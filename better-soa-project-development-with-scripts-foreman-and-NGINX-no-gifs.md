@@ -2,8 +2,6 @@
 
 ## MOAR!
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/165/asset.jpg"/>
-
 Everyone knows moar is better. Moar kittens, moar money, moar apps. Why settle for one Ruby project, when you can have three? We'll take one Rails app for authorization and one to serve an API. Hey, let's throw in a Sinatra proxy server serving up an AngularJS app to while we're at it! Now we're cookin'!
 
 There are many ways organizations stand to gain by splitting their application into multiple projects running in symphony. If we're being good programmers and following the Single Responsibility Principle (SRP), it makes sense to embrace it at all levels of organization, from our methods and classes up through our project structure. To organize this on the macro level, we can use a Service Oriented Architecture (SOA) approach. In this article, we'll explore some patterns that make it easier to develop SOA apps with a minimum of headaches.
@@ -41,8 +39,6 @@ The first three repos will hold the actual service projects, and the `processes`
 
 ## Git Your S#*& Together
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/168/asset.jpg" />
-
 It can be pretty annoying to have your projects all out of sync. To make it easier to keep things up to date, here's a bash script you can use to pull all of your projects down and update them in one go. Inside of the processes folder, touch a file called `git_update.sh`.
 
 ```bash
@@ -79,8 +75,6 @@ Now the projects are all updated and ready to go, and we want to begin developin
 
 ## Call In The Foreman
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/166/asset.gif" />
-
 The [foreman gem](https://github.com/ddollar/foreman) is my favorite way to manage multiple applications: it runs them all in a single terminal session. It's pretty simple to get set up, and saves you having to run a lot of shell sessions (and a lot of headaches).
 
 First, we'll need to `gem install foreman`, to make sure we have the global executable available. Then, we'll set up a `Procfile` to tell it which processes we want it to run. This is a lot like the `Procfile` you've probably used if you've ever deployed anything to [Heroku](https://www.heroku.com/). We'll create ours in the `processes` directory, since that's where we're keeping things that pertain to all of the projects in our SOA app.
@@ -100,8 +94,6 @@ From the `processes` folder, run `foreman start`. Sweet. Now everything is all s
 Man, wouldn't it be nice if we could just run everything under a single host name?
 
 ## NGINX, NGINX #9
-
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/167/asset.gif" />
 
 To get around the problem of having three different localhosts, we can use [NGINX](http://nginx.com/). If you're not familiar with NGINX, it's an Apache alternative that acts as "a web server, a reverse proxy server and an application load balancer" (from the official site). We can use it to serve up all three of our apps from the same host, and make things a whole lot easier on ourselves.
 
@@ -230,8 +222,6 @@ end
 ```
 
 ## All Your App Are Belong To Us
-
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/169/asset.jpg" />
 
 I hope that you have a better idea of what it takes to develop an application using Service Oriented Architecture. Juggling several services can be pretty confusing, but if you start with the right set up, it makes things a lot easier. All your apps will be under control if you manage them from a central place, and using the strategies discussed in this article should help make the process less painful. Good luck!
 
