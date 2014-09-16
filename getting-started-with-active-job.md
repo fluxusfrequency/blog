@@ -4,7 +4,7 @@ With the [announcement of Rails 4.2](http://edgeguides.rubyonrails.org/4_2_relea
 
 ## Updating Rails
 
-You'll need Rails 4.2.0 or greater if you want to use Active Job as part of Rails (you can also use require it as a gem in older versions of Rails). You can upgrade your Rails version by specifying `gem 'rails', '4.2.0beta1'` in your `Gemfile`, then running `bundle update`. You'll also want to run `rake rails:update`, being careful not to overwrite any of your application-specific configuration settings.
+You'll need Rails 4.2.0beta1 or greater if you want to use Active Job as part of Rails (you can also use require it as a gem in older versions of Rails). This tutorial is based on `4.2.0beta2`. You can upgrade your Rails version by specifying `gem 'rails', '~> 4.2.0beta2` in your `Gemfile` (as of this writing, `4.2.0beta2` is not yet released, so you'll want to set the git remote to `gem 'rails', github: 'rails/rails'`). Don't forget to run `bundle update`.
 
 ## Setting Up Resque
 
@@ -22,40 +22,28 @@ Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection }
 
 ```
 
-We'll also require the Resque rake task, so we can start our workers with rake:
+We'll also require the Resque and Resque Scheduler rake task, so we can start our workers with rake:
 
 ```
 #lib/tasks/resque.rake
-require "resque/tasks"
+
+require 'resque/tasks'
+require 'resque/scheduler/tasks'
+
+namespace :resque do
+  task :setup do
+    require 'resque'
+    require 'resque-scheduler'
+  end
+end
+
 ```
 
-We can now try to start a worker by running `QUEUE=* rake environment resque:work`. If everything's working right, we should be able to see it in the Resque console by running `resque-web` and visiting `http://0.0.0.0:5678/overview`. If you see "0 of 1 Workers Working", all's well.
+We can now try to start a worker by running `QUEUE=* rake environment resque:work`. If everything's working right, we should be able to see it in the Resque console by running `resque-web` and visiting `http://0.0.0.0:5678/overview`. If you see "0 of 1 Workers Working", all's well. We'll also need to boot up the scheduler process in a separate process, with `rake environment resque:scheduler`.
 
 ## Creating the Mailer
 
-Now we need to give our worker an email to send. Let's imagine that we want to send a weekly newsletter to keep our users engaged, and drive traffic to our site. We'll begin by setting up a mailer. First, we'll write the test. For now, we'll set up our mailer's interface to take a hash of options, one of which will be email.
-
-```
-#test/mailers/user_mailer_test.rb
-
-require 'test_helper'
-
-class UserMailerTest < ActionMailer::TestCase
-  tests UserMailer
-
-  test 'sends a weekly email' do
-    email = UserMailer.follow_up_email(email: 'user@example.com').deliver
-
-    assert_equal 1, ActionMailer::Base.deliveries.length
-
-    assert_includes email.from, 'noreturn@example.com'
-    assert_includes email.to, 'user@example.com'
-    assert_equal 'We hope you are enjoying our app', email.subject
-  end
-end
-```
-
-This test will fail because we haven't created the mailer yet. Let's do that now.
+Now we need to give our worker an email to send. Let's imagine that we want to send a weekly newsletter to keep our users engaged, and drive traffic to our site. We'll begin by setting up a mailer. Our mailer will take a hash of params that includes an `email` key.
 
 ```
 #app/mailers/user_mailer.rb
@@ -72,17 +60,14 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-If we run the test again, it blows up because there's no template for the email. Let's write that.
+We'll also need to write a template for the mailer to use. To send a valid multi-part email, we would also need create an html version. I'll leave that part to your imagination.
 
 ```
 #app/views/user_mailer/follow_up_email.text
 
 Hey, we saw that you recently signed up for our app.
 We hope you're enjoying it!
-
 ```
-
-Now the test passes. To send a valid multi-part email, we would also need create an html version. I'll leave that part to your imagination.
 
 ## Creating the Job
 
@@ -103,7 +88,7 @@ class FollowUpEmailJob < ActiveJob::Base
   queue_as :email
 
   def perform(email)
-    UserMailer.follow_up_email(email)
+    UserMailer.follow_up_email(email).deliver_now
   end
 end
 ```
@@ -120,28 +105,82 @@ class UsersController < ApplicationController
   
   def create
     @user = User.create(user_params)
-    FollowUpEmailJob.new(@user.email).enqueue(wait: 1.minute)
+    FollowUpEmailJob.new(@user.email).enqueue(wait: 10.seconds)
+    # redirect somewhere
   end
 end
 ```
 
-## Trying it Out
+To make this work, we'll need some routes and a view template:
 
-We can test that this is working properly using the `mailcatcher` gem. You'll want to do a global install with `gem install mailcatcher`. We'll also take a look at the Resque queue to make sure we see things happening there. At this point, you should have three processes running:
+```
+#config/routes.rb
+
+Rails.application.routes.draw do
+  resources :users, only: [:new, :create]
+end
+```
+
+
+```
+#app/views/users/new.html.erb
+
+<%= form_for @user do |f| %>
+  <%= f.email_field :email %>
+  <%= f.submit %>
+<% end %>
+```
+
+## Setting Up Mailcatcher
+
+We can test that this is working properly using the `mailcatcher` gem. You'll want to do a global install with `gem install mailcatcher`. Once we run `mailcatcher`, we'll be able to intercept emails and view them at `http://127.0.0.1:1080`. We'll also need to configure Action Mailer to send the emails to `localhost:1025` via smtp.
+
+```
+#config/environments/development.rb
+
+Rails.application.configure do
+  ...
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+end
+```
+
+## Trying It Out
+
+Now everything is set. We'll sign up a new user and watch the job get enqueued in the queue, then catch the mail in Mailcatcher. At this point, we have four processes running in the terminal:
 
 ```
 mailcatcher
 QUEUE=* rake environment resque:work
+rake environment resque:scheduler
 rails server
 ```
 
-Assuming you've already got the standard routes and templates in place to create a new user, we can visit `localhost:3000/users/new` and sign up a new user.
+It's time. Open up `http:/http://0.0.0.0:5678` in your browser and watch the Resque dashboard. In another tab, visit `http://127.0.0.1:1080` to view sent mails in Mailcatcher. 
 
-Now to try it out. We'll open up `http:/http://0.0.0.0:5678` in your browser and watch our worker. In another tab, we'll open `http://127.0.0.1:1080/` to view Mailcatcher. When we create the user, the Resque server should show a `follow_up_email` job appear in the `emails` queue. Then, in three minutes, we should see the email come through.
+Now visit `localhost:3000/users/new` and sign up a new user. Ten seconds later, a new job should appear in the `emails` queue of the Resque dashboard. Then we should see the email come through in the Mailcatcher tab just afterward.
 
+## Using Acive Job with Action Mailer
 
-## Statistics
+The example here shows how to schedule any job with ActiveJob. But since ActiveJob comes backed into ActionMailer, we could have also scheduled the job directly with the `UserMailer` in the controller.
 
-[Activejob Stats gem](https://github.com/seuros/activejob-stats)
+```
+#app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+  ...
+  
+  def create
+    ...
+    UserMailer.follow_up_email(email).deliver_later!(wait: 10.seconds)
+  end
+end
+
+```
 
 ## Conclusion
+
+Active Job makes scheduling jobs easier. It's also a great way to set up your job infrastructure without knowing too much about what queueing system you're using. If you needed to switch to [Sidekiq](https://github.com/mperham/sidekiq) or [Delayed Job](https://github.com/collectiveidea/delayed_job) in the future, it would be a painless switch: just set the ActiveJob adapter to the appropriate technology.
+
+As Active Job matures, hopefully we'll see the ability to schedule recurring tasks, like sending monthly newsletters.
+
