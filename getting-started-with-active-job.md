@@ -14,17 +14,16 @@ To use Resque, you'll need to make sure you have [Redis](http://redis.io/) insta
 
 Once you've got Redis up and running, you'll need to install and configure the Resque gem. We'll also need `resque-scheduler` to use ActiveJob. Add them the Gemfile with `gem 'resque'` and `gem 'resque-scheduler'` and run `bundle install`. You'll also need to create a Resque configuration file:
 
-```
+```ruby
 #config/initializers/resque.rb
 
 Resque.redis = Redis.new(:url => 'http://localhost:6379')
 Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection }
-
 ```
 
 We'll also require the Resque and Resque Scheduler rake task, so we can start our workers with rake:
 
-```
+```ruby
 #lib/tasks/resque.rake
 
 require 'resque/tasks'
@@ -36,7 +35,6 @@ namespace :resque do
     require 'resque-scheduler'
   end
 end
-
 ```
 
 We can now try to start a worker by running `QUEUE=* rake environment resque:work`. If everything's working right, we should be able to see it in the Resque console by running `resque-web` and visiting `http://0.0.0.0:5678/overview`. If you see "0 of 1 Workers Working", all's well. We'll also need to boot up the scheduler process in a separate process, with `rake environment resque:scheduler`.
@@ -45,7 +43,7 @@ We can now try to start a worker by running `QUEUE=* rake environment resque:wor
 
 Now we need to give our worker an email to send. Let's imagine that we want to send a weekly newsletter to keep our users engaged, and drive traffic to our site. We'll begin by setting up a mailer. Our mailer will take a hash of params that includes an `email` key.
 
-```
+```ruby
 #app/mailers/user_mailer.rb
 
 class UserMailer < ActionMailer::Base
@@ -62,7 +60,7 @@ end
 
 We'll also need to write a template for the mailer to use. To send a valid multi-part email, we would also need create an html version. I'll leave that part to your imagination.
 
-```
+```ruby
 #app/views/user_mailer/follow_up_email.text
 
 Hey, we saw that you recently signed up for our app.
@@ -73,7 +71,7 @@ We hope you're enjoying it!
 
 Now that we have a working mailer, we're ready to set up Active Job. We'll begin by configuring it to use Resque.
 
-```
+```ruby
 #config/initializers/active_job.rb
 
 ActiveJob::Base.queue_adapter = :resque
@@ -81,7 +79,7 @@ ActiveJob::Base.queue_adapter = :resque
 
 With Active Job in place, we can now create the job that the background worker will use to send the email. The conventions for a job include giving it a queue, and defining a `perform` method.
 
-```
+```ruby
 #app/jobs/follow_up_email_job.rb
 
 class FollowUpEmailJob < ActiveJob::Base
@@ -95,14 +93,14 @@ end
 
 Now when a user signs up, we can set the job to send the email later. Note that the syntax is a little bit different than what is described in [the documentation](http://edgeguides.rubyonrails.org/active_job_basics.html).
 
-```
+```ruby
 #app/controllers/users_controller.rb
 
 class UsersController < ApplicationController
   def new
     @user = User.new
   end
-  
+
   def create
     @user = User.create(user_params)
     FollowUpEmailJob.new(@user.email).enqueue(wait: 10.seconds)
@@ -113,7 +111,7 @@ end
 
 To make this work, we'll need some routes and a view template:
 
-```
+```ruby
 #config/routes.rb
 
 Rails.application.routes.draw do
@@ -122,7 +120,7 @@ end
 ```
 
 
-```
+```erb
 #app/views/users/new.html.erb
 
 <%= form_for @user do |f| %>
@@ -135,7 +133,7 @@ end
 
 We can test that this is working properly using the `mailcatcher` gem. You'll want to do a global install with `gem install mailcatcher`. Once we run `mailcatcher`, we'll be able to intercept emails and view them at `http://127.0.0.1:1080`. We'll also need to configure Action Mailer to send the emails to `localhost:1025` via smtp.
 
-```
+```ruby
 #config/environments/development.rb
 
 Rails.application.configure do
@@ -149,14 +147,12 @@ end
 
 Now everything is set. We'll sign up a new user and watch the job get enqueued in the queue, then catch the mail in Mailcatcher. At this point, we have four processes running in the terminal:
 
-```
-mailcatcher
-QUEUE=* rake environment resque:work
-rake environment resque:scheduler
-rails server
-```
+- `mailcatcher`
+- `QUEUE=* rake environment resque:work`
+- `rake environment resque:scheduler`
+- `rails server`
 
-It's time. Open up `http:/http://0.0.0.0:5678` in your browser and watch the Resque dashboard. In another tab, visit `http://127.0.0.1:1080` to view sent mails in Mailcatcher. 
+It's time. Open up `http:/http://0.0.0.0:5678` in your browser and watch the Resque dashboard. In another tab, visit `http://127.0.0.1:1080` to view sent mails in Mailcatcher.
 
 Now visit `localhost:3000/users/new` and sign up a new user. Ten seconds later, a new job should appear in the `emails` queue of the Resque dashboard. Then we should see the email come through in the Mailcatcher tab just afterward.
 
@@ -164,18 +160,16 @@ Now visit `localhost:3000/users/new` and sign up a new user. Ten seconds later, 
 
 The example here shows how to schedule any job with ActiveJob. But since ActiveJob comes backed into ActionMailer, we could have also scheduled the job directly with the `UserMailer` in the controller.
 
-```
+```ruby
 #app/controllers/users_controller.rb
 
 class UsersController < ApplicationController
   ...
-  
   def create
     ...
     UserMailer.follow_up_email(email).deliver_later!(wait: 10.seconds)
   end
 end
-
 ```
 
 ## Conclusion
