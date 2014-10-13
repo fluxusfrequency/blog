@@ -1,4 +1,4 @@
-# Eight Reasons That I Love Minitest
+# Why I Love Minitest
 
 The other day at our company standup, I mentioned that I was eager to
 read an article on [Concurrency in Minitest](http://chriskottom.com/blog/2014/10/exploring-minitest-concurrency/)
