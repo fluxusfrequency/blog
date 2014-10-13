@@ -7,15 +7,17 @@ coworkers asked: "people still use Minitest?" My reply: "you mean you're not
 using Minitest yet?"
 
 I love Minitest. It's small, lightweight, and ships with Ruby.
-It's used by heavyweights like [Aaron Patterson](http://rubyrogues.com/001-rr-testing-practices-and-tools/),
-Sandi Metz, Katrina Owen, and of course, DHH.  Here's a look at why Minitest is
-awesome.
+It's used by respected programmers like [Aaron Patterson](http://rubyrogues.com/001-rr-testing-practices-and-tools/),
+Katrina Owen, Sandi Metz, and of course, DHH. Here's a look at why
+Minitest remains a powerful and popular choice for testing Ruby code.
 
 ## Witness the Firepower of this Fully Armed and Operational Testing Tool
 
-I was a student in the second [gSchool](http://www.galvanize.it/school/) class. At
-that time, it was being taught by [Jumpstart Lab](http://jumpstartlab.com/).
-My instructors were [Jeff Casimir](https://twitter.com/j3), [Franklin Webber](https://twitter.com/franklinwebber), and [Katrina Owen](https://twitter.com/kytrinyx).
+Although I come from a [family of programmers](http://fluxusfrequency.github.io/blog/2013/10/03/the-history-of-programming-in-the-life-of-russ-lewis/),
+I entered the profession by going to a bootcamp.  I was a student in the second
+[gSchool](http://www.galvanize.it/school/) class. At that time, it was being
+taught by [Jumpstart Lab](http://jumpstartlab.com/).  My instructors were [Jeff Casimir](https://twitter.com/j3),
+[Franklin Webber](https://twitter.com/franklinwebber), and [Katrina Owen](https://twitter.com/kytrinyx).
 
 My classmates and I were brought up with TDD from day one. We practiced it in everything
 we did. The tool we used was Minitest. When it was first introduced, I scoffed a little
@@ -24,70 +26,67 @@ because of the name.
 "Why are we using a 'mini' testing framework?  I want to use what the pros use,"
 I complained to Katrina.
 
-"Despite the name, Minitest is a fully-featured testing framework, and is used
-in plenty of production apps," was her reply.
+"Minitest is a fully-featured testing framework, and is used in plenty of
+production apps," was her reply.
 
-I've been using it ever since.
+I've been using it ever since. Here are seven reasons I think Minitest is the bees' knees.
 
-## Why Minitest Is Groovy
+### 1. It's Just Ruby
 
-Here are seven reasons I think Minitest is the bees' knees.
+When you use Minitest, you are writing your tests in Ruby. Minitest
+ships with Ruby. If you can write Ruby, you can write tests in Minitest.
+I love the simplicity because it makes it easy to focus on designing code.
+Just imagine what you want it to do, and write your assertion or expectation.
 
-### 1. It's Plain Ruby
-
-When you choose to use Minitest, you are choosing the use Ruby to write
-your tests. I love the simplicity because it makes it easy to focus on
-designing code. Just imagine what you want it to do, and write the
-expectation in regular Ruby.
-
-I reached out to Katrina again recently to ask her thoughts on what's
+I recently reached out to Katrina to ask her thoughts on what's
 good about Minitest. Its simplicity was at the top of her list:
-"It's simpler. There's no "magic" (just plain Ruby)...When there is "magic" then
+"It's simpler. There's no 'magic' (just plain Ruby)...When there is "magic" then
 it's very easy to assume that you *can't* understand it...
-You can read through the source code, and understand what is going on."
+You can read through the [Minitest] source code, and understand what is going on."
 
 I also asked Sandi Metz what she thought of Minitest. She said: "Minitest is
 wonderfully simple and encourages this same simplicity in tests and code."
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+### 2. It Makes Sense to Programmers
+
+The relatively "low-level" status of Minitest makes it easy to
+customize. Katrina observes:
 
 "Because Minitest is so simple, it's not too hard to extend. It feels
 like a tool that I can shape to my needs, rather than a tool that I need
 to use the way it was intended."
 
-### 2. It Makes Sense to Programmers
+The DSL for Minitest is small and easy to use. All you need to know is `assert`
+for booleans, and `assert_equal` for everything else. If you want to negate it,
+use `refute` or `refute_equal` instead. For everything else, you just write
+Ruby code.
 
-"I prefer good, strong idioms over things that try to be natural language"
-
-Declaring variables is more intuitive than using "let" blocks. Which
-makes more sense if you think about it as code rather than English?
-
-"Let post do post dot create end"
-`let(:post) { Post.create }`
-
-"post equals post dot create"
-`post = Post.create`
-
-The DSL for Minitest is small and easy to use. All you need to know is `assert` for booleans,
-and `assert_equal` for everything else. If you want to negate it, use
-`refute` or `refute_equal` instead. The rest is just Ruby.
+If you prefer the BDD `expect` syntax, it's also available in the
+[mintest/spec](https://github.com/seattlerb/minitest/blob/master/lib/minitest/spec.rb)
+library. I would recommend giving `assert` a try, though. Although BDD
+syntax seems more English-like, it's not actually English. Using
+`assert` is pretty straightforward. It also provides the benefit of
+making your test files flat.
 
 ### 3. It's Flat
 
 With nested `context`, `describe`, and `it` blocks, it can be difficult
-to remember what `it` refers to, or which `before` block is included in
+to remember what `it` refers to, and which `before` blocks are accessible in
 your scope. I find myself scanning indentation in BDD tests to figure
 out what scope I'm working in.
 
-Minitest is flat. You start with a class, then you write a bunch of test
-methods inside of it. It's clear that the only variables available are
-those defined in the `setup` method or in the test itself.
+If you use the default `assert` syntax, Minitest is flat. You start with a test class,
+then you write a bunch of test methods inside of it. It's clear that the only
+variables available are those defined in the `setup` method or in the test itself.
+This flatness also means it gets painful quickly if your test is tied to
+too many dependencies. As Katrina puts it, "the lack of nested contexts means that
+I'm faced with the appropriate amount of pain when I make bad choices. It quickly
+becomes ugly if I have too many dependencies. I like that."
 
-You might object that `describe`, `expect`, and `should` are a great way
-to document the desired behavior of your code. I would argue that you
-can document it even more straightfowardly in Minitest, by naming the
-method descriptively, and setting an output message if you're really
-worried you'll forget what the test was for.
+Minitest also makes it easy to document the desired behavior of your code:
+just name the the test method to describe what you are testing. If you're really
+worried you'll forget what the test was for, you can output a message to
+the console if the test fails:
 
 ```
 test 'it calculates the average speed of an unladen swallow' do
@@ -99,23 +98,16 @@ test 'it calculates the average speed of an unladen swallow' do
 end
 ```
 
-Minitest's flatness is also a benefit when it comes to practicing a good
+Minitest's flatness is also beneficial when it comes to practicing a good
 Test-Driven workflow. You can `skip` all of the tests in a file easily,
 without scanning through nested blocks. Then you can make them pass, one
 at a time.
 
-```
-The lack of nested contexts means that I'm faced with the appropriate
-amount of pain when I make bad choices. It quickly becomes ugly if I
-have too many dependencies. I like that.
-```
-
 ### 4. It Lends Itself to A Good Test-Driven Workflow
 
-Minitest is awesome for getting into a red/green/refactor workflow.
+Minitest is awesome for getting into a red/green/refactor loop.
 Write a test, watch it fail, make it pass, refactor. Repeat. A Minitest
-file is just a flat list of tests that are waiting for you to make them
-pass.
+file is just a list of tests that are waiting for you to make them pass.
 
 Plus, since you're just writing Ruby, you can use a style like this to get the
 next test set up with a minimum of effort:
@@ -128,20 +120,19 @@ test 'something' do
 end
 ```
 
-If you want to repeat an assertion in different contexts, you can just
-write a method for it, and call it in as many tests as you want to. Need
-a [shared example](https://canaryup.com/blog/shared-examples-with-minitest)? Include a module.
+If you want to repeat an assertion in different contexts, you can write a method
+for it, and call it in as many tests as you want to. Need a [shared example](https://canaryup.com/blog/shared-examples-with-minitest)?
+Include a module.
 
 ### 5. Minitest::Benchmark is Awesome
 
 If you are dealing with large amounts of data, and performance is
-a concern, [Minitest::Benchmark](https://github.com/seattlerb/minitest/blob/master/lib/minitest/benchmark.rb) is your best friend.
+a concern, [Minitest::Benchmark](https://github.com/seattlerb/minitest/blob/master/lib/minitest/benchmark.rb) is new your best friend.
 
 It lets you test your algorithms in a repeatable manner, to make sure
-that their Big O classifications don't accidentally get changed. You can
-collect benchmarks in 'tab-separated format, making it
-easy to paste into a spreadsheet for graphing or further
-analysis'.
+that their algorithmic efficiency don't accidentally get changed. You can
+collect benchmarks in "tab-separated format, making it easy to paste into a
+spreadsheet for graphing or further analysis".
 
 Here are a few of the assertions in Minitest::Benchmark that might be of
 interest:
@@ -153,47 +144,54 @@ interest:
 
 ### 6. It's Randomized By Default
 
-Running the tests in a different order than they're written can catch bugs
-caused by poorly written tests. Running them in a different order every
-time can do the same. Here's how Aaron Patterson described the benefit
-of this feature in an [episode of Ruby Rogues](http://rubyrogues.com/001-rr-testing-practices-and-tools/):
+Running the tests in a different order each time can help catch bugs
+caused by unintended dependencies between examples. Here's how Aaron Patterson
+described the benefit of randomized tests in an [episode of Ruby Rogues](http://rubyrogues.com/001-rr-testing-practices-and-tools/):
 
-```
-I’m sure you’ve been in a situation where your application, like one particular test fails in isolation, but when you run with — it works, right? And that’s typically because one test like setup some particular environment that another test depended  on, you didn’t know that when you writing the test. Since Minitest runs the test in a random order, you can’t make one test depend another. So you’ll see and error case.
-```
+"I’m sure you’ve been in a situation where your application, like one particular
+test fails in isolation, but when you run with — it works, right? And that’s
+typically because one test like setup some particular environment that another
+test depended  on, you didn’t know that when you writing the test. Since Minitest
+runs the test in a random order, you can’t make one test depend another.
+So you’ll see and error case."
 
 ### 7. It's Faster
 
-Minitest does not create any matchers or example objects that have to be
-garbage collected. Many people have run tests comparing Minitest to
-other frameworks, and it usually comes out slightly ahead. Sometimes it
-comes out [significantly ahead](http://blog.rawonrails.com/2012/01/very-cursory-test-of-rspec-28-speed.html).
+Minitest doesn't create any matchers or example objects that have to be
+garbage collected. Many people have benchmarked Minitest against other
+frameworks, and it usually comes out at ahead. Often it's a marginal
+difference, but sometimes it comes out [significantly ahead](http://blog.rawonrails.com/2012/01/very-cursory-test-of-rspec-28-speed.html).
 
-Minitest also supports concurrent test runs. Although you would expect
-this to lead to great speed gains, it does so [only in JRuby and Rubinius](http://chriskottom.com/blog/2014/10/exploring-minitest-concurrency/).
-Still, it's nice to know that the option is there.
+Minitest also supports concurrent test runs. Although I thought this
+would lead to great speed gains, it turns out that it [only makes a difference
+in JRuby and Rubinius](http://chriskottom.com/blog/2014/10/exploring-minitest-concurrency/).
+The Matz Ruby Implementation (MRI) [doesn't get speed gains](https://blog.engineyard.com/2010/concurrency-real-and-imagined-in-mri-threads)
+when using concurrency. Still, it's nice to know that the option is there, in case you are using
+JRuby or Rubinius, or the MRI changes in the future.
 
 ## Have You Tried It?
 
 I've talked to a lot of people that are surprised when I say I prefer Minitest. They
 often ask, "why should I switch to Minitest?" Perhaps a better question to ask is
 this one, posed by [Ken Collins](https://github.com/metaskills/holy_grail_harness/issues/3):
-What is in other testing frameworks that you need that Minitest does not offer?
+"What is in [other testing frameworks] that you need that Minitest does not offer?"
 
-In the end, programming tools are a matter of individual taste. When
-I've asked programmers about Minitest, they all expressed that they were not _against_
+Programming tools are a matter of individual taste. When I've asked programmers
+about Minitest, they've all expressed that they were not _against_
 RSpec or other frameworks. Sandi Metz said: "I'm agnostic about testing frameworks...
-I also use RSpec and I find it equally useful in it's own way." Katrina said:
+I also use RSpec and I find it equally useful in it's own way." Katrina Owen said:
 "I don't dislike RSpec, but I do prefer Minitest." In the end, I think most
-would agree that testing frameworks a personal choice.
+would agree that testing frameworks are a personal choice.
 
 That said, if you haven't tried Minitest lately (or ever), why not taste the Kool-Aid?
-If you're curious about Minitest, but feel like you still need some convincing:
-
-Just try it.
-
-It's a small investment. You'll be up and running in a few
+If you're curious about Minitest, but feel like you still need some convincing,
+just try it!  It's a small investment. You'll be up and running in a few
 minutes. Why not go try the first Ruby [Exercism](http://exercism.io/getting-started)?
+
+I hope this tour of Minitest's features has been informative, and piqued your
+interest in this fabulous test framework. Is there anything I missed? Disagree?
+Let's talk! Please share your point of view in the comments section, or
+tweet at me at @fluxusfrequency.
 
 ## Other Resources
 
