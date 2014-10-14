@@ -31,12 +31,12 @@ production apps," was her reply.
 
 I've been using it ever since. Here are seven reasons I think Minitest is the bees' knees.
 
-### 1. It's Just Ruby
+### 1. It's Simple
 
-When you use Minitest, you are writing your tests in Ruby. Minitest
-ships with Ruby. If you can write Ruby, you can write tests in Minitest.
-I love the simplicity because it makes it easy to focus on designing code.
-Just imagine what you want it to do, and write your assertion or expectation.
+Minitest ships with Ruby because it's easy to understand, and can be
+written by anyone who knows the language.  I love this simplicity because it
+makes it easy to focus on designing code.  Just imagine what you want it to do,
+and write your assertion, and make it pass.
 
 I recently reached out to Katrina to ask her thoughts on what's
 good about Minitest. Its simplicity was at the top of her list:
@@ -47,35 +47,58 @@ You can read through the [Minitest] source code, and understand what is going on
 I also asked Sandi Metz what she thought of Minitest. She said: "Minitest is
 wonderfully simple and encourages this same simplicity in tests and code."
 
-### 2. It Makes Sense to Programmers
+Minitest is low in sugar. All you need to know is `assert`
+for booleans, and `assert_equal` for everything else. If you want to test a
+negative case, use `refute` or `refute_equal` instead. For everything else,
+just write Ruby.
+
+### 2. It's Extensible
 
 The relatively "low-level" status of Minitest makes it easy to
-customize. Katrina observes:
+customize tests. Katrina observes:
 
 "Because Minitest is so simple, it's not too hard to extend. It feels
 like a tool that I can shape to my needs, rather than a tool that I need
 to use the way it was intended."
 
-The DSL for Minitest is small and easy to use. All you need to know is `assert`
-for booleans, and `assert_equal` for everything else. If you want to negate it,
-use `refute` or `refute_equal` instead. For everything else, you just write
-Ruby code.
+If you want to repeat setup for an assertion in different contexts, you can write a
+method for it, and call it in as many tests as you need.
 
-If you prefer the BDD `expect` syntax, it's also available in the
-[mintest/spec](https://github.com/seattlerb/minitest/blob/master/lib/minitest/spec.rb)
-library. I would recommend giving `assert` a try, though. Although BDD
-syntax seems more English-like, it's not actually English. Using
-`assert` is pretty straightforward. It also provides the benefit of
-making your test files flat.
+```
+def assert_average_speed(swallow)
+  # Do some additional work here
+  assert_equal '11 MPS', swallow.speed
+end
 
-### 3. It's Flat
+def test_african
+  swallow = Swallow.new(type: 'African')
+  assert_average_speed(swallow)
+end
+
+def test_european
+  swallow = Swallow.new(type: 'European')
+  assert_average_speed(swallow)
+end
+```
+
+Need a shared example?
+[Include a module](https://canaryup.com/blog/shared-examples-with-minitest).
+
+### 3. It's Flat If You Use Assert
+
+The default syntax for Minitest is `assert`. Although the BDD `expect` syntax is
+available in [mintest/spec](https://github.com/seattlerb/minitest/blob/master/lib/minitest/spec.rb),
+I recommend giving `assert` a try. Maybe you love expectations because they read
+like English, sort of. Although `assert` doesn't try to imitate natural language,
+it's actually quite intuitive to use. It also provides the benefit of making your
+test files flat.
 
 With nested `context`, `describe`, and `it` blocks, it can be difficult
 to remember what `it` refers to, and which `before` blocks are accessible in
 your scope. I find myself scanning indentation in BDD tests to figure
 out what scope I'm working in.
 
-If you use the default `assert` syntax, Minitest is flat. You start with a test class,
+When you use `assert` syntax, your test file is flat. You start with a test class,
 then you write a bunch of test methods inside of it. It's clear that the only
 variables available are those defined in the `setup` method or in the test itself.
 This flatness also means it gets painful quickly if your test is tied to
@@ -83,14 +106,14 @@ too many dependencies. As Katrina puts it, "the lack of nested contexts means th
 I'm faced with the appropriate amount of pain when I make bad choices. It quickly
 becomes ugly if I have too many dependencies. I like that."
 
-Minitest also makes it easy to document the desired behavior of your code:
+Using `assert` also makes it easy to document the desired behavior of your code:
 just name the the test method to describe what you are testing. If you're really
 worried you'll forget what the test was for, you can output a message to
 the console if the test fails:
 
 ```
-test 'it calculates the average speed of an unladen swallow' do
-  swallow = Swallow.new(wing_span: 30, laden: false)
+test 'it calculates the air-speed velocity of an unladen swallow' do
+  swallow = Swallow.new(wing_span: 30, laden: false, type: 'European')
   expected = '11 MPS'
   actual = swallow.average_speed
   assert_equal expected, actual, 'The average speed of an unladen
@@ -98,7 +121,7 @@ test 'it calculates the average speed of an unladen swallow' do
 end
 ```
 
-Minitest's flatness is also beneficial when it comes to practicing a good
+Minitest's flatness is also beneficial when it comes to practicing a
 Test-Driven workflow. You can `skip` all of the tests in a file easily,
 without scanning through nested blocks. Then you can make them pass, one
 at a time.
@@ -183,8 +206,8 @@ I also use RSpec and I find it equally useful in it's own way." Katrina Owen sai
 "I don't dislike RSpec, but I do prefer Minitest." In the end, I think most
 would agree that testing frameworks are a personal choice.
 
-That said, if you haven't tried Minitest lately (or ever), why not taste the Kool-Aid?
-If you're curious about Minitest, but feel like you still need some convincing,
+That said, if you haven't used Minitest lately (or ever), why not check
+it out?  If you're curious, but feel like you still need some convincing,
 just try it!  It's a small investment. You'll be up and running in a few
 minutes. Why not go try the first Ruby [Exercism](http://exercism.io/getting-started)?
 
