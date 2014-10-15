@@ -40,8 +40,8 @@ and write your assertion, and make it pass.
 
 I recently reached out to Katrina to ask her thoughts on what's
 good about Minitest. Its simplicity was at the top of her list:
-"It's simpler. There's no 'magic' (just plain Ruby)...When there is "magic" then
-it's very easy to assume that you *can't* understand it...
+"It's simpler. There's no 'magic' (just plain Ruby) [...] When there is "magic" then
+it's very easy to assume that you *can't* understand it [...]
 You can read through the [Minitest] source code, and understand what is going on."
 
 I also asked Sandi Metz what she thought of Minitest. She said: "Minitest is
@@ -61,8 +61,8 @@ customize tests. Katrina observes:
 like a tool that I can shape to my needs, rather than a tool that I need
 to use the way it was intended."
 
-If you want to repeat setup for an assertion in different contexts, you can write a
-method for it, and call it in as many tests as you need.
+If you want to repeat an assertion in multiple contexts, you can write a
+custom assertion for it, and call it in as many tests as you need.
 
 ```
 def assert_average_speed(swallow)
@@ -81,17 +81,30 @@ def test_european
 end
 ```
 
-Need a [shared example](https://canaryup.com/blog/shared-examples-with-minitest)?
-Include a module.
+If you are testing something that requires nearly the same test
+to be run repeatedly, for example when testing a controller that has
+a user authentication `before_action`. In cases like this, you can
+create a shared example by [including a module](https://canaryup.com/blog/shared-examples-with-minitest).
+
+If you need even more control, you can create an object with custom behavior
+that inherits from `Minitest::Test`, and have your tests inherit from it. Doing so
+allows you to completely customize your test suite with new methods as
+you see fit.
+
+Finally, Minitest comes with hooks to help you easily write extensions to the gem.
+You can define a plugin by adding a `minitest/XXX_plugin.rb` file to
+your project folder, and Minitest will automatically find and require
+it. You can use extensions to define command-line options, custom reporters,
+and anything else you want Minitest to be able to do.
 
 ### 3. It's Flat If You Use Assert
 
-Althought the BDD `expect` syntax is available in
-[mintest/spec](https://github.com/seattlerb/minitest/blob/master/lib/minitest/spec.rb),
-I would recommend giving `assert` a try. Maybe you love `expect` or
-`should` because they read like English, sort of. Although `assert`
-doesn't try to imitate natural language, it's actually quite intuitive
-to use. It also provides the benefit of making your test files flat.
+The default syntax for Minitest is `assert`. Although the BDD `expect` syntax is
+available in [mintest/spec](https://github.com/seattlerb/minitest/blob/master/lib/minitest/spec.rb),
+I recommend giving `assert` a try. Maybe you love expectations because they read
+like English, sort of. Although `assert` doesn't try to imitate natural language,
+it's actually quite intuitive to use. It also provides the benefit of making your
+test files flat.
 
 With nested `context`, `describe`, and `it` blocks, it can be difficult
 to remember what `it` refers to, and which `before` blocks are accessible in
@@ -142,6 +155,11 @@ test 'something' do
   assert_equal expected, actual
 end
 ```
+
+If you want to repeat an assertion in different contexts, you can write a method
+for it, and call it in as many tests as you want to. Need a [shared example](https://canaryup.com/blog/shared-examples-with-minitest)?
+Include a module.
+
 ### 5. Minitest::Benchmark is Awesome
 
 If you are dealing with large amounts of data, and performance is
@@ -166,12 +184,11 @@ Running the tests in a different order each time can help catch bugs
 caused by unintended dependencies between examples. Here's how Aaron Patterson
 described the benefit of randomized tests in an [episode of Ruby Rogues](http://rubyrogues.com/001-rr-testing-practices-and-tools/):
 
-"I’m sure you’ve been in a situation where your application, like one particular
-test fails in isolation, but when you run with — it works, right? And that’s
-typically because one test like setup some particular environment that another
-test depended  on, you didn’t know that when you writing the test. Since Minitest
-runs the test in a random order, you can’t make one test depend another.
-So you’ll see and error case."
+"I’m sure you’ve been in a situation where your [...] test fails in
+isolation, but when you run [the entire test suite] it works. [T]hat’s
+typically because one test set up some particular environment that another
+test depended on. [...] Since Minitest runs the test in a random order,
+you can’t make one test depend another, so you’ll see an error case."
 
 ### 7. It's Faster
 
@@ -201,8 +218,8 @@ I also use RSpec and I find it equally useful in it's own way." Katrina Owen sai
 "I don't dislike RSpec, but I do prefer Minitest." In the end, I think most
 would agree that testing frameworks are a personal choice.
 
-That said, if you haven't tried Minitest lately (or ever), why not taste the Kool-Aid?
-If you're curious about Minitest, but feel like you still need some convincing,
+That said, if you haven't used Minitest lately (or ever), why not check
+it out?  If you're curious, but feel like you still need some convincing,
 just try it!  It's a small investment. You'll be up and running in a few
 minutes. Why not go try the first Ruby [Exercism](http://exercism.io/getting-started)?
 
