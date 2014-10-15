@@ -26,6 +26,24 @@ def my_method(self, argument):
 ```
 
 But these are all superficial differences. As I solved more and more
-Python problems on [exercism.io](), everything started to feel natural.
-I felt like everything I wrote had a Ruby analog. Except list
-comprehensions.
+Python problems on [exercism.io](http://exercism.io/), everything started to feel natural.
+I felt like everything I wrote had an analog in Ruby. Except list comprehensions.
+
+## You Cannot Grasp The True Form Of Arrays
+
+In Python, arrays are called lists. There is a really cool thing you can
+do with them called a "list comprehension".  They're also found in
+Coffeescript. Basically, it's the Python way of doing a Ruby Enumerable
+(like `each`). It turns out to be really expressive, fast, and powerful.
+
+Instead of doing this:
+
+```
+[1, 2, 3, 4, 5, 6].each { |i| puts i }
+```
+
+You do this:
+
+```
+[print(x) for x in [1, 2, 3, 4, 5, 6]]
+```
