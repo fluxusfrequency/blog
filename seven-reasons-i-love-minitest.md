@@ -70,7 +70,7 @@ With nested `context`, `describe`, and `it` blocks, it can be difficult to remem
 
 When you use `assert` syntax, your test file is flat. You start with a test class, then you write a bunch of test methods inside of it. It's clear that the only variables available are those defined in the `setup` method or in the test itself. This flatness also means it gets painful quickly if your test is tied to too many dependencies. As Katrina puts it, "the lack of nested contexts means that I'm faced with the appropriate amount of pain when I make bad choices. It quickly becomes ugly if I have too many dependencies. I like that."
 
-Using `assert` also makes it easy to document the desired behavior of your code: just name the the test method to describe what you are testing. If you're really worried you'll forget what the test was for, you can output a message to the console if the test fails:
+Using `assert` also makes it easy to document the desired behavior of your code: just name the test method to describe what you are testing. If you're really worried you'll forget what the test was for, you can output a message to the console if the test fails:
 
 ```ruby
 test 'it calculates the air-speed velocity of an unladen swallow' do
