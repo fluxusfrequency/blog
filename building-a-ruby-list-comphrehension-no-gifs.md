@@ -12,8 +12,6 @@ which we'll explore in this article.
 
 ## Snake Handling
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/194/asset.gif">
-
 Recently, I decided to start learning Python. I enjoy the natural way that Ruby flows off the fingers, and had heard that Python was similar. It sounded easy enough, especially since this article promised I could [Learn Python in Ten Minutes](http://www.stavros.io/tutorials/python/).
 
 It took a little while to get used to some of the differences in Python,
@@ -55,8 +53,6 @@ to implement one.
 
 ## How It Works
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/193/asset.gif">
-
 My first thought in writing a list comprehension in Ruby was to make it
 look like Python. I wanted to be able to write square brackets with an
 expression inside of them. To make that happen, I would need to override
@@ -75,8 +71,6 @@ into this idea, but not really interested in rewriting the Ruby source
 code.
 
 ## Caught In A Loop
-
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/192/asset.gif">
 
 My first goal was to get the basic `x for x in my_array` part working.
 I wrote a test:
@@ -135,8 +129,6 @@ Pretty soon, though, I ran into a problem.
 
 ## No Scope
 
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/191/asset.gif">
-
 When I defined a variable in the test scope, then tried to evaluate it
 in the `comprehension` argument string, my Comprehension couldn't access
 it. For example, I wrote this test:
@@ -191,8 +183,6 @@ opened my eyes to the whole world of accessing callers and callees in
 a way that I normally don't think about in Ruby.
 
 ## You Obviously Worked Hard On These Plans, Kernel Klink.
-
-<img src="//quickleft-production.s3.amazonaws.com/uploads/asset/attachment/190/asset.gif">
 
 I wasn't all that happy with having to define my `c()` method in
 a module and include it in the `main` scope. I really just wanted it to
