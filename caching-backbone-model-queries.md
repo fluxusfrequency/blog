@@ -1,7 +1,6 @@
 # Caching Backbone Model Queries
 
-I was recently working on a Backbone project with fellow Quick Left-er [Bob Bonifield](https://twitter.com/bbonifield), when we came across a problem. We were building an administration panel to be used internally by our client, and there were a couple of views that needed to display the same information about users in a slightly different way.
-To prevent unnecessary AJAX calls, we decided to cache the result of `Backbone.Model#fetch` at two levels of our application. The result: less network time and a snappier user experience. Here's how we did it.
+I was recently working on a Backbone project with fellow Quick Left-er [Bob Bonifield](https://twitter.com/bbonifield), when we came across a problem. We were building an administration panel to be used internally by our client, and there were a couple of views that needed to display the same information about users in a slightly different way. To prevent unnecessary AJAX calls, we decided to cache the result of `Backbone.Model#fetch` at two levels of our application. The result: less network time and a snappier user experience. Here's how we did it.
 
 ## Caching the Controller Call
 
@@ -11,7 +10,7 @@ Bob and I were using backbone-route-control for this project. I'll show how we s
 
 First, we set up the app view and initialized a new Router as a property of it, passing in the controllers we wanted to use:
 
-```
+```javascript
 // Main
 
 var UsersController = require('controllers/users');
@@ -28,7 +27,7 @@ app.router = new Router({
 Next, we defined the router and set it up to use the UsersController to
 handle the appropriate routes.
 
-```
+```javascript
 // Router
 
 var BackboneRouteControl = require('backbone-route-control')
@@ -51,7 +50,7 @@ return Router;
 
 After we got the router set up, we defined the UsersController and the appropriate route methods. We opted to cache the ID of the last user that was accessed by either the `show` or `dashboard` method, so that we wouldn't repeat the fetch call when we didn't need to. We set the result of the call to `Backbone.Model#fetch` (a promise) to a variable called `userLoadedDeferred`, and passed it down the the views themselves. In doing so, we took advantage of the fact that the result of the `fetch` call is delegated [jQuery.ajax](http://api.jquery.com/jquery.ajax/). When saving the result of a call to `jQuery.ajax` to variable, the value of the deferred's `.complete` or `.fail` callback will always return the same payload after it has been fetched from the server.
 
-```
+```javascript
 // UsersController
 
 var UsersController = function(app) {
