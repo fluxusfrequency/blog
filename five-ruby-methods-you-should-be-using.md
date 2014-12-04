@@ -1,4 +1,4 @@
-# Five Ruby Methods You Should Be Using
+# Five Ruby Methods To Make Your Code Succinct And Understandable
 
 There's something magical about the way that Ruby just flows from your fingertips. _why_ said ["Ruby will teach you to express your ideas through a computer"](http://mislav.uniqpath.com/poignant-guide/book/chapter-2.html). Maybe that's why Ruby has become such a [popular choice](http://blog.codeeval.com/codeevalblog/2014) for modern web development.
 
