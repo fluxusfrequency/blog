@@ -1,16 +1,16 @@
 # Setting Up A Clientside JavaScript Project With Gulp And Browserify
 
-It's hard to keep up.
+For JavaScript developers, it can be hard to keep up to date with the latest frameworks and libraries. It seems like every day there's a new _something_.js to check out. Luckily, there is one part of the toolchain that doesn't change as often, and that's the build process. That said, it's worth checking out your options every now and then.
 
-Although Grunt and Requirejs remain viable and useful tools, it's good to explore the new kids on the block as well. Have you haven't had a chance to try Gulp or Browserify yet? If not, let's get our feet wet! These tools are great for use with Backbone, Angular, Ember, React, or your own hand-rolled JavaScript project.
+My build process toolset has traditionally been comprised of [RequireJS](http://requirejs.org/) for dependency loading, and [Grunt](http://gruntjs.com/). They've worked great, but recently I was pairing with someone who prefers to use [Gulp](http://gulpjs.com/) and [Browserify](http://browserify.org/) instead. After using them on a couple of projects, I'm coming to like them quite a bit. They're great for use with Backbone, Angular, Ember, React, and my own hand-rolled JavaScript projects.
 
 In this post, we'll explore how to set up a clientside JavaScript project for success using Gulp and Browserify.
 
 ## Defining the Project Structure
 
-Let's imagine we're writing an app that helps you find where you parked your car. If you want to follow along, check out the [code on GitHub](https://github.com/fluxusfrequency/car-finder).
+For the purposes of this post, we'll pretend we're building an app called Car Finder, that helps you remember where you parked your car. If you want to follow along, check out the [code on GitHub](https://github.com/fluxusfrequency/car-finder).
 
-When I'm building a full application that includes both an API server and a clientside JavaScript app, there's a certain project structure that I've found works well for me. I like to put my clientside code in a single folder one level down from the root of my project, called `client`. This folder will have sibling folders named `server`, `test`, `public`, and `build`. Most of these are self-explanatory. The `build` folder is where we'll put the resulting files created by Browserify builds. Here's how this would look:
+When building a full application that includes both an API server and a clientside JavaScript app, there's a certain project structure that I've found often works well for me. I like to put my clientside app in a folder one level down from the root of my project, called `client`. This folder usually has sibling folders named `server`, `test`, `public`, and `build`. Here's how this would look for Car Finder:
 
 ```
 car-finder
@@ -22,17 +22,17 @@ car-finder
    |- stylesheets
 |- server
 |- test
-
 ```
 
-The idea is to do all developent inside of `client`, then use a build task to compile the JS and copy it into the `public` folder` to be served by the backend.
+The idea is to do our app developent inside of `client`, then use a build task to compile the JS and copy it to the `build` folder, where it will be minified, uglified, and copied to `public` to be served by the backend.
 
-## Configuring Dependencies
+## Pulling In Dependencies
 
 To get up and running, we'll need to pull in some dependencies.
 
-Run `npm init` and follow the prompts, then add `browserify`, `browserify-shim`, and the `gulp` packages we'll
-need with:
+Run `npm init` and follow the prompts.
+
+Add `browserify`, `gulp`, and our build and testing dependencies:
 
 ```bash
 npm install --save-dev gulp gulp-browserify browserify-shim gulp-jshint gulp-mocha-phantomjs \
@@ -41,7 +41,9 @@ gulp-rename gulp-uglify gulp-less gulp-autoprefixer gulp-minify-css mocha chai
 
 If you're using git, you may want to ignore your `node_modules` folder with `echo "node_modules" >> .gitignore`.
 
-You'll probably want to use `browserify-shim` to shim jQuery and your JavaScript framework. To do that, you just set up your `package.json` like so. Now you can do `var $ = require('jquery')`. The process is the same to add any other library.
+## Shimming Your Frameworks
+
+You'll probably want to use `browserify-shim` to shim jQuery and your JavaScript framework so that you can write `var $ = require('jquery')` into your code. We'll use jQuery here, but the process is the same for any other library (Angular, Ember, Backbone, React, etc.). To set it up, modify your `package.json` like so:
 
 ```json
 {
@@ -73,14 +75,13 @@ You'll probably want to use `browserify-shim` to shim jQuery and your JavaScript
 }
 ```
 
-If you're getting JSHint errors in your editor for this file, you can
-turn them off with `echo "package.json" >> .jshintignore`.
+If you're getting JSHint errors in your editor for this file, you can turn them off with `echo "package.json" >> .jshintignore`.
 
 ## Setting Up Gulp
 
-Now that we have `gulp` installed, we'll configure `gulp` commands to lint our code, test it, run a compilation process, and copy our minified JS into the `public` folder.  We'll also set up a watch so that any changes to our project will trigger a lint and recompile.
+Now that we have the `gulp` package installed, we'll configure `gulp` tasks to lint our code, test it, trigger the compilation process, and copy our minified JS into the `public` folder.  We'll also set up a `watch` task that we can use to trigger a lint and recompile of our project whenever a source file is changed.
 
-We'll start by requiring the gulp packages we want in a `gulpfile.js` that lives in the root of the project.
+We'll start by requiring the `gulp` packages we want in a `gulpfile.js` that lives in the root of the project.
 
 ```javascript
 // Gulp Dependencies
@@ -103,7 +104,7 @@ var jshint = require('gulp-jshint');
 var mochaPhantomjs = require('gulp-mocha-phantomjs');
 ```
 
-Now we can start defining some gulp tasks.
+Now we can start defining some tasks.
 
 ### JSHint
 
@@ -123,7 +124,7 @@ gulp.task('lint-test', function() {
 });
 ``
 
-We'll also need to define a `.jshintrc` in the root of our project, so that JSHint will know which rules to apply. If you have a JSHint plugin turned on in your editor, it will show you any linting errors as well. I use [jshint.vim](https://github.com/wookiehangover/jshint.vim). Here's an example of a typical `.jshintrc` for one of my projects. You'll notice that it has some predefined globals that we'll need to have defined for our testing environment to work.
+We'll also need to define a `.jshintrc` in the root of our project, so that JSHint will know which rules to apply. If you have a JSHint plugin turned on in your editor, it will show you any linting errors as well. I use [jshint.vim](https://github.com/wookiehangover/jshint.vim). Here's an example of a typical `.jshintrc` for one of my projects. You'll notice that it has some predefined globals that we'll be using in our testing environment.
 
 ```json
 {
@@ -148,7 +149,6 @@ We'll also need to define a `.jshintrc` in the root of our project, so that JSHi
     "afterEach"  : false,
     "before"     : false,
     "beforeEach" : false,
-    "browser"    : false,
     "context"    : false,
     "describe"   : false,
     "it"         : false,
@@ -159,9 +159,9 @@ We'll also need to define a `.jshintrc` in the root of our project, so that JSHi
 
 ### Mocha
 
-I'm a firm believer in Test-Driven Development, so one of the first things I always do when setting up a project is to make sure I have a working testing framework. For clientside unit testing, I like to use `gulp-mocha-phantomjs`. We'll need to define a few things in the test folder.
+I'm a Test-Driven Development junkie, so one of the first things I always do when setting up a project is to make sure I have a working testing framework. For clientside unit testing, I like to use [gulp-mocha-phantomjs](https://www.npmjs.org/package/gulp-mocha-phantomjs), which we already pulled in above.
 
-We'll need to create a `test/client/index.html` file for Mocha to load up in the headless PhantomJS browser environment. It will pull Mocha in from our `node_modules` folder, require a `build/client-test.js` file (more on this in a minute), then run the scripts:
+Before we can run any tests, we'll need to create a `test/client/index.html` file for Mocha to load up in the headless PhantomJS browser environment. It will pull Mocha in from our `node_modules` folder, require `build/client-test.js` (more on this in a minute), then run the scripts:
 
 ```html
 <!doctype html>
@@ -191,7 +191,7 @@ We'll need to create a `test/client/index.html` file for Mocha to load up in the
 
 ## Setting Up Browserify
 
-Now we need to set up browserify to work the way we want. First, we'll define a couple of Gulp tasks: one to build the app, and one to build the tests. We'll copy the compiled app file to `public` so we can serve it unminified in development, and we'll also put a copy into `build`, where we'll grab it for minification. The test file will also be put into `build`. Finally, we'll set up a `watch` task to trigger rebuilds of the app and test builds when one of the source files changes.
+Now we need to set up Browserify to compile our code. First, we'll define a couple of `gulp` tasks: one to build the app, and one to build the tests. We'll copy the result of the compile to `public` so we can serve it unminified in development, and we'll also put a copy into `build`, where we'll grab it for minification. The  compiled test file will also go into `build`. Finally, we'll set up a `watch` task to trigger rebuilds of the app and test when one of the source files changes.
 
 ```javascript
 gulp.task('browserify-client', ['lint-client'], function() {
@@ -220,13 +220,13 @@ gulp.task('watch', function() {
 
 ```
 
-There's one more thing we'll need to do before we can run our Gulp tasks, which is to make sure we actually have `index.js` files in each of the folders we've told Gulp to look at. Add one to the `client` and `test/client` folders.
+There's one more thing we'll need to do before we can run our `gulp` tasks, which is to make sure we actually have `index.js` files in each of the folders we've it to look at, so it doesn't raise an error. Add one to the `client` and `test/client` folders.
 
-Now, we should be able to run `gulp browserify-client` and see new `build/car-finder.js` and `public/javascripts/car-finder.js` files. In the same way, `gulp browserify-test` should create a `build/client-test.js` file.
+Now, when we run `gulp browserify-client` from the command line, we see new `build/car-finder.js` and `public/javascripts/car-finder.js` files. In the same way, `gulp browserify-test` creates a `build/client-test.js` file.
 
 ## More Testing
 
-Now that we have Browserify set up, we can finish getting our test environment up and running. Let's define a `test` Gulp task and add it to our `watch`. Since we can now add the `browserify-test` task as a dependency for the `test` task, our `watch` will just run `test`, and the test files will be browserified automatically. We should also update our watch to run the tests whenever we change any of the app _or_ test files.
+Now that we have Browserify set up, we can finish getting our test environment up and running. Let's define a `test` Gulp task and add it to our `watch`. We'll add `browserify-test` as a dependency for the `test` task, so our `watch` will just require `test`. We should also update our watch to run the tests whenever we change any of the app _or_ test files.
 
 ```javascript
 gulp.task('test', ['lint-test', 'browserify-test'], function() {
@@ -252,13 +252,13 @@ describe('test setup', function() {
 });
 ```
 
-Now, when we run `gulp test`, we should see Gulp run the `lint-test`, `browserify-test`, and `test` tasks and exit with one passing example. We can also test the `watch` task by running `gulp watch`, then making changes to `test/client/index.js` or `client/index.js`. Changes to any of the files in those folders should trigger the tests.
+Now, when we run `gulp test`, we should see Gulp run the `lint-test`, `browserify-test`, and `test` tasks and exit with one passing example. We can also test the `watch` task by running `gulp watch`, then making changes to `test/client/index.js` or `client/index.js`, which should trigger the tests.
 
 ## Building Assets
 
-Now that we have our app and our tests up and running, let's turn our attention to the rest of our build process. I like to use `less` for styling. We'll need a `styles` task to compile it down to CSS. In the process, we'll use [gulp-autoprefixer]() so that we don't have to write vendor prefixes in our CSS3 rules. As we did with the app, we'll create a development copy and a build copy, and place them in `public/stylesheets` and `build`, respectively. We'll also add this as to our `watch`, so changes to our styles will get picked up.
+Next, let's turn our attention to the rest of our build process. I like to use `less` for styling. We'll need a `styles` task to compile it down to CSS. In the process, we'll use [gulp-autoprefixer](https://www.npmjs.org/package/gulp-autoprefixer) so that we don't have to write vendor prefixes in our CSS rules. As we did with the app, we'll create a development copy and a build copy, and place them in `public/stylesheets` and `build`, respectively. We'll also add the `less` directory to our `watch`, so changes to our styles will get picked up.
 
-We should probably uglify our JavaScript files too. We'll write tasks for minification and uglification, then copy the minified production versions of the files to `public/stylesheets` and `public/javascripts`. Finally, we'll wrap it all up into a `build` task.
+We should also uglify our JavaScript files to improve page load time. We'll write tasks for minification and uglification, then copy the minified production versions of the files to `public/stylesheets` and `public/javascripts`. Finally, we'll wrap it all up into a `build` task.
 
 Here are the changes to the `gulpfile`:
 
@@ -289,16 +289,15 @@ gulp.task('uglify', ['browserify-client'], function() {
 gulp.task('build', ['uglify', 'minify']);
 ```
 
-If we now run `gulp build`, we should see these new files appear:
+If we now run `gulp build`, we see the following files appear:
 - `build/car-finder.css`
 - `public/javascripts/car-finder.min.js`
 - `public/stylesheets/car-finder.css`
 - `public/stylesheets/car-finder.min.css`
 
-
 ## Did It Work?
 
-We'll want to check that what we've built is actually going to work.  Let's add a little bit of styling and JS code to make sure it's all getting compiled and served the way we hope it is. We'll start with an `index.html` file in the `public` folder. It will load up the development versions of our CSS and JS files, for better debugging in development. We would want to change these to use the minified versions for production.
+We'll want to check that what we've built is actually going to work.  Let's add a little bit of styling and JS code to make sure it's all getting compiled and served the way we hope it is. We'll start with an `index.html` file in the `public` folder. It will load up the development versions of our CSS and JS files.
 
 ```html
 <!doctype html>
@@ -332,14 +331,18 @@ alert('I found your car!');
 
 Let's put it all together. Run `grunt build`, then `open public/index.html`. Our default browser opens a beautiful olive green screen with an alert box. Profit!
 
-## Wrapping Up
+## One Task To Rule Them All
 
-We've now set up our project to use Browserify to take the headache out of requiring modules nad dependencies, and Gulp to make linting, testing, `less` compilation, minification, and uglification a breeze. I like to tie it all together with a `default` Gulp task, so all I have to do is run `gulp` to check that everything's going together the way I expect, and start watching for changes. Since `test` already does the linting and browserifying, and we'll want to run the tests, all we really need here is `test`, `build`, and `watch`.
+At this point, I usually like to tie it all together with a `default` Gulp task, so all I have to do is run `gulp` to check that everything's going together the way I expect, and start watching for changes. Since `test` already does the linting and browserifying, all we really need here is `test`, `build`, and `watch`.
 
 ```javascript
 gulp.task('default', ['test', 'build', 'watch']);
 ```
 
-I hope that this exploration of Gulp and Browserify has been enlightening. I personally love these tools, and at the moment they're my defaults when creating a personal project. Hopefully this post will help you set up a successful project.
+## Wrapping Up
+
+We've now set up our project to use Browserify and Gulp. The former took the headache out of requiring modules and dependencies, and the latter made defining tasks for linting, testing, `less` compilation, minification, and uglification a breeze.
+
+I hope you've found this exploration of Gulp and Browserify has been enlightening. I personally love these tools. For the moment, they're my defaults when creating a personal project. I hope this post helps make your day-to-day development more fun by simplifying things. Thanks for reading!
 
 P.S. What do you think? Going to make the switch from Grunt and/or Requirejs? Think these tools are inferior? Leave a comment below.
