@@ -152,11 +152,7 @@ Now everything is set up. To try it out, we'll sign up as a new user and watch t
 - `rake environment resque:scheduler`
 - `rails server`
 
-<<<<<<< HEAD
-It's time. Open up `http:/http://0.0.0.0:5678` in your browser and watch the Resque dashboard. In another tab, visit `http://127.0.0.1:1080` to view sent mails in Mailcatcher.
-=======
 In your browser, view the Resque dashboard at `http:/http://0.0.0.0:5678`. In another tab, visit `http://127.0.0.1:1080` to see the Mailcatcher dashboard.
->>>>>>> e7c5469ef6a743dc51f71281244d430fa29987c6
 
 Now, for the moment of truth. Visit `localhost:3000/users/new` and sign up as a new user. Ten seconds later, a new job will appear in the `emails` queue of the Resque dashboard. Just afterward, the email will appear in Mailcatcher.
 
