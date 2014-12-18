@@ -56,7 +56,7 @@ def test_european
 end
 ```
 
-If you are testing something that requires nearly the same test to be run repeatedly, for example when testing a controller that has a user authentication `before_action`. In cases like this, you can create a shared example by [including a module](https://canaryup.com/blog/shared-examples-with-minitest).
+If you are testing something that requires nearly the same test to be run repeatedly, for example when testing a controller that has a user authentication `before_action`, you can create a shared example by [including a module](https://canaryup.com/blog/shared-examples-with-minitest).
 
 If you need even more control, you can create an object with custom behavior that inherits from `Minitest::Test`, and have your tests inherit from it. Doing so allows you to completely customize your test suite with new methods as you see fit.
 
