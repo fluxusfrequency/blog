@@ -1,7 +1,5 @@
-# Instances, Classes, and Modules, Oh My!
+# Class, Module, Instance
 
-What kind of method should it be?
-Exercism example
 
 ## Instances
 
@@ -136,3 +134,4 @@ obj--->OtherClass---------->(OtherClass)-----------...
 
 Vertical arrows = inheritance
 Paren = metaclass
+
