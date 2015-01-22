@@ -2,7 +2,7 @@
 
 One of the biggest challenges of object oriented programming in Ruby is defining the interface of your objects. In other languages, such as Java, there is an explicit way to define an interface that you must conform to. But in Ruby, it's up to you.
 
-Compounding difficulty is the problem of deciding which object should own a method that you want to write. Trying to choose between modules, class methods, instance methods, structs, and lambdas can be overwhelming.
+Compounding with this difficulty is the problem of deciding which object should own a method that you want to write. Trying to choose between modules, class methods, instance methods, structs, and lambdas can be overwhelming.
 
 In this post, we'll look at several ways to solve the Exercism [Leap Year](http://exercism.io/nitpick/ruby/leap) problem, exploring different levels of method visiblitiy and scope level along the way.
 
@@ -15,14 +15,11 @@ Year.leap?(1984)
 #=> true
 ```
 
-A leap year is defined as a year that is divisible by 4, unless it's also divisible by 100. Apparently, centuries aren't leap years. That is, unless they are centuries that are divisible by 400. So there are three rules for leap years:
+A leap year is defined as a year that is divisible by four, unless it's also divisible by 100. Apparently, centuries aren't leap years. That is, unless they are centuries that are divisible by 400. So there are three rules for leap years:
 
-1) If it's divisible by 400, it's an exceptional century and is a leap
-year.
-2) If it's divisible by 100, it's a mundane century and in not a leap
-year.
-3) Otherwise, if it's divisible by 4, it's a leap year, otherwise it's
-not.
+1) If it's divisible by 400, it's an exceptional century and is a leap year.
+2) If it's divisible by 100, it's a mundane century and in not a leap year.
+3) Otherwise, if it's divisible by 4, it's a leap year, otherwise it's not.
 
 ## The First Approach: Using Class Methods
 
@@ -100,7 +97,7 @@ Now if I run that last test, it will raise an error.
 
 ## All About the Eigenclass
 
-In my mind, what we've now done is somewhat better, but there's still a smell here. I'll get to exactly what that is in just a moment, but for now I'll say that it's due to the fact that we've defined all of these methods on the singleton class, or eigenclass, of `Year`. If you don't know about eigenclasses, you can read about them [here]().
+In my mind, what we've now done is somewhat better, but there's still a smell here. I'll get to exactly what that is in just a moment, but for now I'll say that it's due to the fact that we've defined all of these methods on the singleton class, or eigenclass, of `Year`. If you don't know about eigenclasses, you can read about them [here](http://madebydna.com/all/code/2011/06/24/eigenclasses-demystified.html).
 
 We can define methods on an eigenclass by prepending each method definition with `self.`, or we can use `class << self` or `class << Year` and nesting our method definitions inside of that block. Doing it this way makes it possible to use the `private` keyword, because we're now working at the instance level of scope. If we were to introduce `class << self`, then, we could do away with our `private_class_method` call.
 
@@ -128,7 +125,7 @@ class Year
 end
 ```
 
-But we haven't really changed much here. In my mind, there's still a big smell, which is this. According to [Wikipedia](http://en.wikipedia.org/wiki/Class_%28computer_programming%29), "a class is an extensible program-code-template for _creating objects_ (emphasis mine)". Our `Year` class never creates a single instance. It's just an eigenclass that happens to be able to create (mostly) useless `Year` instances.
+But we haven't really changed much here. In my mind, there's still a big smell, which is this. [According to Wikipedia](http://en.wikipedia.org/wiki/Class_%28computer_programming%29), a class is (emphasis mine) " an extensible program-code-template for _creating objects_ ". Our `Year` class never creates a single instance. It's just an eigenclass that happens to be able to create (mostly) useless `Year` instances.
 
 So where _should_ we be putting class-level methods that are not associated with any instance object?
 
@@ -260,6 +257,9 @@ We started with a class method that was a single-liner. There's a lot of value i
 
 We used an eigenclass-based approach, simply hiding the implementation methods with `private_class_method`. We solved it using a module, treating the `leap?` method both as a mix-in and as a `module_function`. Finally, we pushed the functionality down to the instance level, which could help us in dealing with multiple `Year` objects down the road.
 
-Which of these approaches is best? It depends on lots of things: how you feel about privacy, how you expect the program to change in the future, how comfortable you are with scope and the more arcane methods in Ruby.  At the very least, it's nice to know what's available to you when thinking about what methods you want to expose, and what level of scope you should use it on. I hope this post will factor into your thoughts when making these kind of decisions in the future.
+Which of these approaches is best?
 
-P.S. What do you think? Should I have used Structs or Lambdas? Leave a comment below or tweet at me, and we'll talk!
+It depends on lots of things: how you feel about privacy, how you expect the program to change in the future, how comfortable you are with scope and the more arcane methods in Ruby.  At the very least, it's nice to know what's available to you when thinking about what methods you want to expose, and what level of scope you should use it on.  I hope this post will factor into your thoughts when making these kind of decisions in the future.
+
+P.S. What do you think? Did this make sense? Should I have used Structs or Lambdas? Throw us a comment below!
+
