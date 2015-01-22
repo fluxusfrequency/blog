@@ -1,27 +1,26 @@
-# Cover Me, I'm Going In!
-## Measuring Clientside JavaScript Test Coverage With Istanbul
+# Measuring Clientside JavaScript Test Coverage With Istanbul
 
-Testing is a vital part of any application. Whether a project's authors are hoping for scalability, fewer bugs, or just code that stands the test of time, a solid test suite is essential to making those dreams come true.
+Testing is a vital part of any development process. Whether a project's authors are hoping for scalability, fewer bugs, or just code that stands the test of time, a solid test suite is essential.
 
-It's all well and good to write tests, but how do you know that you've tested the code that matters? Did you cover the most important components? Did you test the sad path? The edge cases? What about the zero states?
+It's all well and good writing tests, but how do you know that you've tested the code that matters? Did you cover the most important components? Did you test [the sad path](http://engineering.imvu.com/2012/05/08/writing-resilient-unit-tests-3/)? The edge cases? What about the [zero states](http://emptystat.es/)?
 
 Using [Istanbul](http://gotwarlost.github.io/istanbul/), you can generate a nice coverage report to answer these questions. In this article, we'll look at how to get it set up in a typical clientside JS project.
 
 ## A Note About Metrics
 
-Before we get into the process of setting up Istanbul, I'd like to talk about code coverage as a metric. Metrics in programming can be very two-sided. On the one hand, they can be very useful in measuring velocity and predicting completion of new features. But, they can also become self-fullfilling prophecies leading to bad code.
+Before we get into the process of setting up Istanbul, I'd like to talk about code coverage as a metric. Metrics in programming can be very two-sided. On the one hand, they can be very useful in measuring velocity and predicting completion of new features. But, they can also become self-fulfilling prophecies leading to bad code.
 
 For example, if a project manager or tech lead measures her programmers' effectiveness by counting the lines of code they write, she will not find that those who wrote the most lines are the ones that wrote the best code. In fact, there's a danger that some of the programmers will adopt a verbose style, using far more lines than necessary to get the same thing done, in order to bump their ranking.
 
 Placing a strong emphasis on test coverage as a metric can lead to a similar problem. Imagine that a company adopts a policy that any pull request must increase or maintain the percentage of lines tested. What will be the result?
 
-I imagine that in many cases, developers will write good tests to accompany their features an bugfixes. But what happens if there is a rush and they just want to get the code in?
+I imagine that in many cases, developers will write good tests to accompany their features and bugfixes. But what happens if there’s a rush and they just want to get the code in?
 
-Test coverage tools only count the lines that were hit when the test suite was run, so the developer can just run the line in question during the test, while making a trivial assertion. The result? The line is marked covered, but no failsafe has actually been put in place.
+Test coverage tools only count the lines that were hit when the test suite was run, so the developer can just run the line in question during the test, while making a trivial assertion. The result? The line is marked covered, but nothing meaningful is being tested.
 
-Rather than using test coverage as a metric that is required or to measure developer thoroughness, it makes a lot more sense to use coverage as a way of seeing which code and _isn't_ covered (hint: it's often `else` branches). That information can then be used to prioritize testing goals.
+Rather than using test coverage as a measure of developer thoroughness, it makes a lot more sense to use coverage as a way of seeing which code _isn't_ covered (hint: it's often `else` branches). That information can then be used to prioritize testing goals.
 
-TL;DR: Don't use code coverage to measure what's tested, use it to find out what isn't.
+In summary: don't use code coverage to measure what's tested, use it to find out what isn't.
 
 ## Time to Test
 
@@ -37,7 +36,9 @@ Because we're hotshots and we want to show off, we decide to begin by taking a s
 
 This is where [Istanbul](http://gotwarlost.github.io/istanbul/) comes in. Istanbul is a code coverage tool written in JavaScript by [Krishnan Anantheswaran](https://github.com/gotwarlost) of Yahoo!.
 
-It can be a little tricky to set up, so let's take a look at one way to do it. There are four steps in our approach:
+It can be a little tricky to set up, so let's take a look at one way to do it.
+
+There are four steps in our approach:
 
 1. Instrument the source code with Istanbul
 2. Run `mocha-phantomjs`, passing in a `hooks` argument
@@ -50,7 +51,7 @@ Let's get started.
 
 We'll need to find a way to run our code through Istanbul after it's been compiled, so the first step is to set up an NPM task that will pipe compiled code into a tool like [browserify-istanbul](https://github.com/devongovett/browserify-istanbul).
 
-Just in case you're not using `browserify`, a panacea of other Istanbul NPM packages exist for instrumenting code (and many other purposes), including [browserify-gulp](https://github.com/SBoudrias/gulp-istanbul), [grunt-istanbul-reporter](https://github.com/justspamjustin/grunt-istanbul-reporter), and [borschik-tech-istanbul](https://github.com/bem/borschik-tech-istanbul).
+Just in case you're not using `browserify`, a variety of other Istanbul NPM packages exist for instrumenting code, including [browserify-gulp](https://github.com/SBoudrias/gulp-istanbul), [grunt-istanbul-reporter](https://github.com/justspamjustin/grunt-istanbul-reporter), and [borschik-tech-istanbul](https://github.com/bem/borschik-tech-istanbul).
 
 For the moment, let's imagine that we _are_ using Browserify. We already have NPM tasks in place to compile our code for development/production and for testing. Here's what they look like. Note that the `-o` option to `browserify` specifies the output file for the build and the `-d` option turns on debugging.
 
@@ -163,19 +164,14 @@ We'll write an NPM script that executes the `instanbul report` command, passing 
 }
 ```
 
-Now we have all the scripts we need to generate and view our coverage
-report.
+Now we have all the scripts we need to generate and view our coverage report.
 
 ## Generating the Report
 
-We'll need to run each of the commands that we've defined before we'll
-be able to view our results (you may want to wrap these in a single NPM
-task for convenience).
+We'll need to run each of the commands that we've defined before we'll be able to view our results (you may want to wrap these in a single NPM task for convenience).
 
-- `npm run build-test-coverage` to compile our test code and load it
-  into Istanbul
-- `./js/test/cli.js` to run the tests with `mocha-phantomjs` and write
-  the `coverage.json` file
+- `npm run build-test-coverage` to compile our test code and load it into Istanbul
+- `./js/test/cli.js` to run the tests with `mocha-phantomjs` and write the `coverage.json` file
 - `npm run coverage-report` to format the coverage results as an HTML file
 
 Once we've completed these steps, we should see a new `coverage/lcov-report` folder containing an `index.html` file and a few assets to make it look pretty.
@@ -191,7 +187,7 @@ There are four category columns at the top of the page, each telling us about a 
 - *Functions* tells us how many of our functions were touched
 - *Lines* tells us the total lines of code that were touched
 
-There's also list of the folders in our project, each with a categorical coverage breakdown. You can also click on each of the folders to further break down the coverage file by file. If you then click on a file, you'll see its contents highlighted in green and red to indicate covered and uncovered lines.
+There's also a list of the folders in our project, each with a categorical coverage breakdown. You can also click on each of the folders to further break down the coverage file by file. If you then click on a file, you'll see its contents highlighted in green and red to indicate covered and uncovered lines.
 
 The ability to zoom in and out on our project and see the categorical breakdown at each level makes Istanbul particularly nice to work with.  It also makes it easy to dig in and explore places in your code base that might benefit from some additional testing.
 
@@ -203,6 +199,6 @@ Although I would discourage you from measuring the success of your test suite ba
 
 I hope that this post has helped you get Istanbul up and running with a minimum of heartache. Until next time, keep testing!
 
-P. S. Are there other tools you use for coverage? Do you have any
-special tricks for hooking coverage into your CI builds? Leave us
-a comment below!
+P. S. Are there other tools you use for coverage? Do you have any special tricks for hooking coverage into your CI builds? Leave us a comment below!
+
+
