@@ -1,4 +1,4 @@
-# Customizing The Middleware Stack in Rails and Other Rack Apps
+# Understanding Rack
 
 For many of us web developers, we work on the highest levels of abstraction when we program. Sometimes it's easy to take things for granted. Especially when we're using Rails.
 
@@ -178,11 +178,54 @@ So I guess that means that `Rails::Application` must be a Rack app? Sure enough!
 
 So what middleware is it using? Well, I see that [it's autoloading](https://github.com/rails/rails/blob/master/railties/lib/rails/application.rb#L182) `rails/application/default_middleware_stack`. [Checking that out](https://github.com/rails/rails/blob/master/railties/lib/rails/application/default_middleware_stack.rb#L13), it looks like it's defined in `ActionDispatch`. Where does `ActionDispatch` come from? `ActionPack`.
 
-### ActionPack
+### Action Dispatch
 
-[ActionPack](https://github.com/rails/rails/tree/master/actionpack) is Rails's framework for handling web requests and responses. Sound familiar?
+[Action Pack](https://github.com/rails/rails/tree/master/actionpack) is Rails's framework for handling web requests and responses. Action Pack home to quite a few of the niceties you find in Rails, such as routing, the the abstract controllers that you inherit from, and view rendering.
+
+The most relevant part of AP for our discussion here is [Action Dispatch](https://github.com/rails/rails/tree/master/actionpack/lib/action_dispatch). It provides several middleware components that deal with ssl, cookies, debugging, static files, and much more.
+
+If you go take a look at each of the [Action Dispatch middleware components](https://github.com/rails/rails/tree/master/actionpack/lib/action_dispatch/middleware), you'll notice they're all following the Rack specification: they all respond to `call`, taking in an `app` and returning `status`, `headers`, and `body`. Many of them also make use of `Rack::Request` and `Rack::Response` objects.
+
+For me, reading through the code in these components took a lot of the mystery out of what's going on behind the scenes when making requests to a Rails app. When I realized that it's just a bunch of Ruby objects that follow the Rack specification, passing the request and response to each other, it made this whole section of Rails a lot less mysterious.
+
+Now that we understand a little bit of what's happening under the hood, let's take a look at how to actually include some custom middleware in a Rails app.
 
 ### Adding Your Own Middleware
+
+Imagine you are [hosting an application on Engine Yard](https://www.engineyard.com/pricing). You have a Rails API running on one server, and a client-side JavaScript app running on another. The API has a url of `https://api.myawesomeapp.com`, and the client-side app lives at `https://app.myawesomeapp.com`.
+
+You're going to run into a problem pretty quick: you can't access resources at `api.myawesomeapp.com` from your JS app, because of the [same-origin policy](http://en.wikipedia.org/wiki/Same-origin_policy). As you may know, the solution to this problem is to enable [Cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) (CORS). There are many ways to enable CORS on your server, but one of the easiest is to use the [Rack::Cors middleware gem](https://github.com/cyu/rack-cors).
+
+Begin by requiring it in the `Gemfile`:
+
+```ruby
+gem "rack-cors", require: "rack/cors"
+
+```
+
+As with so many things, Rails provides a very easy way to get middleware loaded. Although we certainly _could_ add it to a `Rack::Builder` block in `config.ru`, as we did above, the Rails convention is to place it in `config/application.rb`, using the following syntax:
+
+```ruby
+module MyAwesomeApp
+  class Application < Rails::Application
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*',
+        :headers => :any,
+        :expose => ['X-User-Authentication-Token', 'X-User-Id'],
+        :methods => [:get, :post, :options, :patch, :delete]
+      end
+    end
+  end
+end
+```
+
+Note that we're using [insert_before](http://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack) here to ensure that `Rack::Cors` comes before the rest of the middleware included in the stack by ActionPack (and any other middleware you might be using).
+
+Now if you reboot the server, you should be good to go! Your client-side app can access `api.myawesomeapp.com` without running into same-origin policy JS errors.
+
+If you want to learn more about how HTTP requests are routed through Rack in Rails, I highly suggest taking a look at [this tour](https://www.omniref.com/ruby/gems/railties/4.2.0/symbols/Rails::Application#annotation=4084035&line=161), of the Rails source code related to handling requests.
 
 ## Conclusion
 

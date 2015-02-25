@@ -36,7 +36,7 @@ rake db:create
 
 ## Creating the Models
 
-We'll need a couple of models: `User`s and `Messages`. The workflow to create them should be fairly familiar:
+We'll need a couple of models: `User` and `Message`. The workflow to create them should be fairly familiar:
 
 ```
 rails g scaffold user username:string
@@ -65,8 +65,9 @@ end
 
 Let's send some messages! Imagine for a minute that you've already set up some kind of token-based authentication system, and you have some way of getting ahold of the user that is making requests to your API.
 
-We can open up the `MessagesController`, and since we used a `scaffold`, we should already be able to view all the messages. Let's scope that to the current user. First we'll write a convenience method to get all the sent and received messages for a user, then we'll rework the `MessagesController` to work the way we want it to.
+We can open up the `MessagesController`, and since we used a `scaffold`, we should already be able to view all the messages. Let's scope that to the current user.
 
+First, we write a convenience method to get all the sent and received messages for a user:
 ```
 class User < ActiveRecord::Base
   ...
@@ -75,6 +76,8 @@ class User < ActiveRecord::Base
   end
 end
 ```
+
+Then, we rework the `MessagesController` to work the way we want it to:
 
 ```
 class MessagesController < ApplicationController
@@ -88,10 +91,29 @@ end
 Assuming that we have created a couple of sent and received messages for the `current_user`, we should be able to take a look at `http://localhost:3000/messages` and see some raw JSON that looks like this:
 
 ```
-[{"sender_id":1,"id":1,"recipient_id":2,"body":"YOLO","created_at":"2015-02-03T21:05:12.908Z","updated_at":"2015-02-03T21:05:12.908Z"},{"recipient_id":1,"id":2,"sender_id":2,"body":"Hello, world!","created_at":"2015-02-03T21:05:51.309Z","updated_at":"2015-02-03T21:05:51.309Z"}]
+[
+   {
+      "sender_id":1,
+      "id":1,
+      "recipient_id":2,
+      "body":"YOLO",
+      "created_at":"2015-02-03T21:05:12.908Z",
+      "updated_at":"2015-02-03T21:05:12.908Z"
+   },
+   {
+      "recipient_id":1,
+      "id":2,
+      "sender_id":2,
+      "body":"Hello, world!",
+      "created_at":"2015-02-03T21:05:51.309Z",
+      "updated_at":"2015-02-03T21:05:51.309Z"
+   }
+]
 ```
 
-It's kind of ugly. It would be nice if we could remove the timestamps and ids. This is where AMS comes in.
+It's kind of ugly. It would be nice if we could remove the timestamps and ids.
+
+This is where AMS comes in.
 
 ## Adding ActiveModel::Serializers
 
@@ -106,7 +128,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers"
 
 Then `bundle install`. Note that I'm using a the edge version of AMS here because it supports `belongs_to` and other features. See the [github project README](https://github.com/rails-api/active_model_serializers/blob/master/README.md) for some information about maintenance and why you might want to use an older version.
 
-Now we can easily set up a serializer with `rails g serializer message`. Let's take a look at what this generated for us. In `app/serializers/message_serializer.rb`, we find this code:
+Now we can easily set up a serializer with `rails g serializer message`.
+
+Let's take a look at what this generated for us.
+
+In `app/serializers/message_serializer.rb`, we find this code:
 
 ```
 class MessageSerializer < ActiveModel::Serializer
@@ -115,7 +141,6 @@ end
 ```
 
 Whichever `attributes` we specify (as a list of symbols) will be returned in the JSON response. Let's skip `id`, and instead return the `sender_id`, `recipient_id`, and `body`:
-
 
 ```
 class MessageSerializer < ActiveModel::Serializer
@@ -126,7 +151,20 @@ end
 Now when we visit `/messages`, we get this slightly cleaner JSON:
 
 ```
-{"messages":[{"sender_id":1,"recipient_id":2,"body":"YOLO"},{"sender_id":2,"recipient_id":1,"body":"Hello, world!"}]}
+{
+   "messages":[
+      {
+         "sender_id":1,
+         "recipient_id":2,
+         "body":"YOLO"
+      },
+      {
+         "sender_id":2,
+         "recipient_id":1,
+         "body":"Hello, world!"
+      }
+   ]
+}
 ```
 
 ## Cleaning Up the Format
@@ -142,10 +180,45 @@ end
 Now we can see more about the Sender and Recipient:
 
 ```
-{"messages":[{"sender":{"id":1,"username":"Ben","created_at":"2015-02-03T21:04:09.220Z","updated_at":"2015-02-03T21:04:09.220Z"},"recipient":{"id":2,"username":"David","created_at":"2015-02-03T21:04:45.948Z","updated_at":"2015-02-03T21:04:45.948Z"},"body":"YOLO"},{"sender":{"id":2,"username":"David","created_at":"2015-02-03T21:04:45.948Z","updated_at":"2015-02-03T21:04:45.948Z"},"recipient":{"id":1,"username":"Ben","created_at":"2015-02-03T21:04:09.220Z","updated_at":"2015-02-03T21:04:09.220Z"},"body":"Hello, world!"}]}
+{
+   "messages":[
+      {
+         "sender":{
+            "id":1,
+            "username":"Ben",
+            "created_at":"2015-02-03T21:04:09.220Z",
+            "updated_at":"2015-02-03T21:04:09.220Z"
+         },
+         "recipient":{
+            "id":2,
+            "username":"David",
+            "created_at":"2015-02-03T21:04:45.948Z",
+            "updated_at":"2015-02-03T21:04:45.948Z"
+         },
+         "body":"YOLO"
+      },
+      {
+         "sender":{
+            "id":2,
+            "username":"David",
+            "created_at":"2015-02-03T21:04:45.948Z",
+            "updated_at":"2015-02-03T21:04:45.948Z"
+         },
+         "recipient":{
+            "id":1,
+            "username":"Ben",
+            "created_at":"2015-02-03T21:04:09.220Z",
+            "updated_at":"2015-02-03T21:04:09.220Z"
+         },
+         "body":"Hello, world!"
+      }
+   ]
+}
 ```
 
-Actually, that might be too much. Let's clean up how `User` objects are serialized by generating a User serializer with `rails g serializer user`. We'll set it up to just return the username.
+Actually, that might be too much.
+
+Let's clean up how `User` objects are serialized by generating a User serializer with `rails g serializer user`. We'll set it up to just return the username.
 
 ```
 class UserSerializer < ActiveModel::Serializer
@@ -166,7 +239,26 @@ end
 If we take a look at `/messages`, we now see:
 
 ```
-[{"recipient":{"username":"David"},"body":"YOLO","sender":{"username":"Ben"}},{"recipient":{"username":"Ben"},"body":"Hello, world!","sender":{"username":"David"}}]
+[
+   {
+      "recipient":{
+         "username":"David"
+      },
+      "body":"YOLO",
+      "sender":{
+         "username":"Ben"
+      }
+   },
+   {
+      "recipient":{
+         "username":"Ben"
+      },
+      "body":"Hello, world!",
+      "sender":{
+         "username":"David"
+      }
+   }
+]
 ```
 
 Things are really starting to come together!
@@ -196,10 +288,36 @@ end
 We'll want to be able to serve up these conversations, so we'll need a `ConversationsController`. We want to get all of the conversations for a given user, so we'll add a class-level method to the `Conversation` model to find them and return them in this format:
 
 ```
-# TODO: Insert JSON blob here
+[
+   {
+      "messages":[
+         {
+            "body":"YOLO",
+            "recipient":{
+               "username":"David"
+            },
+            "sender":{
+               "username":"Ben"
+            }
+         },
+         {
+            "body":"Hello, world!",
+            "recipient":{
+               "username":"Ben"
+            },
+            "sender":{
+               "username":"David"
+            }
+         }
+      ],
+      "participant":{
+         "username":"David"
+      }
+   }
+]
 ```
 
-To make this work, we'll run a `group_by` on the user's messages, grouping by the _other_ user's id. We'll then map the resulting hash into a collection of `Conversation` objects, passing in the other user and the list of messages.
+To make this work, we'll run a `group_by` on the user's messages, grouping by the _other_ user's ID. We'll then map the resulting hash into a collection of `Conversation` objects, passing in the other user and the list of messages.
 
 ```
 class Conversation
@@ -255,9 +373,11 @@ end
 
 Visiting `/conversations`, we should see a list of all the conversations for the current user.
 
+Whoops! Something’s wrong. But what is it?
+
 ## Serializing Plain Old Ruby Objects
 
-Whoops! When we visit that route, we get an error: `undefined method `new' for nil:NilClass`. It's coming from this line in the controller:
+When we visit that route, we get an error: `undefined method `new' for nil:NilClass`. It's coming from this line in the controller:
 
 ```
 render json: conversations
@@ -289,10 +409,41 @@ Or, we could `include ActiveModel::Serialization` which is where our AR-backed o
 Now when we take a look at `/conversations`, we get:
 
 ```
-[{"participant":{"id":2,"username":"David","created_at":"2015-02-03T21:04:45.948Z","updated_at":"2015-02-03T21:04:45.948Z"},"messages":[{"sender_id":1,"recipient_id":2,"id":1,"body":"YOLO","created_at":"2015-02-03T21:05:12.908Z","updated_at":"2015-02-03T21:05:12.908Z"},{"sender_id":2,"id":2,"recipient_id":1,"body":"Hello, world!","created_at":"2015-02-03T21:05:51.309Z","updated_at":"2015-02-03T21:05:51.309Z"}]}]
+[
+   {
+      "participant":{
+         "id":2,
+         "username":"David",
+         "created_at":"2015-02-03T21:04:45.948Z",
+         "updated_at":"2015-02-03T21:04:45.948Z"
+      },
+      "messages":[
+         {
+            "sender_id":1,
+            "recipient_id":2,
+            "id":1,
+            "body":"YOLO",
+            "created_at":"2015-02-03T21:05:12.908Z",
+            "updated_at":"2015-02-03T21:05:12.908Z"
+         },
+         {
+            "sender_id":2,
+            "id":2,
+            "recipient_id":1,
+            "body":"Hello, world!",
+            "created_at":"2015-02-03T21:05:51.309Z",
+            "updated_at":"2015-02-03T21:05:51.309Z"
+         }
+      ]
+   }
+]
 ```
 
-Whoops. Not quite right. But the problem is similar to the one we had before in the `MessageSerializer`. Maybe the same approach will work. We'll change the `attributes` to AR relationships.
+Whoops! Not quite right.
+
+But the problem is similar to the one we had before in the `MessageSerializer`. Maybe the same approach will work.
+
+We'll change the `attributes` to AR relationships.
 
 ```
 class ConversationSerializer < ActiveModel::Serializer
@@ -304,12 +455,26 @@ end
 Almost! Now `/conversations` returns:
 
 ```
-[{"messages":[{"body":"YOLO"},{"body":"Hello, world!"}],"participant":{"username":"David"}}]
+[
+   {
+      "messages":[
+         {
+            "body":"YOLO"
+         },
+         {
+            "body":"Hello, world!"
+         }
+      ],
+      "participant":{
+         "username":"David"
+      }
+   }
+]
 ```
 
 We can't see who the sender of each message was! AMS isn't using the `UserSerializer` for the message sender and recipient, because we're not using an AR object.
 
-A little [source code](https://github.com/rails-api/active_model_serializers/blob/master/lib/active_model/serializer.rb#136) spelunking point the way to a fix.
+A little [source code](https://github.com/rails-api/active_model_serializers/blob/master/lib/active_model/serializer.rb#136) spelunking points the way to a fix.
 
 ```
 class MessageSerializer < ActiveModel::Serializer
@@ -328,17 +493,42 @@ end
 Now `/conversations` gives us what we want:
 
 ```
-[{"messages":[{"body":"YOLO","recipient":{"username":"David"},"sender":{"username":"Ben"}},{"body":"Hello, world!","recipient":{"username":"Ben"},"sender":{"username":"David"}}],"participant":{"username":"David"}}]
+[
+   {
+      "messages":[
+         {
+            "body":"YOLO",
+            "recipient":{
+               "username":"David"
+            },
+            "sender":{
+               "username":"Ben"
+            }
+         },
+         {
+            "body":"Hello, world!",
+            "recipient":{
+               "username":"Ben"
+            },
+            "sender":{
+               "username":"David"
+            }
+         }
+      ],
+      "participant":{
+         "username":"David"
+      }
+   }
+]
 ```
 
-And `/messages` still works as well!
+And `/messages` still works as well! Woo hoo!
 
 ## Wrapping Up
 
-The ActiveModel::Serializers gem claims to bring "convention over configuration to your JSON generation". It does a great job of it, but when you need to massage the data, things can get a little bit hairy.
+The ActiveModel::Serializers gem claims to bring "convention over configuration to your JSON generation". It does a great job of it. But when you need to massage the data, things can get a little bit hairy.
 
-Hopefully some of the tricks we've covered will help you present JSON from your Rails API the way you want. For this, and virtually any other problem caused by _the magic_ getting in the way, I can't suggest digging through the source code enough.
+Hopefully some of the tricks we've covered will help you serve JSON from your Rails API with the structure you want. For this, and virtually any other problem caused by _the magic_ getting in the way, I suggest digging through the source code.
 
 At the end of the day ARS is an excellent choice for getting your JSON API off the ground with a minimum of fuss. Good luck!
 
-P.S. Have a different approach? Prefer `rabl` or `jbuilder`? Did I leave something out? Leave us a comment below!
