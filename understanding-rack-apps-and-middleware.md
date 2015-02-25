@@ -1,4 +1,4 @@
-# Understanding Rack
+# Understanding Rack Apps and Middleware
 
 For many of us web developers, we work on the highest levels of abstraction when we program. Sometimes it's easy to take things for granted. Especially when we're using Rails.
 
@@ -236,3 +236,4 @@ Hopefully, understanding what's going on when a request hits your server and you
 If I've done my job, reading this article will enable you to do the same thing.
 
 P.S. Do you know of any use-cases where a simple Rack app was enough to meet your business needs? What other ways do you integrate Rack apps in your bigger applications? We want to hear your battle stories! Leave us a comment below!
+
