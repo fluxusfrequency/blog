@@ -4,7 +4,7 @@ I've tried a lot of different Platform as a Service (PaaS) providers for hosting
 
 Some platforms give you full control, but it can be time-consuming to get all of your dependencies properly set up. It would be nice to have some of the boilerplate taken care of, while still retaining full control of my server environment.
 
-If you haven’t deployed an application to Engine Yard (EY), you should give it a try. You’ll be pleasantly surprised to find that this is exactly the kind of service they offer. It’s a breeze to get Redis, cron, and any other tools you need installed. You also get root access to your server and can SSH in just as you would with a bare server.
+If you haven’t deployed an application to Engine Yard (EY), you should give it a try. You’ll be pleasantly surprised to find that this is exactly the kind of service offered. It’s a breeze to get Redis, cron, and any other tools you need installed. You also get root access to your server and can SSH in just as you would with a bare server.
 
 My favorite feature has always been the ability to push custom Chef recipes to my server, making it super-easy to tweak the server as needed without having to spend a lot of time downloading Ubuntu packages and managing user permissions.
 
@@ -14,13 +14,13 @@ There is a little bit of a learning curve though, so I decided to deploy and cus
 
 I started out with a production application in a Git repository that was ready to go. It just needed a server to run on.
 
-I went to Engine Yard and signed up for [a free trial](https://www.engineyard.com/trial) account.
+I went to Engine Yard and signed up for [a free trial account](https://www.engineyard.com/trial).
 
 Once I was done filling out my contact and billing information, I created my first "application" resource on Engine Yard Cloud. Here are the steps I followed to get it running from there.
 
-First, I created a "production" environment for my application, and configured it. I was given four choices of server beefiness: single instance, staging, production, or custom. I went with a production box, and added Phusion Passenger and PostgreSQL to the stack. Since I was deploying a Rails app, I also added Ruby 2.2.0 and set up my migration command. I was happy to see that EY would backup by my database and take a server snapshot on a recurring schedule. I opted in for that service.
+First, I created a "production" environment for my application and configured it. I was given four choices of server beefiness: single instance, staging, production, or custom. I went with a production box, and added Phusion Passenger and PostgreSQL to the stack. Since I was deploying a Rails app, I also added Ruby 2.2.0 and set up my migration command. I was happy to see that EY would backup by my database and take a server snapshot on a recurring schedule. I opted in for that service.
 
-While the server was being provisioned, there were a few access-related tasks I had to take care of as well. First, I added the SSH keys from my development machine to my production environment. To do so, I visited the EY Cloud dashboard, then clicked on Tools, then SSH Keys and pasted my key into the text area, then hit the big *Apply* button on my app's "production" environment page.
+While the server was being provisioned, there were a few access-related tasks I had to take care of as well. First, I [added the SSH keys](https://support.cloud.engineyard.com/entries/21016533-Connect-to-Your-Instance-Using-SSH) from my development machine to my production environment. To do so, I visited the EY Cloud dashboard, then clicked on *Tools*, then *SSH Keys* and pasted my key into the text area, then hit the big *Apply* button on my app's "production" environment page.
 
 I also had to add an SSH key EY provided to my GitHub account. This allowed EY to grab my code and push it to the server directly.
 
@@ -32,7 +32,7 @@ A few minutes later, the server and my credentials were all set up, and I was re
 
 It turned out I’d forgotten to add a `config/ey.yml` file to my Rails project. This file is used to customize each of the Engine Yard environments the app is being deployed to. To add one, it’s easiest use the [engineyard gem](https://github.com/engineyard/engineyard).
 
-To install the gem globally, I ran `gem install engineyard`. Then I initialized an EY configuration file using `ey init`. I checked out the `config/ey.yml` file it generated. Everything looked good, so I committed and pushed it up to GitHub.
+To install the gem globally, I ran `gem install engineyard` on my local machine. Then I initialized an EY configuration file using `ey init`. I checked out the `config/ey.yml` file it generated. Everything looked good, so I committed and pushed it up to GitHub.
 
 This time, I deployed using `ey deploy`, and it worked like a charm. Success!
 
@@ -84,7 +84,7 @@ To add recipes to your application, you'll need to fork the [Engine Yard Cloud R
 
 ### Default Recipes
 
-The Engine Yard Cloud Recipes repo comes with comes with cookbooks for most of the things you would ever need: Sidekiq, Redis, Solr, Elasticsearch, Cron, PostgreSQL Extensions, and much more.
+The Engine Yard Cloud Recipes repo comes with comes with cookbooks for most of the things you would ever need: Sidekiq, Redis, Solr, Elasticsearch, cron, PostgreSQL Extensions, and much more.
 
 Here's what I did to add Redis to my project.
 
@@ -187,4 +187,3 @@ That said, Engine Yard makes this sort of work a breeze. Their balance between a
 If you haven't given Engine Yard a try, why not give it a go?
 
 P.S. What kind of custom Chef recipes are you using on your servers? I know that business requirements can lead to some pretty gnarly setups. Tell me about it via the comments.
-
