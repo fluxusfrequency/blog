@@ -1,4 +1,4 @@
-# Serving Custom JSON Responses From Your Rails API With the ActiveModelSerialzers Gem
+# Serving Custom JSON Responses With ActiveModel::Serialzers
 
 These days, there are so many different choices when it comes to serving data from an API. You can build it in Node with [ExpressJS](http://expressjs.com/), in Go with [Martini](http://martini.codegangsta.io/), Clojure with [Compojure](https://github.com/weavejester/compojure), and many more. But in many cases, you just want to bring something to market as fast as you can. For those times, I still reach for [Ruby on Rails](http://rubyonrails.org/).
 
