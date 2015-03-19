@@ -10,7 +10,7 @@ Did you know that Rails is a [Rack](http://rack.github.io/) app? Sinatra too. Wh
 
 It's possible to quickly build simple web applications using just Rack.
 
-All it takes to get started is define and object that responds to a `call` method, taking in an environment hash and returning an Array with the HTTP response code, headers, and response body. Once you've written the server code, all you have to do is boot it up with a Ruby server like `Rack::Handler::WEBrick`, or put it into a `config.ru` file and run it from the command line with `rackup config.ru`.
+To get started, all you need is an object that responds to a `call` method, taking in an environment hash and returning an Array with the HTTP response code, headers, and response body. Once you've written the server code, all you have to do is boot it up with a Ruby server like `Rack::Handler::WEBrick`, or put it into a `config.ru` file and run it from the command line with `rackup config.ru`.
 
 Ok, cool. So what does Rack actually _do_?
 
@@ -86,15 +86,16 @@ A middleware component sits between the client and the server, processing inboun
 
 ## Using Middleware in a Rack App
 
-To add middleware to a Rack application, all you have to do is tell Rack to use it. You can use multiple middleware components, and they will change the request or response before passing it on to the next component. This series of components is called the "middleware stack"
+To add middleware to a Rack application, all you have to do is tell Rack to use it. You can use multiple middleware components, and they will change the request or response before passing it on to the next component. This series of components is called the _middleware stack_.
 
 ### Warden
 
 We're going to take a look at how you would add [Warden](https://github.com/hassox/warden) to a project. Warden has to come _after_ some kind of session middleware in the stack, so we'll use `Rack::Session::Cookie` as well.
 
-1) Add it to your project `Gemfile` with `gem "warden"`.
-2) Install with `bundle install`.
-3) Add it to your `config.ru` file:
+First, add it to your project `Gemfile` with `gem "warden"` and install it with `bundle install`.
+
+Now add it to your `config.ru` file:
+
 ```
 require "warden"
 
@@ -110,7 +111,7 @@ end
 run Proc.new { |env| ['200', {'Content-Type' => 'text/html'}, ['get rack\'d']] }
 ```
 
-4) Run the server with `rackup`. It will find `config.ru` and boot up on port 9292.
+Finally, run the server with `rackup`. It will find `config.ru` and boot up on port 9292.
 
 Note that there is more setup involved in getting Warden to actually do authentication with your app. This is just an example of how to get it loaded into the middleware stack. To see a more fleshed-out example of integrating Warden, check out [this gist](https://gist.github.com/lukesutton/107966).
 
@@ -133,7 +134,7 @@ run app
 
 ### Rack Basic Auth
 
-One really useful piece of middleware is `Rack::Auth::Basic`, which you can use to protect any Rack app with [HTTP basic authentication](http://tools.ietf.org/html/rfc2617). It is really lightweight and comes in handy in protecting little bits of an application. For example, Ryan Bates uses it to protect a Resque server in a Rails app in [this episode of Railscasts](http://railscasts.com/episodes/271-resque?view=asciicast).
+One really useful piece of middleware is `Rack::Auth::Basic`, which you can use to protect any Rack app with [HTTP basic authentication](http://tools.ietf.org/html/rfc2617). It is really lightweight and comes in handy for protecting little bits of an application. For example, Ryan Bates uses it to protect a Resque server in a Rails app in [this episode of Railscasts](http://railscasts.com/episodes/271-resque?view=asciicast).
 
 Here's how to set it up:
 
@@ -148,8 +149,6 @@ That was easy!
 ## Using Middleware in Rails
 
 Now, so what? Rack is pretty cool, and we know that Rails is built on it. But just because we understand what it is, doesn't make it actually useful in working with a production app.
-
-Let's say that you're [hosting a Rails app on Engine Yard](https://www.engineyard.com/techstack/ruby) and you want to make sure that
 
 ### How Rails Uses Rack
 
@@ -192,7 +191,7 @@ Now that we understand a little bit of what's happening under the hood, let's ta
 
 ### Adding Your Own Middleware
 
-Imagine you are [hosting an application on Engine Yard](https://www.engineyard.com/pricing). You have a Rails API running on one server, and a client-side JavaScript app running on another. The API has a url of `https://api.myawesomeapp.com`, and the client-side app lives at `https://app.myawesomeapp.com`.
+Imagine you are [hosting an application on Engine Yard](https://www.engineyard.com/trial). You have a Rails API running on one server, and a client-side JavaScript app running on another. The API has a url of `https://api.myawesomeapp.com`, and the client-side app lives at `https://app.myawesomeapp.com`.
 
 You're going to run into a problem pretty quick: you can't access resources at `api.myawesomeapp.com` from your JS app, because of the [same-origin policy](http://en.wikipedia.org/wiki/Same-origin_policy). As you may know, the solution to this problem is to enable [Cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) (CORS). There are many ways to enable CORS on your server, but one of the easiest is to use the [Rack::Cors middleware gem](https://github.com/cyu/rack-cors).
 
@@ -225,15 +224,15 @@ Note that we're using [insert_before](http://guides.rubyonrails.org/rails_on_rac
 
 Now if you reboot the server, you should be good to go! Your client-side app can access `api.myawesomeapp.com` without running into same-origin policy JS errors.
 
-If you want to learn more about how HTTP requests are routed through Rack in Rails, I highly suggest taking a look at [this tour](https://www.omniref.com/ruby/gems/railties/4.2.0/symbols/Rails::Application#annotation=4084035&line=161), of the Rails source code related to handling requests.
+If you want to learn more about how HTTP requests are routed through Rack in Rails, I’d suggest taking a look at [this tour](https://www.omniref.com/ruby/gems/railties/4.2.0/symbols/Rails::Application#annotation=4084035&line=161) of the Rails source code that deals with handling requests.
 
 ## Conclusion
 
-In this post, we've take an in-depth at the internals of Rack, and by extension, the request-response cycle for several Ruby web frameworks, including Ruby on Rails.
+In this post, we've take an in-depth at the internals of Rack, and by extension, the request/response cycle for several Ruby web frameworks, including Ruby on Rails.
 
-Hopefully, understanding what's going on when a request hits your server and your application sends back a response helps make things feel a little less _magical_. Because I don't know about you, but when things go wrong, I have a lot harder time troubleshooting when there's _magic_ involved than when I understand what's going on. In that case, I can say: "oh, it's just a Rack response", and get down to fixing the bug.
+Hopefully, understanding what's going on when a request hits your server and your application sends back a response helps make things feel a little less _magical_. Because I don't know about you, but when things go wrong, I have a lot harder time troubleshooting when there's magic involved than when I understand what's going on. In that case, I can say "oh, it's just a Rack response", and get down to fixing the bug.
 
 If I've done my job, reading this article will enable you to do the same thing.
 
-P.S. Do you know of any use-cases where a simple Rack app was enough to meet your business needs? What other ways do you integrate Rack apps in your bigger applications? We want to hear your battle stories! Leave us a comment below!
+P.S. Do you know of any use-cases where a simple Rack app was enough to meet your business needs? What other ways do you integrate Rack apps in your bigger applications? We want to hear your battle stories! Leave us a comment!
 
