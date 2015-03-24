@@ -193,7 +193,7 @@ Now, if we run the tests, they will all still pass, with the exception of the on
 
 I want to stay with the idea that we might want a `Year` class that can do other things unrelated to determining whether we are talking about leap year or not. Really, there are a bunch of different years, but they all have certain things in common (which era they fall in, whether they are leap, etc.). In my mind, this would be a good use case for instances instead of class level methods.
 
-What it look like if we brought the responsibility for knowing whether a year is leap back into a `Year` class, but passing that behavior onto _instances_ of year, instead of putting it on the eigenclass?
+What would it look like if we brought the responsibility for knowing whether a year is leap back into a `Year` class, but passing that behavior onto _instances_ of year, instead of putting it on the eigenclass?
 
 It's a little weird to be able to do something like `Year.new(2015).year`, so I'll name the state we're going to store `reckoning` instead.
 
