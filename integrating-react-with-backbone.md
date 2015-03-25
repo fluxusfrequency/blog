@@ -4,11 +4,11 @@ There are so many JS frameworks! [It can get tiring](http://www.allenpike.com/20
 
 But like any developer who writes JavaScript, I try to keep abreast of the trends. I like to tinker with new things, and rebuild [TodoMVC](http://todomvc.com/) as often as possible.
 
-All joking aside, when it comes to choosing frameworks for a project, emerging frameworks just haven't been battle-tested enough for me to recommend to clients in most cases.
+Joking aside, when it comes to choosing frameworks for a project, emerging frameworks just haven't been battle-tested enough for me to recommend to clients in most cases.
 
 But like much of the community, I feel pretty confident in the future of [React](http://facebook.github.io/react/index.html). It's well documented, makes reasoning about data easy, and it's performant.
 
-Since React only provides the "view" part of a client-side [MVC application](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller), I still have to find a way to wrap the rest of the application. When it comes to choosing a library that I'm confident in, I still reach for [BackboneJS](http://backbonejs.org/). A company that bets on Backbone won't have trouble finding people who can work on their code base. It's been around for a long time, is unopionated enough to be adaptable to many different situations. And as an added bonus, it plays well with React.
+Since React only provides the view layer of a client-side [MVC application](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller), I still have to find a way to wrap the rest of the application. When it comes to choosing a library that I'm confident in, I still reach for [BackboneJS](http://backbonejs.org/). A company that bets on Backbone won't have trouble finding people who can work on their code base. It's been around for a long time, is unopionated enough to be adaptable to many different situations. And as an added bonus, it plays well with React.
 
 In this post, we'll explore the relationship between Backbone and React, by looking at one way to structure a project that uses them together.
 
@@ -22,7 +22,9 @@ We'll also be making use of [backbone-route-control](https://www.npmjs.com/packa
 
 ## Project Structure
 
-There are many ways to structure the directories for a client-side JS application, and every project lends itself to a slightly different setup. Today we'll be basing our directory structure in a fairly typical fashion for a Backbone project, but we'll also be introducing the concept of _screens_ to our application, so we'll also be extending it slightly. Here's what we'll need:
+There are many ways to structure the directories for a client-side JS application, and every project lends itself to a slightly different setup. Today we'll be creating our directory structure in a fairly typical fashion for a Backbone project. But we'll also be introducing the concept of _screens_ to our application, so we'll also be extending it slightly.
+
+Here's what we'll need:
 
 ```
 assets/
@@ -41,7 +43,9 @@ assets/
 
 Much of this is standard Backbone boilerplate. The `collections/`, `models/`, and `vendor/` directories are self-explanatory. We'll store reusable UI components, such as pagination, pills, and toggles, in `components/`.
 
-The heart of our app will live in the `screens/` directory. Here, we'll write React components will handle the display logic, taking the place of traditional Backbone views and templates. However, we'll still include thin Backbone views to render these components. We'll talk more about screens in a moment. For now, let's take a look at the how a request will flow through the application, starting from the macro level.
+The heart of our app will live in the `screens/` directory. Here, we'll write React components that will handle the display logic, taking the place of traditional Backbone views and templates. However, we'll still include thin Backbone views to render these components.
+
+We'll talk more about screens in a moment. For now, let's take a look at the how a request will flow through the application, starting from the macro level.
 
 ## The Application
 
@@ -162,7 +166,7 @@ var UsersController = function(options) {
 module.exports = UsersController;
 ```
 
-This controller requires the `User` model and collection, as well as the screens to display the index all of the users, or show a single user. It instantiates a Backbone collection or model, depending on the route, fetches its data from the server, loads it into the screen (which we'll get to momentarily), then shows that screen in the app's `mainView` container.
+This controller loads the `User` model and collection, and uses them to display the user index and show screens. It instantiates a Backbone collection or model, depending on the route, fetches its data from the server, loads it into the screen (which we'll get to momentarily), then shows that screen in the app's `mainView` container.
 
 ## Screens
 
@@ -250,7 +254,9 @@ var MainComponent = React.createBackboneClass({
 module.exports = MainComponent;
 ```
 
-That's it, the `MainView`. Since it's so simple, it makes a good introduction to how we can render components in this project. Now let's take a look at something a little more advanced.
+That's it, the whole `MainView`. Since it's so simple, it makes a good introduction to how we can render components in this project.
+
+Now let's take a look at something a little more advanced.
 
 ### User Show View
 
@@ -275,7 +281,7 @@ var UserView = BaseView.extend({
 module.exports = UsersView;
 ```
 
-That's it, mostly just boilerplate. In fact, pretty much all of our Backbone views will look like this. A simple extension of `BaseView` that defines a `component()` method. That method instantiates a React component and returns it to the `render()` method in the `BaseView`, which in turn is called by the `mainView`'s `pageRender()` method.
+That's it. Mostly just boilerplate. In fact, pretty much all of our Backbone views will look like this. A simple extension of `BaseView` that defines a `component()` method. That method instantiates a React component and returns it to the `render()` method in the `BaseView`, which in turn is called by the `mainView`'s `pageRender()` method.
 
 #### React Component
 
@@ -329,7 +335,7 @@ var UserShowScreen = React.createBackboneClass({
 module.exports = UserShowScreeen;
 ```
 
-You may have noticed that curious `mixins` property. What is that? `react.backbone` gives us some niceties here, since we're calling `React.createBackboneClass` instead of `React.createClass`. Whenever the `user` prop that was passed into this component fires a `change` event, the component's `render()` method will be called (for more information, take a look at [the package on GitHub](https://github.com/clayallsopp/react.backbone)).
+You may have noticed that curious `mixins` property. What is that? `react.backbone` gives us some niceties here, since we're calling `React.createBackboneClass` instead of `React.createClass`. Whenever the `user` prop that was passed into this component fires a `change` event, the component's `render()` method will be called. For more information, take a look at [the package on GitHub](https://github.com/clayallsopp/react.backbone).
 
 When we click that like button, we're incrementing the `likesCount` attribute on the user, and saving it to the server with our `save()` call. When the result of that `sync` comes back, our view will automatically re-render, and the likes count indication will update! Pretty sweet!
 
@@ -427,7 +433,7 @@ We've now traced the entire series of events that happens when someone loads up 
 
 We only barely scratched the surface of what React is capable of here. If you haven't checked out the [React component API docs](http://facebook.github.io/react/docs/component-api.html), I highly suggest doing so. Once I began to fully harness the power it gave me, I found my projects' view layers much cleaner. Plus, I get all of the React [performance benefits](http://facebook.github.io/react/docs/advanced-performance.html) for free!
 
-I hope that this post has helped make it more obvious how to get started with integrating React into a Backbone app. To me, it always seemed like a good idea, but I had know idea where to begin. Once I got a sense of the pattern, though, it became pretty easy to do.
+I hope that this post has helped make it more obvious how to get started with integrating React into a Backbone app. To me, it always seemed like a good idea, but I didn’t know where to begin. Once I got a sense of the pattern, though, it became pretty easy to do.
 
 P.S. Do you have a different pattern for using React in your Backbone app? Want to talk about using React in Ember or Angular? Leave us a note in the comments!
 
