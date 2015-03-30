@@ -1,10 +1,10 @@
-# Nine Exotic Ruby Datastores
+# Seven Exotic Ruby Datastores
 
 Admit it: you like to get fancy. We all do. People love the exotic. As programmers, we often love the arcane.
 
 Despite constant warnings against premature optimization, an emphasis on "readable code", and the old aphorism, "keep it simple, stupid", we just can't help ourselves. We love the obscure.
 
-In that spirit, let's go on an adventure. In this post, we'll take a look at nine weird ways to store data in the Ruby language.
+In that spirit, let's go on an adventure. In this post, we'll take a look at seven weird ways to store data in the Ruby language.
 
 ## The Ones We Already Know
 
@@ -15,6 +15,7 @@ Before we get started, we'll set a baseline. What are the ways to store data in 
 - Hash
 - CSV
 - JSON
+- IO and the Filesystem
 
 And all kinds of numbers.
 
@@ -78,18 +79,34 @@ Next we'll take a look at `Struct`'s close cousin, `OpenStruct`.
 
 ### What It Is
 
-OpenStruct lives in the Ruby Standard Library, so to use it in your code, you'll have to `require 'ostruct'`.
+An OpenStruct is somewhat like a hash. It's a data structure that you can use to store and access key-value pairs. In fact, it really _is_ a hash. Under the hood, each OpenStruct uses a hash for data storage. It also defines getters and setters automatically using `method_missing` and `define_method`.
 
-Similar to a hash. Allows definition of arbitrary attributes with associated values. A class that gets metaprogrammed to have accessors for the attributes
+There are three main differences between a struct and an open struct. The first is that when you initialize a Struct, you get back an instance of `Class` which you must futher instantiate, whereas an OpenStruct gives you back an OpenStruct object. That means you can't call `new` on an OpenStruct. Secondly, OpenStructs don't allow you to define behaviors by passing a block to the initializer as we did with the Struct above. Finally, OpenStructs must be passed an argument that responds to `each_pair` (such as a hash), whereas Stucts expect a list of strings or symbols (to define their attribute names). In the end, an OpenStruct is much simpler than a Struct in terms of what it can do.
+
+OpenStruct lives in the Ruby Standard Library, so to use it in your code, you'll have to `require 'ostruct'`.
 
 ### Example
 
-As a test stub.
+```ruby
+luke = OpenStruct.new({
+  home: "Tatooine",
+  side: :light,
+  weapon: :light_saber
+})
+
+luke
+=> #<OpenStruct home="Tatooine", side=:light, weapon=:light_saber>
+luke.home
+=> "Tatooine"
+luke.side = :dark
+=> :dark
+luke
+=> #<OpenStruct home="Tatooine", side=:dark, weapon=:light_saber>
+```
 
 ### When You Would Use It
 
-Not as good performance as a hash due to using `method_missing` and
-`define_method`.
+As with Structs, I like to use OpenStructs as test stubs. Unfortunately, the metaprogramming used behind the scenes makes OpenStructs [much slower than hashes](http://ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html#class-OpenStruct-label-Implementation-3A), and they also respond to far fewer methods, so they aren't as flexible for everyday use. However, their built-in getters make them really useful anywhere that you need to inject an object that responds to a certain method into a duck-typed method call.
 
 
 
@@ -97,111 +114,181 @@ Not as good performance as a hash due to using `method_missing` and
 
 ### What It Is
 
-A way to serialize Ruby objects into a binary format.
-http://www.skorks.com/2010/04/serializing-and-deserializing-objects-with-ruby/
+Marshalling is way to serialize Ruby objects into a binary format. It converts them into a byte stream that can be saved to disk or a database and reconstituted later.
+
+You marshall objects by calling `Marshall.dump` and `Marshall.load`.
 
 ### Example
 
+```ruby
+SpaceCaptain = Struct.new(:name, :rank, :affiliation)
+=> SpaceCaptain
+
+picard = SpaceCaptain.new("Jean-Luc Picard", "Captain", "United Federation of Planets")
+=> #<struct SpaceCaptain name="Jean-Luc Picard", rank="Captain", affiliation="United Federation of Planets">
+
+saved_picard = Marshal.dump(picard)
+=> "\x04\bS:\x11SpaceCaptain\b:\tnameI\"\x14Jean-Luc Picard\x06:\x06ET:\trankI\"\fCaptain\x06;\aT:\x10affiliationI\"!United Federation of Planets\x06;\aT"
+# Write to disk
+
+loaded_picard = Marshal.load(saved_picard)
+=> #<struct SpaceCaptain name="Jean-Luc Picard", rank="Captain", affiliation="United Federation of Planets">
+```
+
 ### When You Would Use It
 
-To save an object to a file or database
+There are plenty of use cases for serializing code running in memory and saving it for later reuse. For example, if you were writing a video game, and you wanted to make it possible for a player to save their game for later, you could marshall the objects in memory (for example, the player, her location in a map, and any enemies that are nearby) and persist them, then load them up again when the player is ready to continue later.
+
+Although there are other data serialization formats available, such as JSON, XML, and YAML (which we'll look at next), marshalling is [by far the fastest option](http://www.skorks.com/2010/04/serializing-and-deserializing-objects-with-ruby/) available in Ruby. That makes it particularly well-suited to situations where you dealing with large volumes of data or processing it at high speed.
+
 
 
 
 ## YAML
 
-If there's one
-
-
 ### What It Is
 
-YAML Ain't Markup Language
+YAML, which stands for YAML Ain't Markup Language, is a widely-used format for serializing data in a human-readable format. It's available in many languages, of which Ruby is only one. The most widely-used Ruby YAML parser, [psych](https://github.com/tenderlove/psych), is a wrapper around `libyaml`, the C language parser.
 
-Cross-language data serialization in a human-readable format.
-Libyaml is a C yaml parser, psych is a Ruby wrapper for it maintained by Aaron Patterson.
-
-In the stdlib
+YAML lives in the Ruby Standard Library, so to use it in your code, you'll have to `require 'yaml'`. You can use the [YAML::Store library](http://ruby-doc.org/stdlib-2.2.1/libdoc/yaml/rdoc/YAML/Store.html) to easily save data to disk.
 
 ### Example
 
-Indentation
-Access like a hash
+```ruby
+require 'yaml/store'
 
-IdeaBox
+class Database
+  DATABASE = YAML::Store.new('my_database')
+
+  def self.save_person(user_data)
+    DATABASE.transaction do
+      DATABASE["people"] ||= []
+      DATABASE["people"] << user_data
+    end
+  end
+end
+
+bilbo = {
+  race: :hobbit,
+  aliases: ["Bilba Labingi"],
+  home: "The Shire",
+  inventory: [:the_one_ring, :arkenstone]
+}
+
+Database.save_person(bilbo)
+=> [{:race=>:hobbit, :aliases=>["Bilba Labingi"], :home=>"The Shire", :inventory=>[:the_one_ring, :arkenstone]}, {:race=>:hobbit, :aliases=>["Bilba Labingi"], :home=>"The Shire", :inventory=>[:the_one_ring, :arkenstone]}]
+```
+
+Here's what `my_database` would look like after running this code:
+
+```yaml
+---
+people:
+- :race: :hobbit
+  :aliases:
+  - Bilba Labingi
+  :home: The Shire
+  :inventory:
+  - :the_one_ring
+  - :arkenstone
+```
 
 ### When You Would Use It
 
-Store Ruby objects on disk
-Rails i18n
+YAML serves the same function as marshalling: it's a way to serialize Ruby objects for storage. It's quite a bit slower, but it's human-readable.
+
+YAML is working behind the scenes when ActiveRecord is used to [serialize a record attribute](http://apidock.com/rails/ActiveRecord/Base/serialize/class) containing a hash or an array and save it to a text column in the database. When the attribute is retrieved, ActiveRecord deserializes it back from YAML into a Ruby object of its original data type.
 
 
 
 ## Set
 
-In stdlib
-
 ### What It Is
 
-Like an unordered array that can only contain unique members.
-Use array methods but with faster lookup (like hash lookup). Uses hash
-under the hood
+If you're familiar with mathematical [set theory](http://en.wikipedia.org/wiki/Set_theory), the `Set` class should be pretty intuitive. Sets respond to `intersection`, `difference`, `merge`, and many other Set operations.
+
+It allows you to define a data structure that behaves like an unordered array that can only contain unique members.
+It exposes many of the same methods available when accessing arrays, but with a faster lookup. Like OpenStruct, Set users hash under the hood.
+
+Sets can be saved in [redis](http://redis.io/), which makes it possible to look them up with very fast access.
+
+Set lives in the Ruby Standard Library, so to use it in your code, you'll have to `require 'set'`.
 
 ### Example
 
+```ruby
+require 'set'
+
+basic_lands = Set.new
+[:swamp, :island, :forest, :mountain, :plains].each do |land|
+  basic_lands << land
+end
+
+basic_lands
+=> #<Set: {:swamp, :island, :forest, :mountain, :plains}>
+
+basic_lands << :swamp
+# does nothing
+=> #<Set: {:swamp, :island, :forest, :mountain, :plains}>
+
+fires_lands = Set.new
+[:forest, :mountain, :city_of_brass, :karplusan_forest, :rishadan_port].each do |land|
+  fires_lands << land
+end
+fires_lands
+=> #<Set: {:forest, :mountain, :city_of_brass, :karplusan_forest, :rishadan_port}>
+
+basic_lands.intersection(fires_lands)
+=> #<Set: {:forest, :mountain}>
+
+basic_lands.difference(fires_lands)
+=> #<Set: {:swamp, :island, :plains}>
+
+basic_lands.subset?(fires_lands)
+=> false
+
+basic_lands.merge(fires_lands)
+=> #<Set: {:swamp, :island, :forest, :mountain, :plains, :city_of_brass, :karplusan_forest, :rishadan_port}>
+```
+
 ### When You Would Use It
 
-Compare equality without considering order
-Receiving events that should only be recorded once per identifier (e.g.
-whether a user has "checked in" to an event)
-
-
-
-
-
-## Matrix
-
-### What It Is
-
-### Example
-
-### When You Would Use It
-
-Encryption, graphing, statistics, electronic circuits and more
-
-
+Sets are great for situations where you need to make sure that a given element isn't contained in a collection more than once. For example, if you were using tags in an applicaiton that was not backed by a database. They're also great for comparing the equality of two lists without caring about their order (as an array would). You could use this feature to check whether the data stored in memory is in sync with another collection fetched from a remote server.
 
 
 ## Queue
 
 ### What It Is
 
-A place to hold values to be shared between threads.
+A [Queue](http://ruby-doc.org/core-2.2.1/Queue.html) is a place that can be used hold values that you want to share between threads. It's basically a stack that is visible to all of the concurrently running thread process in a given Ruby environment.
 
-SizedQueue - queue with a max capacity
-
-### Example
-
-### When You Would Use It
-
-
-
-
-## IO + The Filesystem
-
-### What It Is
-
-A read/write stream. Can be duplex / bidirectional. Plays back like
-a tape. File is its only standard subclass of IO.
-
-Tempfile < File < IO
+If you want to limit the amount of data that can be shared, you can use a [SizedQueue]().
 
 ### Example
 
+```ruby
+require 'thread'
+chess_moves = Queue.new
+
+player_moves = Thread.new do
+  chess_moves << "e4"
+  sleep(1)
+  chess_moves << "e5"
+  sleep(1)
+  chess_moves << "f4"
+end
+
+game_board = Thread.new do
+  while chess_moves.length > 0
+    move = chess_moves.pop
+    # update the ui with the move
+  end
+end
+```
+
 ### When You Would Use It
 
-To save data to / read data from the filesystem
-
-
+Queues are extremely helpful in any application that runs code concurrently. For example, background processing libraries like [Redis](https://github.com/resque/resque) [make use of a queue](https://github.com/resque/resque/blob/master/lib/resque/queue.rb) to check for the latest jobs and instruct workers to run them.
 
 
 
@@ -209,22 +296,129 @@ To save data to / read data from the filesystem
 
 ### What It Is
 
-A way to interact with all of the living objects in the current Ruby
-environment, and the garbage collector.
+The ObjectSpace module is a collection of methods that can be used to interact with all of the living objects in the current Ruby environment, as well as the garbage collector.
+
+You can use it to check out all of the objects currently living in memory, look up objects by the object ID reference, and trigger garbage collector runs. You can also define a hook to be triggered when any object of a given class is removed from the ObjectSpace using `ObjectSpace#define_finalizer`.
+
+How is ObjectSpace a data store? It's the highest level data store (that hasn't been interpreted or compiled yet) in any place that you can run Ruby code. Any time you define or remove an object from memory, you are changing what is visible in the ObjectSpace.
 
 ### Example
 
-finalizers
+Let's take a look at everything that's available in an IRB session.
+
+```ruby
+object_counts = Hash.new(0)
+ObjectSpace.each_object do |o|
+  object_counts[o.class] += 1
+end
+
+require "pp"
+pp object_counts
+
+{
+  String=>67073,
+  Array=>14474,
+  Regexp=>164,
+  Gem::Specification=>299,
+  Hash=>1023,
+  Gem::Version=>381,
+  Gem::StubSpecification::StubLine=>296,
+  Time=>297,
+  Gem::StubSpecification=>299,
+  Class=>418,
+  IRB::Notifier::LeveledNotifier=>3,
+  IRB::Notifier::CompositeNotifier=>1,
+  IRB::StdioOutputMethod=>2,
+  RubyVM::InstructionSequence=>1020,
+  Gem::Requirement=>2032,
+  Gem::Dependency=>1432,
+  IRB::Notifier::NoMsgNotifier=>1,
+  Module=>30,
+  RubyVM::Env=>17,
+  Proc=>69,
+  Mutex=>3,
+  Encoding=>100,
+  Complex=>1,
+  Bignum=>2,
+  ThreadGroup=>1,
+  IOError=>1,
+  Binding=>2,
+  Thread=>1,
+  RubyVM=>1,
+  NoMemoryError=>1,
+  SystemStackError=>1,
+  Random=>1,
+  ARGF.class=>1,
+  IO=>5,
+  Data=>1,
+  Object=>7,
+  Float=>4,
+  fatal=>1,
+  Gem::PathSupport=>1,
+  IRB::Locale=>1,
+  Range=>2,
+  IRB::Inspector=>5,
+  Gem::Platform=>1,
+  Monitor=>1,
+  File=>1,
+  IRB::ReadlineInputMethod=>1,
+  IRB::WorkSpace=>1,
+  IRB::Context=>1,
+  IRB::Irb=>1,
+  Thread::Backtrace=>2,
+  LoadError=>1,
+  MatchData=>168,
+  IRB::SLex::Node=>78,
+  IRB::SLex=>1,
+  RubyLex=>1,
+  RubyToken::TkSPACE=>12,
+  RubyToken::TkASSIGN=>1,
+  RubyToken::TkIDENTIFIER=>12,
+  RubyToken::TkDOT=>5,
+  RubyToken::TkCONSTANT=>3,
+  RubyToken::TkNL=>7,
+  RubyToken::TkRPAREN=>1,
+  RubyToken::TkINTEGER=>3,
+  RubyToken::TkLPAREN=>1,
+  RubyToken::TkRBRACK=>2,
+  RubyToken::TkfLBRACK=>2,
+  RubyToken::TkBITOR=>4,
+  RubyToken::TkDO=>2,
+  NameError=>1,
+  NameError::message=>1,
+  RubyToken::TkEND=>2,
+  RubyToken::TkOPASGN=>2
+}
+```
+
+If we create a new object, it ends up in the ObjectSpace.
+
+```ruby
+require "ostruct"
+
+ObjectSpace.each_object(OpenStruct).count
+=> 0
+spidey = OpenStruct.new({ name: "Peter Parker", species: "Human Mutate" })
+
+ObjectSpace.each_object(OpenStruct).count
+=> 1
+```
+
 
 ### When You Would Use It
 
-Get a reference to an object from its id.
-Count objects for performance reasons
-Iterate through all the objects of a certain type with `each_object`
-Manually start garbage collection
+Although you already use the ObjectSpace all the time, knowing about the methods it exposes opens up a lot of possibilities for investigating and improving the performance of your code.
+
+The best use I've seen for ObjectSpace so far is using it to detect memory leaks. [This article](https://cirw.in/blog/find-references) shows an interesting way to map the objects in your object space to create a graph useful in tracking down and fixing memory leaks.
 
 
 
 ## Conclusion
 
+Ruby is such a fun language to write because there are so many ways to say the same thing. It doesn't stop at writing statements and expressions, though. You can also store data in a huge number of ways.
 
+In this post, we looked at seven fairly unusual ways to handle data in Ruby. Hopefully, reading through them has given you some ideas for how to handle persistence or in-memory storage in your own applications. I also dream that you may have learned something about how Ruby works along the way, too.
+
+Until next time, happy coding!
+
+P. S. We know that there are other exotic datastores out there. What are some of your favorites and how do you use them? Leave us a comment!

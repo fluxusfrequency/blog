@@ -1,0 +1,16 @@
+---
+people:
+- :race: :hobbit
+  :aliases:
+  - Bilba Labingi
+  :home: The Shire
+  :inventory:
+  - :the_one_ring
+  - :arkenstone
+- :race: :hobbit
+  :aliases:
+  - Bilba Labingi
+  :home: The Shire
+  :inventory:
+  - :the_one_ring
+  - :arkenstone
