@@ -2,44 +2,48 @@
 
 ## Introduction
 
-When building software iteratively, there comes a point in the story writing process where a team must consider all the edge cases of a feature. What do we expect to happen when all goes as planned? What about when a user supplies bad data? Can we consider malicious attacks? What about when chaos makes the whole system unstable?
+When building software iteratively, planning features is something that must be done early and often. But doing so is a process that can be made more complicated by the all of the stakeholders involved having different viewpoints and goals.
 
-In this post, we'll consider the way that each of these cases might affect the job of different stakeholders in a product, including the product owner, QA technician, designer, and the developer. We'll also think about how the perspective that each of these roles provides can help teams build better software.
+What's more, it's easy to overlook key behaviors that a system should have, potentially leading to expensive or rushed backfilling later. It's easy to identify what should happen when everthing goes according to plan, but what should happen when a user supplies bad data? A hacker launches a malicious attack on our application? What about when chaos makes the whole system unstable?
 
+There is a way to get everyone's voice heard, including the product owner, developer, designer, and QA engineer. By performing a use case analysis during story planning, teams can draw use the multitude of perspectives that each person's role gives them to plan a system that will cost less and perform better.
 
-## Use-case Analysis
-Scenarios / Paths
+Use case analysis allows teams to uncover edge cases and make systematic changes before a single line of code is ever written. In this post, we'll take a look at one method of performing use case analysis during story planning to yield the best results.
 
-Narrative of foreseeable interactions of user roles and the technical system
+## Use Case Analysis
 
-Identify a system's requirements
+Use case analysis a fancy term that comes out of a process called Object Oriented Analysis. It's used to figure out what's requiremed of an application, how it should behave, and the people, systems, and processes that will interact within it.
 
-Golden path, alternate paths, exception path
+A scenario is a narrative of interactions between users of varying roles and a technical system. It helps determine a system's requirements and sets a foundation on which the system will be built. It's a functional description of a small slice of what the application will do, or at least what the stakeholders hope it will do.
 
-"Foundation on which a system will be built" -Wikipedia
+When doing a use case analysis, a team identifies different scenarios that they expect to play out within an application, and plans the desired results of those scenarios.
 
-Has a functional goal
-
+If you're a developer or QA technician, perhaps you've thought of scenarios as the Happy Path and the Sad Path when writing your tests. These are just two of the many paths that can be identified. Aside from the Happy (or Golden) Path, there are many alternative paths, such as the exception path and the evil path. When performing a use case analysis, we'll think through these paths up front, before we start writing code.
 
 ### Why Think About Use Cases?
 
-- Makes a contract between stakeholders more resistant to change
-- Written in plain language so all stakeholders can discuss together
-- Describe system in a way that costs little to modify
-- Avoid functional parts of the system from "falling through the cracks"
+There are many benefits from approaching feature planning from a use case perspective.
 
-Goals:
+Talking through and modeling a feature in simple language makes it easy for all the stakeholders to be involved in the conversation. It makes the contract that they come up with together more resistant to change, as unforeseen circumstances are less likely to be revealed later. Functional parts of the system are less likely to fall through the cracks when a variety of scenarios are considered up front.
 
-- design system from user's perspective
-- communicate system behavior in user's terms
-- specify all externally visible behaviors
+In my mind, perhaps the most valuable benefit of use case analysis is that it gives teams a way to describe a system that costs very little to modify. By talking through alternate paths early, it's easy to change the requirements and described behavior of an application before it's even built. As time goes on, code is written, and a system begins to take shape, complexity increases significantly. Changing features in a use case diagram is easy. Changing them in wireframes is harder, in design comps harder still, in development code even harder, and in a production app it's extremely hard. During planning, making changes is easy, so it pays to think through as many of the potential scenarios as possible at this nascent stage.
 
-- clearly communicate system requirements
-- clearly communicate how the system is to be used
-- clearly communicate the roles the user plays in the system
-- clearly communicate what the system does in response to user stimulus
-- clearly communicate what the user receives from the system
-- clearly communicate the value the customer or user will receive from the system
+### Goals of Use Case Planning
+
+Here are some of the goals that use case planning hopes to accomplish:
+
+- Design the system from the user's perspective
+- Communicate the system's behavior in the user's terms
+- Specify all of the externally visible behaviors
+
+And to clearly communicate the following to all members of the team:
+
+- System requirements
+- How the system is to be used
+- The roles the user plays in the system
+- What the system does in response to user stimulus
+- What data or feedback the user receives from the system
+- The value the customer will receive from the system
 
 
 ### Happy Paths / Use Cases
