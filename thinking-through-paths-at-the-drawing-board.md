@@ -12,7 +12,7 @@ Use case analysis allows teams to uncover edge cases and make systematic changes
 
 ## Use Case Analysis
 
-Use case analysis a fancy term that comes out of a process called Object Oriented Analysis. It's used to figure out what's requiremed of an application, how it should behave, and the people, systems, and processes that will interact within it.
+Use case analysis a fancy term that comes out of a process called Object Oriented Analysis. It's used to figure out what's required of an application, how it should behave, and the people, systems, and processes that will interact within it.
 
 A scenario is a narrative of interactions between users of varying roles and a technical system. It helps determine a system's requirements and sets a foundation on which the system will be built. It's a functional description of a small slice of what the application will do, or at least what the stakeholders hope it will do.
 
@@ -93,7 +93,6 @@ User
 Merchant
 Platform Owner
 
-Card
 Stripe
 Credit Card Company
 SaaS Platform
@@ -183,3 +182,5 @@ http://people.cs.uchicago.edu/~mark/51023/Ucstyleg.html
 http://www.nishantverma.com/2010/03/test-case-paths-happy-sad-bad.html
 
 http://adam.goucher.ca/?p=399
+
+"Use case restaurant model" by Kishorekumar 62. Licensed under CC BY-SA 3.0 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Use_case_restaurant_model.svg#/media/File:Use_case_restaurant_model.svg
