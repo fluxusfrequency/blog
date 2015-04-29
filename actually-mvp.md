@@ -63,6 +63,10 @@ So you want to build a thing, huh? You're going to change the world, like Steve 
 
 According to [this article](http://get2growth.com/how-many-startups/), there were 1.35 million tech startups as of February 2014. Before you start dreaming of all that VC cash and crack your wallet open to get things off the ground, why don't you do a little experiment to see if it's at all likely that you'll end up anywhere besides broke.
 
+
+
+Build, Measure, Learn
+
 ### First Steps
 
 You need to take a small first step.
@@ -73,6 +77,14 @@ What's the littlest thing you can build?
 
 The classic example of an MVP is to put up a pixel-perfect landing page, touting all the benefits of joining Doggie Dates and driving users to sign up with their email for early access. You can drop Google Analytics into the page to track clicks and pageviews, and if anyone signs up too, great! You can reach out and ask them questions.
 
+Is a landing page an MVP?
+[nope](http://ramlijohn.com/a-landing-page-is-not-a-minimum-viable-product/)
+[yup](https://medium.com/@joelgascoigne/how-to-successfully-validate-your-idea-with-a-landing-page-mvp-ef3c2d02dc51)
+[yup](http://www.startuplessonslearned.com/2009/03/minimum-viable-product.html)
+If they sign up they're down for what you're selling (but is that clear enough to move forward?)
+It's for learning - use them emails to learn
+
+Charge without building it
 
 #### Email
 
@@ -82,36 +94,17 @@ The classic example of an MVP is to put up a pixel-perfect landing page, touting
 
 #### The Hustle
 
-- Landing page
-  Is a landing page an MVP?
-  [nope](http://ramlijohn.com/a-landing-page-is-not-a-minimum-viable-product/)
-  [yup](https://medium.com/@joelgascoigne/how-to-successfully-validate-your-idea-with-a-landing-page-mvp-ef3c2d02dc51)
-  [yup](http://www.startuplessonslearned.com/2009/03/minimum-viable-product.html)
-  If they sign up they're down for what you're selling (but is that clear enough to move forward?)
-  It's for learning - use them emails to learn
-- Email
-- Blog
-- Video
-- Hustle
+
+Offer to buy (Wizard of Oz)
+
+### Learning
 
 Google adwords
-Offer to buy (Wizard of Oz)
+
 Analytics
+User Interviews
+Personal Emails
 
-### Choosing Features
-
-Can somebody use it?
-
-Platform
-Analytics
-
-### Cycle
-
-Release, Advertise, Analyze, Iterate
-Build, Measure, Learn
-
-Charge without building it
-Deploy first, code later
 
 ## For CEOs + CTOs
 
@@ -131,6 +124,8 @@ Deploy first, code later
 Often already believe in the market
 How can we adopt the lessons anyway
 
+Who is the "user"? The client!
+
 You need the release bar
 Checkpoints
 Every couple of weeks
@@ -145,6 +140,10 @@ It's not actually there
 Track the clicks
 If they want it, build it
 Use the CEO/CTO cycle above
+
+
+
+## Conclusion
 
 ## Sources
 
