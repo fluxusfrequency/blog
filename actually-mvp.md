@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the startup world, there is a lot of talk about building Minimum Viable Products (MVPs). At this point, the concept has become so well-accepted that it has almost become a kind of unquestioned dogma. Yet there is a lot of disagreement about what MVP is exactly, and how to carry it out. Many people in the software industry assume that they know what MVP means, and claim to be using the process, but their production workflow tells a different story.
+In the startup world, there is a lot of talk about building [Minimum Viable Products (MVPs)](http://en.wikipedia.org/wiki/Minimum_viable_product). At this point, the concept has become so well-accepted that it has almost become a kind of unquestioned dogma. Yet there is a lot of disagreement about what MVP is exactly, and how to carry it out. Many people in the software industry assume that they know what MVP means, and claim to be using the process, but their production workflow tells a different story.
 
 When it comes to building software, it is often tempting to take an approach akin to building a skyscraper: write the blueprints, obtain the necessary prequisites, then build it to spec. But software is a quickly shifting market. A businessperson may think she knows what the market wants, and plan and begin a project to meet that desire. But by the time the product is built, the needs of consumers have often morphed in a direction that she could never have foreseen.
 
@@ -63,97 +63,48 @@ So you want to build a thing, huh? You're going to change the world, like Steve 
 
 According to [this article](http://get2growth.com/how-many-startups/), there were 1.35 million tech startups as of February 2014. Before you start dreaming of all that VC cash and crack your wallet open to get things off the ground, why don't you do a little experiment to see if it's at all likely that you'll end up anywhere besides broke.
 
+The lean startup approach is all about the [build-measure-learn](http://theleanstartup.com/principles) cycle. Before you have a company, you'll have to start by building something.
 
+### First Step: Build
 
-Build, Measure, Learn
+What's the smallest first step you can take?
 
-### First Steps
+The classic example of an MVP you can use to test an idea is a landing page with a sign up form. The idea is to build a pixel-perfect landing page touting all the benefits of joining Doggie Dates and deploy it on an easy-to-use platform like [Engine Yard](https://www.engineyard.com/). Then you drive users to the site by purchasing some Google AdWords, and entice them to sign up with their email for early access to the application.
 
-You need to take a small first step.
+There has been some recent debate as to whether a landing page is even an MVP. Although some would say no, like [Ramli John](http://ramlijohn.com/a-landing-page-is-not-a-minimum-viable-product/), this strategy doesn't provide enough insight to complete the build-measure-learn cycle. [Eric Reis](http://www.startuplessonslearned.com/2009/03/minimum-viable-product.html) and [others](https://medium.com/@joelgascoigne/how-to-successfully-validate-your-idea-with-a-landing-page-mvp-ef3c2d02dc51) seem to disagree. A landing page _can_ provide enough information to build a successive MVP and continue to gather feedback. If they sign up they're probably interested in what you're selling.
 
-What's the littlest thing you can build?
+Although Ramli John isn't a fan of landing pages, he does have some other great suggestions for ways to build a first MVP. Some startups, like AngelList, have begun as an email list. Blogs can be another great place to gather interested users. We've talked about Eric Reis quite a bit already. His [blog](http://www.startuplessonslearned.com/2008_08_01_archive.html) covered topics like refactoring, TDD, and fundraising before he was known for the Lean Startup. You can try getting off the ground with a video and a startup campaign. Finally, you can do it the old fashioned way: "The Hustle". Just sell your service. In person. _Before_ you build an app.
 
-#### Landing Page
+Landing pages are great for founders of small startups and developers with a great idea for a side project, but what does MVP mean if you have another role in the industry?
 
-The classic example of an MVP is to put up a pixel-perfect landing page, touting all the benefits of joining Doggie Dates and driving users to sign up with their email for early access. You can drop Google Analytics into the page to track clicks and pageviews, and if anyone signs up too, great! You can reach out and ask them questions.
+If you're a consultant like myself, encourage my clients to prioritize their feature requests. We have so many awesome things in mind for Doggie Dating! Favoriting, profile walls, see who viewed me, a Dogs You Might Dig service, responsive layouts, native mobile versions...the list goes on and on. It's great to write them all down and put them in a tracking tool like [Sprint.ly](https://sprint.ly/), so that you don't lose all these creative ideas. Then it's time to prioritize.
 
-Is a landing page an MVP?
-[nope](http://ramlijohn.com/a-landing-page-is-not-a-minimum-viable-product/)
-[yup](https://medium.com/@joelgascoigne/how-to-successfully-validate-your-idea-with-a-landing-page-mvp-ef3c2d02dc51)
-[yup](http://www.startuplessonslearned.com/2009/03/minimum-viable-product.html)
-If they sign up they're down for what you're selling (but is that clear enough to move forward?)
-It's for learning - use them emails to learn
+What do you need first? What is the smallest version of your idea that people (or dogs) could possibly use? Put those tickets at the top of your tracker, and mark the point when they'll be done with a release bar. Encourage your clients to ask themselves: "is this necessary for people to use the site?" before you put _anything_ above that bar.
 
-Charge without building it
+Once you've reached it, follow the steps below! Measure and learn before you go on. That way, you can collectively decide what should _actually_ be built, instead of spending the client's money building things that are going end up being discarded in the end.
 
-#### Email
+If you're a PO, maybe you're charged with exploring new ways that your company can gain more users, or convince the existing ones to pay more. There are some cool tricks you can use to sneak a feature MVP into what's already there. You can make a links that claim to take the user to one or more features, but are actually dead. Then you track the clicks and decide what to build from there. Or you can ask users to pay for a certain feature before you actually begin development on it. If you don't reach a certain threshold of sign-ups, you just cancel it, apologize and refund the money.
 
-#### Blog Post
+No matter your role, if people don't seem to want what you've put out there, delete it and build another version of your dream. Be happy about all the time and money you just saved by not building something that nobody wants! Keep going until you find something that sticks. In this way, you'll set up a great foundation on which to build the rest of your business.
 
-#### Video
+### Second Step: Measure
 
-#### The Hustle
+Regardless of how you choose to build the first version of your idea, you'll want to measure user engagment once it's deployed. The easiest way to do this is to Google Analytics into the page and track clicks and pageviews. Reflecting on this information, you'll begin to learn what people want. If anyone actually signs up on your landing page with their email, you can reach out personally (maybe even take them to lunch) and ask them questions to learn more about what people would want to use.
 
+Once you've gotten past the first iteration of your MVP, you can also invite customers to user testing sessions. These sessions can offer great insight into how your application should behave, and which features are misunderstood or unwanted. Finally, A/B testing can be a great way to research which direction to go next once you've passed the early stages.
 
-Offer to buy (Wizard of Oz)
+### Third Step: Learn
 
-### Learning
+After you've measured clicks, user responses, user testing and A/B testing results, you can begin to draw conclusions. Maybe dating dogs don't actually care about favoriting. Delete that feature. Maybe you heard over and over again that having a profile "wall" would make a huge difference to users. Perhaps that should be the next thing you build?
 
-Google adwords
-
-Analytics
-User Interviews
-Personal Emails
-
-
-## For CEOs + CTOs
-
-1. Build one feature (start with email form)
-2. Track clicks
-3. If favorable,
-     Customer Interview
-     Goto #4
-   Else
-     Delete it
-     Goto #1
-4. Improve what you built
-5. Goto #1
-
-## For Consultants
-
-Often already believe in the market
-How can we adopt the lessons anyway
-
-Who is the "user"? The client!
-
-You need the release bar
-Checkpoints
-Every couple of weeks
-Full slice - e.g. CMS and front end for ONE PAGE
-
-What goes above, what goes below
-
-## For Product Owners (New Features)
-
-Make a link touting the new feature
-It's not actually there
-Track the clicks
-If they want it, build it
-Use the CEO/CTO cycle above
-
-
+You need to sift through all of the information that you get and decide how to act.
 
 ## Conclusion
 
-## Sources
+In the software industry, a lot of people pay lip service to the idea of a Minimum Viable Product. But for many of us, it's not what you think it is.
 
-http://en.wikipedia.org/wiki/Minimum_viable_product
-http://www.infoq.com/news/2015/03/good-enough
-http://vincentjordan.com/2012/01/why-is-your-minimal-viable-product-mvp-really-just-a-pos/
-http://www.quora.com/What-is-a-Minimum-Viable-Product
-http://www.startuplessonslearned.com/2009/08/minimum-viable-product-guide.html
+If you're thinking: I know what people want, and I'm going to build it, you've already misunderstood the process. MVPs are experiments, research. How you use them differs a little bit depending on your situation, but the basic premise is the same. Build a small thing, measure the way it's used, learn from it, repeat.
 
-http://ramlijohn.com/a-landing-page-is-not-a-minimum-viable-product/
-https://medium.com/@joelgascoigne/how-to-successfully-validate-your-idea-with-a-landing-page-mvp-ef3c2d02dc51
+Hopefully, this post has helped refine your definition of what MVP is and is used for.
 
-http://speckyboy.com/2014/10/01/successful-minimum-viable-products/
+P.S. Do you have an MVP success story, or want to warn us of antipatterns for successfully using them? Leave us a comment!
