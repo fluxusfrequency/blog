@@ -6,7 +6,7 @@ In the startup world, there is a lot of talk about building [Minimum Viable Prod
 
 When it comes to building software, it is often tempting to take an approach akin to building a skyscraper: write the blueprints, obtain the necessary prequisites, then build it to spec. But software is a quickly shifting market. A businessperson may think she knows what the market wants, and plan and begin a project to meet that desire. But by the time the product is built, the needs of consumers have often morphed in a direction that she could never have foreseen.
 
-In this post, we'll take explore some common misconceptions about MVP, some different ways to approach building one in software, and how to best use this tool if you're the CEO or CTO of a startup, a product manager for an established company, or a consultant.
+In this post, we'll explore some common misconceptions about MVP, some different ways to approach building one in software, and how to best use this tool if you're the CEO or CTO of a startup, a product manager for an established company, or a consultant.
 
 ## Why MVP?
 
