@@ -6,19 +6,19 @@ In the startup world, there is a lot of talk about building [Minimum Viable Prod
 
 When it comes to building software, it is often tempting to take an approach akin to building a skyscraper: write the blueprints, obtain the necessary prequisites, then build it to spec. But software is a quickly shifting market. A businessperson may think she knows what the market wants, and plan and begin a project to meet that desire. But by the time the product is built, the needs of consumers have often morphed in a direction that she could never have foreseen.
 
-In this post, we'll take explore some common misconceptions about MVP, some different ways to approach building one in software, and how to best use this tool if you're the CEO or CTO of a startup, a product manager for an established company, or a consultant.
+In this post, we'll explore some common misconceptions about MVP, some different ways to approach building one in software, and how to best use this tool if you're the CEO or CTO of a startup, a product manager for an established company, or a consultant.
 
 ## Why MVP?
 
 We hear a lot of talk about MVP and its value, but as a businessperson, why should you care? The reason is simple: it prevents you from spending money building a product that nobody wants.
 
-When you build your business around successive iterations of tiny features, the time before you can reflect on lessons learned is as small as possible. It even push you to decide _not_ to build your big idea, saving you a whole failed chapter in your career.
+When you build your business around successive iterations of tiny features, the time before you can reflect on lessons learned is as small as possible. It can even push you to decide _not_ to build your big idea, saving you a whole failed chapter in your career.
 
 Another great benefit of an MVP approach is that it allows you to test a hypothesis with minimal resources. If you have no money in the bank, you can still get something off the ground. Just look at [Leo Grand](http://venturebeat.com/2013/12/10/homeless-coder-prevails-over-skeptics-releases-mobile-app-to-get-off-the-streets/).
 
 ## History
 
-In the startup world, the idea of MVP was popularized by [Steve Blank (SB)](http://www.amazon.com/Four-Steps-Epiphany-Steve-Blank/dp/0989200507) and [Eric Reis(ER)](http://www.startuplessonslearned.com/2008/10/about-author.html). Eric's 2008 blog post, [The Lean Startup](http://www.startuplessonslearned.com/2008/09/lean-startup.html), kicked off a movement in software development toward building companies around the idea of testing business hypotheses in an iterative way. The idea of MVP is central to this approach, and has become part of the _lingua franca_ of startup culture.
+In the startup world, the idea of MVP was popularized by [Steve Blank (SB)](http://www.amazon.com/Four-Steps-Epiphany-Steve-Blank/dp/0989200507) and [Eric Ries(ER)](http://www.startuplessonslearned.com/2008/10/about-author.html). Eric's 2008 blog post, [The Lean Startup](http://www.startuplessonslearned.com/2008/09/lean-startup.html), kicked off a movement in software development toward building companies around the idea of testing business hypotheses in an iterative way. The idea of MVP is central to this approach, and has become part of the _lingua franca_ of startup culture.
 
 The origins of MVP (and lean software development) draw on the Toyota corporation's [lean manufacturing approach](http://en.wikipedia.org/wiki/Lean_manufacturing), called the Toyota Production System (TPS). Toyota bigwig [Taiichi Ohno](http://en.wikipedia.org/wiki/Taiichi_Ohno) coined the idea of "Just In Time" production, in which return on investment is maximized by reducing inventory.
 
@@ -32,7 +32,7 @@ We've all seen this picture right?
 
 Raise your hand if you think it's a good idea. Now raise your hand if you think you actually follow it. Really? Are you sure you didn't motorize your skateboard? Put a steering wheel on your bike? Let me ask you this: did you actually do a customer interview at any point to see if they even _wanted_ a car?
 
-An MVP may not be what you think it is. Eric Reis [defines it](http://www.startuplessonslearned.com/2009/08/minimum-viable-product-guide.html) as "that version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort". What does that actually mean?
+An MVP may not be what you think it is. Eric Ries [defines it](http://www.startuplessonslearned.com/2009/08/minimum-viable-product-guide.html) as "that version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort". What does that actually mean?
 
 It means building just enough of a product to be deployed and used. It's the _minimum_ feature set that you need to find out whether it makes sense to invest further in an idea. If you're building a dating site for dogs, what do you need? Profiles and messaging. You don't need favoriting, automated emails, or the ability to see who viewed your profile.
 
@@ -77,7 +77,7 @@ Although Ramli John isn't a fan of landing pages, he does have some other great 
 
 Landing pages are great for founders of small startups and developers with a great idea for a side project, but what does MVP mean if you have another role in the industry?
 
-If you're a consultant like myself, encourage my clients to prioritize their feature requests. We have so many awesome things in mind for Doggie Dating! Favoriting, profile walls, see who viewed me, a Dogs You Might Dig service, responsive layouts, native mobile versions...the list goes on and on. It's great to write them all down and put them in a tracking tool like [Sprint.ly](https://sprint.ly/), so that you don't lose all these creative ideas. Then it's time to prioritize.
+If you're a consultant like myself, encourage your clients to prioritize their feature requests. We have so many awesome things in mind for Doggie Dating! Favoriting, profile walls, see who viewed me, a Dogs You Might Dig service, responsive layouts, native mobile versions...the list goes on and on. It's great to write them all down and put them in a tracking tool like [Sprint.ly](https://sprint.ly/), so that you don't lose all these creative ideas. Then it's time to prioritize.
 
 What do you need first? What is the smallest version of your idea that people (or dogs) could possibly use? Put those tickets at the top of your tracker, and mark the point when they'll be done with a release bar. Encourage your clients to ask themselves: "is this necessary for people to use the site?" before you put _anything_ above that bar.
 
@@ -89,7 +89,7 @@ No matter your role, if people don't seem to want what you've put out there, del
 
 ### Second Step: Measure
 
-Regardless of how you choose to build the first version of your idea, you'll want to measure user engagment once it's deployed. The easiest way to do this is to Google Analytics into the page and track clicks and pageviews. Reflecting on this information, you'll begin to learn what people want. If anyone actually signs up on your landing page with their email, you can reach out personally (maybe even take them to lunch) and ask them questions to learn more about what people would want to use.
+Regardless of how you choose to build the first version of your idea, you'll want to measure user engagement once it's deployed. The easiest way to do this is to Google Analytics into the page and track clicks and pageviews. Reflecting on this information, you'll begin to learn what people want. If anyone actually signs up on your landing page with their email, you can reach out personally (maybe even take them to lunch) and ask them questions to learn more about what people would want to use.
 
 Once you've gotten past the first iteration of your MVP, you can also invite customers to user testing sessions. These sessions can offer great insight into how your application should behave, and which features are misunderstood or unwanted. Finally, A/B testing can be a great way to research which direction to go next once you've passed the early stages.
 
