@@ -2,104 +2,129 @@
 
 ## Introduction
 
-I'm really excited about the newest version of JavaScript, ECMAScript 6 (ES6). But I'm also terrified. There's already so much to do between mentoring, contributing to open source, and working on the projects that pay the bills.
+I'm really excited about the newest version of JavaScript, ECMAScript 6 (ES6). But I'm also terrified. There's already so much to do between mentoring, contributing to open source, and working on the projects that pay the bills. When will I ever find the time to learn a whole new version of JavaScript?
 
-But as developers, it's our blessing and curse to always be learning. When I think about getting ready to adopt ES6, I feel some anxiety of the thought of having to figure out all of the new patterns and APIs it exposes.
+As developers, it's our blessing and curse to always be learning. When I think about getting ready to adopt ES6, I feel some anxiety of the thought of having to figure out all of the new patterns and APIs it exposes.
 
-In this post, we'll take a look at XXXXX quick ways to start using ES6 patterns today, in the projects you're already working on. By adding just a little big of ES6 into your coding at a time, it feels a lot less stressful, and you'll become familiar with the new API before you know it.
+In this post, we'll take a look at some quick and painless ways to integrate ES6 into what you're working on today. Hopefully, by adding ES6 patterns into our coding practice just a little at a time, we'll be able to avoid spending a weekend learning the new API when we could be playing outside.
 
 ## Looking Ahead to ES6
 
-First update since 2011 (ES5.1). Was expected to come out in 2013, then pushed back another year twice.
-Rollout schedule
-Built into Ember CLI
+Ecmascript 6 will be the first update to JavaScript since ES5 was finalized in 2009. ES6 was originally slated to come out in 2013, but was then pushed back a couple more times, and is now expected to be finalized next month, in June 2015.
 
-It's a superset of ES5, so just write code the way you always do, until you see a place where you can use one of these new patterns.
+There's a lot of JavaScript in programming these days. It's found on the server as [Node](https://nodejs.org/), in [OS X Automation](https://developer.apple.com/library/mac/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/), and of course, in all of the web browsers -- where many of us spend most of our time writing JS apps. We'll be writing ES6 in all of these locations before you know it. It's already standard in [Ember CLI](http://www.ember-cli.com/), [Angular 2.0 will be based on it](https://www.airpair.com/angularjs/posts/preparing-for-the-future-of-angularjs), and is [making its way into Node](https://github.com/joyent/node/wiki/ES6-%28a.k.a.-Harmony%29-Features-Implemented-in-V8-and-Available-in-Node) bit by bit.
+
+Thinking ahead, it's clear that JavaScript developers will need to start learning ES6 sooner or later. The good news is, it's a superset of ES5, which means all the ways we currently write code will still work. We can do a slow rollout. We'll just write code the way we always do, until we see places where we can use one of these new patterns.
 
 ## Compatibility
 
-http://kangax.github.io/compat-table/es6/
+Before we get into the nitty-gritty of how to start using ES6, a quick note about compatibility. As of this writing, most JavaScript engines are in the process of implementing the features called for by the ES6 spec. To find out specifically what's available, check out this [compatibility table](http://kangax.github.io/compat-table/es6/).
 
-Mostly unsupported features: WeakMap, WeakSet, Proxy, Reflect, Symbol, new.target, subclassing built-ins
-Comprehensions are talked about in ES6, but are more likely to land in ES7 (citation).
+There are many features that haven't been rolled out yet, but can be easily _transpiled_(transformed and compiled) to ES5 for immediate use. There are several compilers and polyfills available to help with transpiling. My favorite is [Babel](https://babeljs.io/), formerly called 6to5. Babel 5.0 was released on Mar 31, 2015, and is currently leading other options, with 76% of the spec in place.
+
+Regardless of which transpiler you use, there are several features that are still mostly unsupported across all JS engines. These include: WeakMap, WeakSet, Proxy, Reflect, Symbol, new.target, and subclassing built-ins, among others. Some features are available in Babel, but only with experimental mode turned on. For the purposes of this post, we'll be looking at some of the most widely supported, easy-to-use features, so we won't be covering experimental features like these.
 
 ## Getting ES6 Into Your Build Process
 
-Instead of waiting of browsers to stop using previous versions of JS (e.g. ES3), so we're transpiling to ES5.
+Since we can transpile ES6 code to ES5 and start using it everywhere now, it doesn't hurt to get it set up in our build process, so that we can just start using it without having to think twice about it. Luckily, this is really easy to do with Babel.
 
-Babel works great with React, features a [built-in JSX transformer](https://babeljs.io/docs/usage/jsx/).
+It's beyond the scope of this post to get into all the variations of what you might encounter in getting ES6 into your build process, but you probably won't have much trouble adding it as a step in your existing build process.
 
-[Babel](https://babeljs.io/) 5.0 was released on Mar 31, 2015.
-[babel-runtime](https://www.npmjs.com/package/babel-runtime) Optional transformer that prevents duplication of common functions and sandboxes your code to avoid requiring a global polyfill.
+There's a Babel plugin available for just about every build setup, including Grunt, Gulp, and Broccoli, and whether you're using Browserify or RequireJS. It even has a built in [JSX transpiler](https://babeljs.io/docs/usage/jsx/), making it really easy to use with React. There's a full list of build tools and how to use them [on the Babel website] (http://babeljs.io/docs/using-babel).
 
-### With Broswerify + NPM Scripts
+You may also want to make use of the [babel-runtime](https://babeljs.io/docs/usage/runtime/) package. This is an optional transformer that prevents duplication of common functions during compilation. It also sandboxes your code, aliasing many globals to `core-js` to avoid polluting the global namespace.
 
-[Babelify](https://github.com/babel/babelify) for use with Browserify
+### With Browswerify + NPM Scripts
+
+Here's a look at how you might add Babel into an existing client-side JS project, using [Browserify](http://browserify.org/) and the [Babelify](https://github.com/babel/babelify) transform module.
 
 In `package.json`:
 
 ```javascript
 {
   "scripts": {
-    "postinstall": "browserify --debug --standalong MyApp assets/js/index.js --transform [ babelify --optional babel-runtime ] --outfile build/my-app.js"
+    "postinstall": "browserify --debug --standalone MyApp assets/js/index.js --transform [ babelify --optional babel-runtime ] --outfile build/my-app.js"
   },
   "dependencies": {
     "babel-runtime": "^5.0.12",
     "babelify": "^6.0.2",
     "browserify": "^9.0.7"
-  },
-  "devDependencies": {
-    "eslint": "^0.19.0",
-    "eslint-plugin-react": "^2.1.0"
   }
 }
 ```
 
-### Other Build Setups
+Note that by defining the build script under the `postinstall` property, it will be run automatically after the package is installed. This can be nice when uploading your project to your production on [Engine Yard](https://www.engineyard.com/), as it will prevent you from having to explicitly call a build in your deploy script.
 
-Grunt, Gulp, Broccoli, RequireJS
-[Find them here](https://babeljs.io/docs/using-babel).
+## Let's Do It
 
-### Linting
+Now that you've gotten ES6 set up in your build, you can just start writing it whenever you're developing. Or, if you don't feel like it, you can just fall back to ES5. Remember, it's all valid ES6!
 
-[eslint](http://eslint.org/)
-
-```javascript
-{
-  "ecmaFeatures": {
-    "modules": true,
-    "jsx": true
-  },
-  "env": {
-    "es6": true
-  }
-}
-```
-
-## Small Wins
-
-
-### Importing and Exporting
+I've tried to identify some of the easiest places in a typical front-end [Backbone + React](http://fluxusfrequency.github.io/blog/2015/04/01/integrating-react-with-backbone/) project that you can start using the new patterns right away. Even if that's not your stack, read on! There's something for everyone here.
 
 ### Let
 
+The new `let` keyword is probably the easiest win that you can possibly get in using ES6. If you do nothing else, just start replacing `var` with `let` everywhere. What's the difference, you ask? Well, `var` is scoped to the closest enclosing _function_, while `let` is scoped to the closest enclosing _block_.
+
+In essence, variables defined with `let` aren't visible outside of `if` blocks and `for` loops, so there's less likelihood for a naming collision. There are other benefits. See [this Stack Overflow answer](http://stackoverflow.com/questions/762011/javascript-let-keyword-vs-var-keyword) for more details.
+
+You can use it pretty much everywhere, but here's a good example of somewhere that it actually makes a difference in preventing a naming collision. The `userName`s inside of the `for` loop don't clash with the current user's `userName` defined just above it.
+
 ```javascript
-let foo = 'bar';
+let UserList = React.createClass({
+  ...
+  // See the Shorthand Object Methods section below
+  render() {
+    let userName = this.props.current
+    // See the Fat Arrow section below
+    let userComponents = this.props.users.map(user => {
+      let userName = user.get('userName');
+      return <UserComponent displayName={userName} />;
+    });
+    return (
+    <div className="user-list">
+      <h1>Welcome back, {userName}!</h1>
+      {userComponents}
+    </div>
+  }
+});
 ```
 
 ### Const
 
+As you might guess from the name, `const` defines a read-only (constant) variable. It should be pretty easy to guess where to use this. For example:
+
 ```javascript
-const foo = 'bar';
+// See the Classes section below
+class MapView extends Backbone.View {
+  const DEFAULT_MAP_CENTER = [48.1667, -100.1667];
+}
 ```
 
 ### Template Strings
 
-String interpolation
+Do you ever get sick of doing string concatenation in JavaScript? I sure do! Well, good news! We can finally do string interpolation. This will come in very handy all over the place. I'm especially excited about using it in React `render` calls like this:
 
 ```javascript
-let color = 'purple';
-`My favorite color is ${color}`
+let ProductList = React.createClass({
+  ...
+  render() {
+    let links = this.props.products.map(product => {
+      return (
+        <li>
+          <a href="/products/${product.id}">{product.get('name')}</a>
+        </li>
+      );
+    });
+
+    return(
+      <div className="product-list">
+        <ul>
+          {links}
+        </ul>
+      </div>
+    );
+  }
+});
 ```
 
 ### String & Array Sugar
@@ -139,7 +164,7 @@ foo('bar', 'baz', 'qux');
 // returns ['baz', 'qux']
 ```
 
-### Shorthand Methods
+### Shorthand Object Methods
 
 ```javascript
 let obj = {
