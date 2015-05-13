@@ -22,7 +22,11 @@ Before we get into the nitty-gritty of how to start using ES6, a quick note abou
 
 There are many features that haven't been rolled out yet, but can be easily _transpiled_(transformed and compiled) to ES5 for immediate use. There are several compilers and polyfills available to help with transpiling. My favorite is [Babel](https://babeljs.io/), formerly called 6to5. Babel 5.0 was released on Mar 31, 2015, and is currently leading other options, with 76% of the spec in place.
 
-Regardless of which transpiler you use, there are several features that are still mostly unsupported across all JS engines. These include: WeakMap, WeakSet, Proxy, Reflect, Symbol, new.target, and subclassing built-ins, among others. Some features are available in Babel, but only with experimental mode turned on. For the purposes of this post, we'll be looking at some of the most widely supported, easy-to-use features, so we won't be covering experimental features like these.
+Regardless of which transpiler you use, there are several features that are still mostly unsupported across all JS engines. These include: tail calls, WeakMap, WeakSet, Proxy, Reflect, Symbol, new.target, and subclassing built-ins, among others.
+
+Some of these features are available in Babel, but only with experimental mode turned on. For the purposes of this post, we'll be looking at some of the most widely supported, easy-to-use features, so we won't be covering experimental features like these.
+
+We're also going to skip over some of the features that are a little more difficult to get started with, such as iterators, generators, and proxies.
 
 ## Getting ES6 Into Your Build Process
 
@@ -252,32 +256,6 @@ Promise.all([
 Not that hard to get started, but they have a lot of edge cases.
 
 "So most of the issues are around the fact that ES6 modules have a default export and named exports. CommonJS, AMD just have a single export, and traditionally handle named exports by exporting a single object with the named exports a properties. So the different ES6 module libraries have different ways of reconciling the differences. I’ve mostly used Babel + Browserify which mostly just works… but you pretty much have to use only default exports or named exports if commonjs might use the module. I think a lot of it is just that module systems get complicated."
-
-
-## More Complex Stuff
-
-### Iterators
-
-### Generators
-
-### Proxies
-Not implemented
-
-### Subclassing Built-Ins
-Transpilers mostly don't support
-
-### Tail Calls
-Not implemented
-
-
-## Other
-
-
-
-### Misc
-
-Unicode Support, octal and binary literals,
-
 
 ## Resources
 
