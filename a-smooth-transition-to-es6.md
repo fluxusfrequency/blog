@@ -18,7 +18,7 @@ Thinking ahead, it's clear that JavaScript developers will need to start learnin
 
 ## Compatibility
 
-Before we get into the nitty-gritty of how to start using ES6, a quick note about compatibility. As of this writing, most JavaScript engines are in the process of implementing the features called for by the ES6 spec. To find out specifically what's available, check out this [compatibility table](http://kangax.github.io/compat-table/es6/).
+Before we get into the nitty-gritty of how to start using ES6, a quick note about compatibility. As of this writing, most JavaScript engines are in the process of implementing the features called for by the ES6 spec. To see a list of the features that are slated for release in ES6 (and how they compare with ES5), check out [this link](http://www.es6features.org). If you want to read about specifically what's available right now, check out this [compatibility table](http://kangax.github.io/compat-table/es6/). In this post, we're going to be focusing on the features that are currently available in the major ES6 engines listed in the table.
 
 There are many features that haven't been rolled out yet, but can be easily _transpiled_(transformed and compiled) to ES5 for immediate use. There are several compilers and polyfills available to help with transpiling. My favorite is [Babel](https://babeljs.io/), formerly called 6to5. Babel 5.0 was released on Mar 31, 2015, and is currently leading other options, with 76% of the spec in place.
 
@@ -65,6 +65,37 @@ Now that you've gotten ES6 set up in your build, you can just start writing it w
 
 I've tried to identify some of the easiest places in a typical front-end [Backbone + React](http://fluxusfrequency.github.io/blog/2015/04/01/integrating-react-with-backbone/) project that you can start using the new patterns right away. Even if that's not your stack, read on! There's something for everyone here.
 
+If you want to try out the examples, you can open up a sandboxed ES6 environment at [http://www.es6fiddle.net/](http://www.es6fiddle.net/).
+
+
+### Classes, Shorthand Methods and Shorthand Properties
+
+A lot of client-side JS code is object-oriented. If you're [using Backbone](http://mikefowler.me/2014/06/11/backbone-with-es6/), just about every Model, Collection, View or Router you ever write will be a subclass of a core library Class. With ES6, extending these objects is a breeze. We can just call `class MySubclass extends MyClass` and we get object inheritance. We get access to a `constructor` method, and we can call `super` from within any method to apply the parent class's method of the same name. This prevents us from having to write things like `Backbone.Collection.prototype.initialize.apply(this, arguments)`.
+
+We also get some handy shorthands for defining methods and properties. Note the pattern I'm using to call `initialize` instead of `initialize: function(args) {}`:
+
+```javascript
+class UserView extends Backbone.View {
+  initialize(options) {
+    this.options = options;
+    super(options);
+  }
+}
+```
+
+We can also define properties using a nice new shorthand. The code below sets an `app` property on the `router` that points to the instance of `App` we create on the second line. In other words, it's the same as doing `this.app = app;`.
+
+```javascript
+let App = function() {};   // we'll look at 'let' in just a second.
+let app = new App();
+
+class AppRouter extends Backbone.Router {
+  app
+}
+
+let router = new AppRouter();
+```
+
 ### Let
 
 The new `let` keyword is probably the easiest win that you can possibly get in using ES6. If you do nothing else, just start replacing `var` with `let` everywhere. What's the difference, you ask? Well, `var` is scoped to the closest enclosing _function_, while `let` is scoped to the closest enclosing _block_.
@@ -76,7 +107,6 @@ You can use it pretty much everywhere, but here's a good example of somewhere th
 ```javascript
 let UserList = React.createClass({
   ...
-  // See the Shorthand Object Methods section below
   render() {
     let userName = this.props.current
     // See the Fat Arrow section below
@@ -98,10 +128,32 @@ let UserList = React.createClass({
 As you might guess from the name, `const` defines a read-only (constant) variable. It should be pretty easy to guess where to use this. For example:
 
 ```javascript
-// See the Classes section below
+const DEFAULT_MAP_CENTER = [48.1667, -100.1667];
+
 class MapView extends Backbone.View {
-  const DEFAULT_MAP_CENTER = [48.1667, -100.1667];
+  centerMap() {
+    map.panTo(DEFAULT_MAP_CENTER);
+  }
 }
+```
+
+### The Fat Arrow
+
+You've probably already heard about the fat arrow, or used it before if you've written any CoffeeScript. The fat arrow, written as `=>`, is a new way to define a function. It preserves the value of `this` from the surrounding context, so you don't have to use workarounds like `var self = this;` or `bind`. It comes in really handy when dealing with nested functions, plus it looks really cool.
+
+```javascript
+
+let Toggle = React.createClass({
+  componentDidMount() {
+    // iOS
+    setTimeout(() => {
+      var $el = $('#' + this.props.id + '_label');
+      $el.on('touchstart', e => {
+        let $checkbox = $el.find('input[type="checkbox"]');
+        $checkbox.prop("checked", !$checkbox.prop("checked"));
+      });
+    }, 0);
+  },
 ```
 
 ### Template Strings
@@ -131,135 +183,160 @@ let ProductList = React.createClass({
 });
 ```
 
-### String & Array Sugar
+### String Sugar
+
+It's always been kind of a pain to check for substrings in JS. `if (myString.indexOf(mySubstring) !== -1)`? Give me a break! ES6 finally gives us some sugar to make this a little easier. We can call `startsWith`, `endsWith`, `includes`, and `repeat`.
 
 ```javascript
-let phrase = 'supercalifragilisticexpialidocious';
-phrase.startsWith('cali', 5); // true
-phrase.endsWith('s', 33);
-phrase.includes('listic');
+// Clean up all the AngularJS elements
+
+$('body').forEach(node => {
+  let $node = $(node);
+  if ($node.attr('class').startsWith('ng')) {
+    $node.remove();
+  }
+});
+
+// Pluralize
+
+function Pluralize(word) {
+  return word.endsWith('s') ? word : `${word}s`;
+}
+
+// Check for spam
+
+let spamMessages = [];
+
+$.get('/messages', function(messages) {
+  spamMessages = messages.filter(message => {
+    !(message.toLowerCase().includes('viagra'));
+  });
+});
+
+// Sing the theme song
 
 let sound = 'na';
 sound.repeat(10); // 'nananananananananana'
-```
 
-```javascript
-['a', 'b', 'c', 'd'].find(c => c == 'b'); // 'b'
-
-Array.from('a', 'b', 'c'); // ['a', 'b', 'c']
 ```
 
 ### Argument Defaults
 
-```javascript
-function foo(a, b='bar') {
-  return b;
-}
-```
-
-### Rest and Spread
+Languages like Ruby and Python have long allowed you to define argument defaults in your method/function signatures. With the addition of this feature to ES6, writing Backbone views requires one less line of boilerplate. By setting options to an argument default, we don't have to worry about cases where nothing is passed in. No more `options = options || {};`!
 
 ```javascript
-function foo(a, ...b) {
-  return b;
-}
-foo('bar', 'baz', 'qux');
-
-// returns ['baz', 'qux']
-```
-
-### Shorthand Object Methods
-
-```javascript
-let obj = {
-  myMethod() {
+class BaseView extends Backbone.View {
+  initialize(options={}) {
+    this.options = options;
   }
 }
 ```
 
-### Shorthand Object Properties
+### Spread and Rest
+
+Sometimes function calls that take multiple arguments can get really messy to deal with. Like when you're calling them from a `bind` that's being triggered by an event listener. For example, check out this event listener from a Backbone view in a recent project I was working on. Because of the method signature of `_resizeProductBox`, I have to pass all those null arguments into `bind` and it gets kind of ugly.
 
 ```javascript
-let obj = {
-  myProp
+class ProductView extends BaseView {
+  initialize() {
+    this.listenTo(options.breakpointEvents, 'all', _.bind(this._resizeProductBox, this, null, null, true));
+  }
+
+  _resizeProductBox(height, width, shouldRefresh) {
+    ...
+  }
 }
 ```
 
-### The Fat Arrow
+In ES6, we can clean this up a bit with _spread_. We'll just prepend an array of default arguments with a `...`  to send them through as arguments to the method call.
+
+Here's how you'd do it using _spread_:
+```javascript
+const BREAKPOINT_RESIZE_ARGUMENTS = [null, null, true];
+
+class ProductView extends BaseView {
+  initialize() {
+    this.listenTo(options.breakpointEvents, 'all', _.bind(this._resizeProductBox, this, ...BREAKPONT_RESIZE_ARGUMENTS);
+  }
+
+  _resizeProductBox(height, width, shouldRefresh) {
+    ...
+  }
+}
+```
+
+On the other side of the coin is _rest_, which lets us accept any number of arguments in a method signature instead of at invocation time, as you can do with the _splat_ in Ruby. For example:
 
 ```javascript
-var mapped = ['a', 'b', 'c'].map(c => c.toUpperCase());
-
-var obj = {
-  foo: 'bar',
-  links: this.$el.find('a'),
-  baz() {
-    this.links.forEach(l =>
-      console.log(this.foo));
-  }
-};
-
+function cleanupViews(...views) {
+  views.forEach(function(view) {
+    view.remove();
+  });
+}
 ```
 
 ### Array Destructuring
 
-```javascript
-function doStuff(a, b, c) {
-  return [a, b, c];
-}
-
-let foo, bar, baz = doStuff(1, 2, 3);
-
-```
-
-### For...Of
+Sometimes I find myself having to access all of the elements of an array-like object with square brackets. It's kind of a bummer. Luckily, ES6 lets me use array destructuring instead. It makes it easy to do things like splitting latitude and longitude from an array into two variables, as I do here (note that I also could have used _spread_).
 
 ```javascript
-let letters = ['a', 'b', 'c'];
-for (var l of letters) {
-  console.log(l.toUpperCase());
-}
-```
+let markers = [];
 
-### Classes
-
-Fantastic for Backbone
-
-```javascript
-class UserView extends Backbone.View {
-  constructor(...args) {
-    super(args)
-  }
-}
+listings.forEach(function (listing, index) {
+  let lat, lng = listing.latlng; // looks like: [39.719121, -105.191969]
+  let listingMarker = new google.maps.Marker({
+    position: new google.maps.LatLng(lat, lng)
+  });
+  markers.push(listingMarker);
+});
 ```
 
 ### Promises
 
+It seems like every project I work on these days uses quite a few promises. Native promises have landed in ES6, so we can all rely on the same API from here on out. Both promise instances and static methods like `Promise.all` are provided. Here's an example of a `userService` from an Angular app that returns a promise from `$http` if the user is online, and a native promise otherwise.
+
 ```javascript
-let firstPromise = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100);
-};
+angular.module('myApp').factory('userService', function($http, offlineStorage) {
+  return {
+    updateSettings: function(user) {
+      var promise;
 
-let secondPromise = new Promise((resolve, reject) => {
-  setTimeout(resolve, 200);
-};
+      if (offlineStorage.isOffline()) {
+        promise = new Promise();
+        promise.resolve(user.toJSON());
+      } else {
+        promise = $http.put('/api/users/' + user.id, user.settings)
+        .then(function(result) {
+          return result.data;
+        });
+      }
 
-Promise.all([
-  firstPromise(console.log('success!')),
-  secondPromise(console.log('oh yeah!'))
-])
+      return promise.then(data => {
+        return new User(data);
+      });
+    }
+  };
+});
 ```
-
 
 ## A Note On Modules
 
-Not that hard to get started, but they have a lot of edge cases.
+You may have noticed that I didn't cover modules, importing or exporting in this post. Although modules are one of the higher profile features in ES6, and they're easy to get started with, they still seem to have a lot of edge cases that will need to be worked out as ES6 is rolled out.
 
-"So most of the issues are around the fact that ES6 modules have a default export and named exports. CommonJS, AMD just have a single export, and traditionally handle named exports by exporting a single object with the named exports a properties. So the different ES6 module libraries have different ways of reconciling the differences. I’ve mostly used Babel + Browserify which mostly just works… but you pretty much have to use only default exports or named exports if commonjs might use the module. I think a lot of it is just that module systems get complicated."
+Specifically, ES6 modules have a `default` export and named exports. CommonJS and AMD only support a single export, and traditionally handle named exports by exporting an object with the named exports as properties. The different ES6 module libraries have different ways of reconciling the differences, so you have to use only default exports or named exports if CommonJS might use the module. How these differences will be reconciled remains to be seen as ES6 sees wider adoption.
 
-## Resources
+If you want to learn more about the module pattern in ES6, take a look at [this overview](https://babeljs.io/docs/learn-es6/#modules).
 
-[Babel ES6 Overview](https://babeljs.io/docs/learn-es6/)
-[ES6 Features](http://es6-features.org/)
-[You Don't Know JS](https://github.com/getify/You-Dont-Know-JS/tree/master/es6%20%26%20beyond)
-[Backbone with ES6](http://mikefowler.me/2014/06/11/backbone-with-es6/)
+## Conclusion
+
+In this post, we took a look at some real-world examples of how you would use ES6 in a client-side JavaScript app. We took a quick look at setting up an ES6 transpile step in your build process, and examined many of the easy-to-use features that you can start using right away.
+
+Before you know it, ES6 will be the standard language in use across the web and on servers and personal computers everywhere. Hopefully, this walkthrough will help you get started with a minimum of stress.
+
+If you're feeling excited about ES6, and you want to learn more, I would suggest reading through [this overview](https://babeljs.io/docs/learn-es6/). Or if you're feeling really enthusiastic, try [this book](https://github.com/getify/You-Dont-Know-JS/tree/master/es6%20%26%20beyond).
+
+Until next time, happy coding!
+
+P.S. How do you plan to use these features in your app? Have you discovered a trick made possible by the new features that speed up your workflow? Leave us a comment!
+
+
