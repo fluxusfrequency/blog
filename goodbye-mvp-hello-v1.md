@@ -91,6 +91,10 @@ As you start building your first release, make sure that you're investing in tec
 
 ## Conclusion
 
-The move from MVP to V1 is a moment of transition for your business. It's vital to consider the norms that you're about to set up, that will have far-reaching effects into the future.
+The move from MVP to V1 is a moment of transition for your business. It's vital to consider the norms that you're about to set up, which will have far-reaching effects into the future. You have to be smart. Know your customers, know your features, and don't delay. But also build a strong foundation, culturally and technically. Finally, set a deadline and stick to it. This lets you build the buzz, keep your team focused, and provides a great excuse to throw a big party. Just don't forget to invite me!
+
+Until then, best of luck with your business.
+
+P.S. Do you have any war stories about the first release of your product? Got any sage advice for our other readers? Leave us a comment!
 
 
