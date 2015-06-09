@@ -1,6 +1,5 @@
 # Happy, Sad, Evil, Weird: Driving Feature Development With Feature Planning
 
-
 When building software iteratively, feature planning has to  be done early and often. But it can be a complicated process due to all of the stakeholders involved, each with different viewpoints and goals.
 
 What's more, it's easy to overlook key behaviors of a feature, which can lead to expensive and rushed code later. It's usually intuitive to figure what should happen when everything goes according to plan, but what about edge cases? What should happen when a user supplies bad data? A hacker launches a malicious attack on our application? What about when [chaos makes the whole system unstable](https://github.com/Netflix/SimianArmy)?
