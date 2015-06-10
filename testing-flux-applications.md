@@ -46,6 +46,8 @@ When we find the files to run in our test suite, we can just use [globbing](http
 
 ### Testing Dependencies
 
+Facebook recommends using their testing tool, [Jest](https://facebook.github.io/jest/), to test React and Flux components. Although I totally respect Jest, [it doesn't run in the browser](https://github.com/facebook/jest/issues/139), plus I'm pretty used to the toolchain I'm about to describe, so I go about things a slightly different way.
+
 #### Mocha + Chai
 
 When it comes to testing frameworks, I'm a big fan of [Mocha](http://mochajs.org/). It gives us `describe` and all of the other [BDD-style]() assertions we could want when combined with [ChaiJS](http://chaijs.com/).
@@ -131,20 +133,20 @@ afterEach(function() {
 
 #### Getting Dependencies
 
-Sometimes it can be a pain to pull in and/or stub a bunch of dependencies for an object you're testing. There's an easy way to grab what you need from within the test: using the native JS getter `__get__`. Here's how to leverage it to your advantage.
+Sometimes it can be a pain to pull in and/or stub a bunch of dependencies for an object you're testing. There's an easy way to grab what you need from within the test: using [rewire](https://github.com/jhnns/rewire), which exposes a special `__get__` method you can use to access whatever you need from the top level scope of the module. You can then stub out methods and properties on those modules. Here's how to leverage it to your advantage.
 
 ```javascript
- beforeEach(function() {
-   this.sinon = sinon.sandbox.create();
-   this.todos = MyAction.__get__('todos');
- });
+beforeEach(function() {
+  this.sinon = sinon.sandbox.create();
+  this.todos = MyAction.__get__('todos');
+});
 
- describe('something related to todos', function() {
-   it('doesnt have to care about todos', function() {
-     this.sinon.stub(this.todos, 'getAll');
-     // do something else that calls this.todos.getAll without worrying about the result
-   });
- });
+describe('something related to todos', function() {
+  it('doesnt have to care about todos', function() {
+    this.sinon.stub(this.todos, 'getAll');
+    // do something else that calls this.todos.getAll without worrying about the result
+  });
+});
 ```
 
 ### Actions
@@ -250,13 +252,13 @@ describe('search', function() {
 
 ### Stores
 
-In my own Flux projects, I have tried to keep the external API of `stores` as "dumb" as possible. They are basically just containers for business objects that expose an interface for other objects to subscribe to change events. I typically define methods named `emitChange`, `addChangeListener`, and `removeEventListener` for each store.
+In my own Flux projects, I have tried to keep the external API of `stores` as "dumb" as possible. They are meant to be simple repositories for business objects that expose an interface for other objects to subscribe to change events. I typically define methods named `emitChange`, `addChangeListener`, and `removeEventListener` for each store.
 
-Despite their relatively simple API, it is vitally important to test your `stores`. They're usually the place where the business logic lives. Plus, they're responsible for loading data from the server into the client-side app. For these reasons, we want to make sure they work properly. Here are a couple of things that can be helpful.
+Despite their relatively simple API, it is vitally important to test your `stores`. They're usually the place where the business logic lives. Plus, they're responsible for loading data from the server into the client-side app. For these reasons, we want to make sure they work properly. Here are a couple of tricks that can be helpful.
 
 #### Using Internals
 
-One nice way to hide the implementation a store uses to fetch its data is to wrap it in an `internals` object. Here's what that looks like:
+Given that `stores` are only supposed to accept data through the callback they register with the `dispatcher`, it can be tricky to send mocked data into them while testing. Facebook has one suggested way of doing it [with Jest](https://facebook.github.io/react/blog/2014/09/24/testing-flux-applications.html#testing-stores), or you can try [this approach](http://bensmithett.com/testing-flux-stores-without-jest/) with Mocha or Jasmine. Alternatively, another nice way to hide the implementation a store uses to fetch its data is to wrap the fetch implementation in an `internals` object and test that instead. Here's what it looks like:
 
 ```javascript
 import _ from 'lodash';
@@ -304,7 +306,7 @@ AppDispatcher.register((action) => {
 export default WidgetStore;
 ```
 
-When it comes to testing this `internals` object, we'll want to check that the internals are behaving as expected. For example:
+When it comes to testing this `internals` object, we can test that the `internals` methods are behaving as expected. For example:
 
 ```javascript
 describe('internals', function() {
@@ -328,8 +330,45 @@ describe('internals', function() {
 });
 ```
 
-#### Other Tip For Testing Stores
+#### Using Dependency Injection
 
+If you write your `stores` in an object-oriented way, you can pass a reference to the `dispatcher` directly into them. This makes it easier to test that different dispatching events trigger the correct callbacks to produce the behavior that is desired. Here's an example (thanks to [Jack Hsu](http://jaysoo.ca/2015/03/09/on-flux-stores-and-actions/) for the inspiration for this tip).
+
+```javascript
+class WidgetStore extends Store {
+  constructor(options) {
+    this.widgets = new Backbone.Collection();
+    this.dispatcher = options.dispatcher;
+    this.dispatcher.register('WIDGET_ADDED', this.onWidgetAdded);
+  }
+
+  onWidgetAdded(widget) {
+    this.widgets.add(widget)
+    this.emit('change');
+  }
+}
+```
+
+And now testing the store is simple. We can just inject a dispatcher and use it to trigger the events we want to test.
+
+```
+describe('WidgetStore', function() {
+  beforeEach(function() {
+    this.dispatcher = new Dispatcher();
+    this.widgetStore = new WidgetStore({ dispatcher: this.dispatcher });
+  });
+
+  describe('WIDGET_ADDED', function() {
+    let widget = new Backbone.Model();
+    this.dispatcher.dispatch({
+      actionType: 'WIDGET_ADDED',
+      payload: widget
+    });
+    expect(this.widgetStore.widgets.toJSON()).to.haveLength(1);
+  });
+});
+
+```
 
 ### View Components
 
@@ -409,3 +448,11 @@ describe('WidgetRepeater', function() {
 ```
 
 ## Conclusion
+
+Committing to a test-driven development approach in client-side JavaScript applications can sometimes be a hard sell. Aside from problems with testing DOM manipulation and asynchronous code, it can also be hard to test patterns that are new to the team, like Flux. But with the right tools, it can become second nature to test some of these things. Once your team has the confidence that they can effectively test these components, it's a lot easier to approach all feature development with a TDD mindset.
+
+In this post, we explored how to better test Flux applications. We took a look at some of the JS testing tools that can be helpful to get setup in your build process. We talked about some testing tips that are useful across all of the different Flux objects. Then we drilled down into testing tips specific to `Actions`, `Stores`, and `View Components`.
+
+I hope that some of these tips come in useful for your team as you build your cutting-edge web application. Best of luck!
+
+P. S. What tricks do you like to use when testing Flux components? Got any thoughts on testing custom `Dispatchers`? Leave us a comment!
