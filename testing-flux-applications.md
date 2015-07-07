@@ -1,8 +1,8 @@
-# Testing React / Flux Applications
+# Testing Flux Applications
 
 ## Introduction
 
-A lot of people in the JavaScript community are pretty excited about Facebook's [React]() library, and associated [Flux]() architecture. We've been using quite a bit of these tools in our client-side projects at Quick Left. It can be a little hard to wrap your mind around the way the data flows at first, but once you get used to it, you come to appreciate how clean it can be.
+A lot of people in the JavaScript community are pretty excited about Facebook's [React](http://facebook.github.io/react/) library, and associated [Flux](http://facebook.github.io/flux/) architecture. We've been using quite a bit of these tools in our client-side projects at Quick Left. It can be a little hard to wrap your mind around the way the data flows at first, but once you get used to it, you come to appreciate how clean it can be.
 
 As with any development, test-driving features is the way to go in a Flux app. As I've been learning this technology, I've been collecting some of the less obvious patterns that make testing easier. In this post, we'll take a look at some of these strategies, to make it easier for you to build the next big thing.
 
@@ -23,7 +23,7 @@ app/
 └── views
 ```
 
-There are a couple of places to put the tests, but I've been leaning toward a pattern where the tests live right alongside their corresponding files. This makes it easy to find the test for a given module, and keeps the directory structures from getting out of sync, as they might if you put everything into a separate `test/` folder. Here's an example of what this might look like.
+There are a couple of places to put the tests, but I've been leaning toward a pattern where the tests live right alongside their corresponding files. This makes it easy to find the test for a given module. It also keeps the directory structures from getting out of sync, as they might if you put everything into a separate `test/` folder. Here's an example of what this might look like.
 
 ```
 app/
@@ -133,7 +133,7 @@ afterEach(function() {
 
 #### Getting Dependencies
 
-Sometimes it can be a pain to pull in and/or stub a bunch of dependencies for an object you're testing. There's an easy way to grab what you need from within the test: using [rewire](https://github.com/jhnns/rewire), which exposes a special `__get__` method you can use to access whatever you need from the top level scope of the module. You can then stub out methods and properties on those modules. Here's how to leverage it to your advantage.
+Sometimes it can be a pain to pull in and/or stub a bunch of dependencies for an object you're testing. There's an easy way to grab what you need from within the test: using [Rewire](https://github.com/jhnns/rewire), which exposes a special `__get__` method you can use to access whatever you need from the top level scope of the module. You can then stub out methods and properties on those modules. Here's how to leverage it to your advantage.
 
 ```javascript
 beforeEach(function() {
@@ -148,6 +148,8 @@ describe('something related to todos', function() {
   });
 });
 ```
+
+As a note, you don't even need to use Rewire unless you need access to instance variables on your objects. Since Flux uses plain objects, multiple calls to `require` will always return the same object. This means that you can just spy on or stub out a method on one of your `Actions` or `Stores` directly after requiring them.
 
 ### Actions
 
@@ -339,11 +341,11 @@ class WidgetStore extends Store {
   constructor(options) {
     this.widgets = new Backbone.Collection();
     this.dispatcher = options.dispatcher;
-    this.dispatcher.register('WIDGET_ADDED', this.onWidgetAdded);
+    this.dispatcher.register(this.onWidgetAdded);
   }
 
-  onWidgetAdded(widget) {
-    this.widgets.add(widget)
+  onWidgetAdded(action) {
+    this.widgets.add(action.payload);
     this.emit('change');
   }
 }
@@ -380,7 +382,7 @@ When it comes to testing, there are a lot of things you can safely skip, since t
 
 It's usually a good idea to wrap your components in a stubbed out context, to make it easier to force them to behave the way you want within your tests. If you don't, it can be hard to get them to render and behave as expected.
 
-To get this to happen, I recommend using the [stub-router-context](https://github.com/rackt/react-router/blob/master/docs/guides/testing.md) module from the [react-router project](https://github.com/rackt/react-router).
+To get this to happen, I recommend using the [stub-router-context](https://gist.github.com/cmain/69aee0b5d9cab96589d7) module from the [react-router project](https://github.com/rackt/react-router). It's useful for wrapping the context of all kinds of components aside from the React Router. Although I tend to stick to the name "Stub Router Context", it would perhaps be more accurate to just call it "stub context", since you can use it to stub out any context.
 
 I also like to add a ref to the stub in the component that's returned in `render`, to make it easier to get hold of the component being wrapped by the component returned by `stub-router-context`.
 
@@ -439,7 +441,7 @@ describe('WidgetRepeater', function() {
 
   it('changes widgets to active on click', function() {
     let widgets = TestUtils.scryRenderedDOMComponentsWithClass(this.component, 'widget')
-    let secondWidget = widgets[1].getDOMNode();
+    let secondWidget = widgets[1].findDOMNode();
     TestUtils.Simulate.click(secondWidget);
     let activeWidgets = TestUtils.scryRenderedDOMComponentsWithClass(this.component, 'active')
     expect(activeWidgets).to.have.length(2);
