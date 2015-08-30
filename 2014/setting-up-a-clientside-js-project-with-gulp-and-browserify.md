@@ -200,7 +200,7 @@ gulp.task('browserify-client', ['lint-client'], function() {
       insertGlobals: true
     }))
     .pipe(rename('car-finder.js'))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build'))
     .pipe(gulp.dest('public/javascripts'));
 });
 
