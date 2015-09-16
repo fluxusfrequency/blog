@@ -1,6 +1,8 @@
 # Raising The Dead: Bringing Your Legacy Application Back Into Development
 ## Part 2: Building A Culture Of Success
 
+ramping up developers on code, setting your dev team up for success, SaaS success tips, managing your team towards success, managing your dev team towards success, build a successful web team
+
 ## Introduction
 
 In [part one of this series](),

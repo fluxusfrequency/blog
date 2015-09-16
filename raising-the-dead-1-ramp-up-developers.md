@@ -1,5 +1,4 @@
-# Raising The Dead: Bringing Your Legacy Application Back Into Development
-## Part 1: Ramping Up Developers On Code
+# Bring Back Your App: Ramping Up Developers On Code
 
 ## Introduction
 
@@ -7,7 +6,7 @@ Remember the glory days? Your company had it all! New signups every day. Coverag
 
 But then something happened. You shifted focus to integrating with another company's API. Or you lost your entire developer team. Slowly, kudzu vines covered over what was once a glorious app. The technology you used to build grew outdated. Bugs accumulated, but there was no time to fix them. You shed a single tear when you thought back to the glory days.
 
-Finally, a new day dawned! You got a funding round! You've just hired a new team of developers. They start next week. You can't wait to get them slinging code. But are you ready? Starting a new team on an old app isn't as easy as handing them laptops and saying "clone down the repo". In this post, the first of a two-part series, we'll take a look at what it takes to ramp up developers on code in a legacy application. When we're through, you'll be ready to let the good times roll again!
+Finally, a new day dawned! You got a funding round! You've just hired a new team of developers. They start next week. You can't wait to get them slinging code. But are you ready? Starting a new team on an old app isn't as easy as handing them laptops and saying "clone down the repo". In this post, the first of a two-part series, we'll take a look at some advice you can use when ramping up developers on code in a legacy application. When we're through, you'll be ready to let the good times roll again!
 
 ## Have An Easy Setup Process
 
