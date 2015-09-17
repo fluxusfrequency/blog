@@ -110,7 +110,6 @@ If you have a good test suite, make sure to run it often as you remove suspect b
 
 Take the time to clean up your code base before new developers roll on, it can save huge amounts of time. New devs don't have to work as hard to understand what's going on, so they can spend those mental cycles shipping new features instead.
 
-
 ## Wrapping Up
 
 In this post, we looked at a couple of strategies for getting a new team ready to develop on an old code base. We looked at how to streamline the technical set up process, some tips for updating dependencies, and ways to pay down technical debt.
