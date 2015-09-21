@@ -14,3 +14,4 @@
 - Listen in standup for cool solutions and problems you're solving. Tons of good content there.
 - Link to other people's posts and tag them on twitter when you promote it
 - Include a CTA
+- Top 6 words for titles: How, Your, What, Best, Why, Tip (in that order)
