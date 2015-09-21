@@ -1,10 +1,12 @@
 # Bring Back Your App: How To Prioritize Your Best Features
 
+<img src="https://quickleft.com/wp-content/uploads/priritize-tasks-300x202.gif" alt="how to prioritize your best features"/>
+
 ## Introduction
 
 The tech world moves fast. It's not uncommon for a startup to scale from two people in a coworking space to a team of thirty or more in a matter of months. Just as often, the team shrinks again due to sudden market changes or errant developers moving on to the next big thing.
 
-When you're getting ready to rebuild, it can be hard to know where to begin. There are so many things to do, from marketing, to onboarding a new team, to deciding what to build next.
+When you're getting ready to rebuild your business, it can be hard to know where to begin. There are so many things to do, from marketing, to onboarding a new team, to deciding what to build next.
 
 In [part one of this series](http://quickleft.com/blog/ramping-up-developers-on-code), we talked about some of things you can do on the technical side to get your dev team up and running with a minimum of fuss.
 
@@ -43,8 +45,6 @@ In some cases, starting a whole new code base can take a lot of time, and might 
 If you do go down the road of extracting services, your team should take the time to define clear boundaries between the old app and the new one, and describe how they will interact in detail. For example, if you're pulling out an API, you might want to come up with a sample JSON response and the HTTP Status Codes that will be used _before_ you build it. Defining the limitations and structure beforehand can keep a project like this from dragging on endlessly.
 
 ### Use MVP To Figure Out Where To Go Next
-
-<img src="http://33.media.tumblr.com/c7020e19413e432bad10202d7910e53e/tumblr_mmci38PviS1rfimo0o1_500.gif" alt="how to prioritize your best features"/>
 
 A lot of people don't realize it, but a Minimum Viable Product (MVP) isn't just the first version of the thing you're building. It's actually a process. A way of testing out the market to find out whether things you _think_ that people will like are _actually_ things that people will like.
 
