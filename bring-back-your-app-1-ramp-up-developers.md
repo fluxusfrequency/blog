@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Remember the glory days? Your company had it all! New signups every day. Coverage on the hottest blogs. Money was rolling in hand over first. All thanks to your hot app. You and your goons really nailed it when you followed an [MVP](https://quickleft.com/blog/actually-mvp/) process and found just the thing the market was looking for.
+Remember the glory days? Your company had it all! New signups every day. Coverage on the hottest blogs. Money was rolling in hand over fist. All thanks to your hot app. You and your goons really nailed it when you followed an [MVP](https://quickleft.com/blog/actually-mvp/) process and built just the thing the market was looking for.
 
 But then something happened. You shifted focus to integrating with another company's API. Or you lost your entire developer team. Slowly, kudzu vines covered over what was once a glorious app. The technology you used to build grew outdated. Bugs accumulated, but there was no time to fix them. You shed a single tear when you thought back to the glory days.
 

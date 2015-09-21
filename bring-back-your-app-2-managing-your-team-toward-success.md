@@ -28,7 +28,7 @@ Think about [Basecamp](https://basecamp.com/). They used to be [37Signals](http:
 
 You can do the same thing on a smaller scale. Focus on the part(s) of your application that made the business a success in the first place. Does your marketing and landing page drive users to interact with that feature? Is it easy to get to and use it? Are there other features or workflows that are getting in the way of users finding their way there?
 
-If you can identify some features that you can lose, you can focus more on the things that drive users to your site, refining them and making sure that they are solid and bug-proof. It also gives you room to experiment with _new_ secondary features without overwhelming your users. Think of it as refactoring at an application level.
+If you can identify some features that you can lose, you can focus more on the things that drive users to your site, refining them and making sure that they are solid and bug-proof. It also gives you room to experiment with _new_ secondary features without overwhelming your users. I know of one company with a well-established application that follows this rule: "you can't add a feature unless you remove one." Think of it as refactoring at an application level.
 
 ### Consider Splitting Out Services
 
