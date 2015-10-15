@@ -15,3 +15,5 @@
 - Link to other people's posts and tag them on twitter when you promote it
 - Include a CTA
 - Top 6 words for titles: How, Your, What, Best, Why, Tip (in that order)
+
+https://moz.com/blog/split-test-gather-ctr-analytics-serps
