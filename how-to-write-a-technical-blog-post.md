@@ -50,9 +50,9 @@ On the other hand, some folks will look for the answers to their questions in ot
 
 ### Identify A Long-Tail Keyword
 
-You might think that marketing your piece is something that comes after you've written it. But considering how you will promote your piece before you write it.
+You might think that marketing your piece is something that comes after you've written it. But considering how you will promote your piece before you write it. One of the easiest wins you can make early on is to [choose an effective title](http://www.8womendream.com/about-the-women-of-8-women-dream/author-catherine-hughes/award-winning-titles-and-headlines-for-inspiration-to-create-viral-blog-posts).
 
-One idea that I've found particularly useful is to drive my post with a well-chosen [long tail keyword](http://www.wordtracker.com/academy/keyword-research/technical-guides/three-good-reasons-to-target-long-tail-keywords). Long tail keywords are specifically targeted 3-4 word phrases meant to be found by readers researching a particular topic.
+I typically try to match my titles with a well-chosen [long tail keyword](http://www.wordtracker.com/academy/keyword-research/technical-guides/three-good-reasons-to-target-long-tail-keywords). Long tail keywords are specifically targeted 3-4 word phrases meant to be found by readers researching a particular topic.
 
 Because single-word rankings in search results are very competitive, it's easier to get a high rank for a multi-word phrase than a single keyword for a given search. Usually, it's best to think of the most compact way to express what you're writing about using common language. For example, the long-tail keyword for _this_ post is "How to write a technical blog". It's a little long, but it's more likely that someone would search for that than "Steps to follow when you want to publish your first technical blog post". On the other side, it's more likely that my audience will find my post than if I had used something more generic like "tech blogging".
 
@@ -192,6 +192,8 @@ Spending a little time thinking about when you should publish you post can go a 
 ### Shout It From The Housetops
 
 This final point is probably obvious, but you'll want to promote your work as much as you can around the web once it finally goes live. Here are some good places to self-promote.
+
+Minimum: Twitter, HN, Reddit as soon as it comes out.
 
 - Twitter
 - Hacker News
