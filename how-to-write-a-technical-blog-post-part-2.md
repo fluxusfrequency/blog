@@ -1,7 +1,7 @@
 # How To Write A Technical Blog Post
 ## Part 2: Write
 
-In this three part series, we're looking at some of the best ways to get yourself into a good flow as a technical blogger. In the first part, we talked about some of the initial steps you can take to get yourself into a good flow as a writer. In this, the second part of of the series, we'll talk about how to do the actual writing itself: some effective structures you can use to organize your posts, the creative process of writing, and making sure that your content is as good as it can be.
+In this three part series, we're looking at some of the best ways to get yourself into a good flow as a technical blogger. In the first part, we talked about some of the initial steps you can take when you're figuring out how to write a technical blog post. In this, the second part of of the series, we'll talk about how to do the actual writing itself: some effective structures you can use to organize your posts, the creative process of writing, and making sure that your content is as good as it can be.
 
 ## Define Your Structure
 
@@ -84,7 +84,7 @@ The more times you repeat this process, the more clear and understandable your w
 
 ## Ask For Review
 
-It's a really good idea to get another set of eyes on your writing. If you're lucky enough to have an editor, they will give you lots of great ideas for phrasing, word choice, and structure. If not, reach out to your peers to see if any of them are willing to help you improve your work. The more people you can get to check your work before you release it to the world, the better.
+It's a really good idea to get another set of eyes on your writing. If you're lucky enough to have an editor, they will give you lots of great ideas for phrasing, word choice, and structure. If not, reach out to your peers to see if any of them are willing to help you improve your work. Especially target those you think already know the ins and outs how to write a technical blog post. The more people you can get to check your work before you release it to the world, the better.
 
 You can also check with someone in the role you're writing for. If there's nobody on your team in that role, you can also try reaching out to a popular influencer in that role on Twitter or elsewhere on the web. In fact, this is also a good thing to consider doing for promotional purposes. Reaching out to major influencers early and gathering their feedback on your topic might lead to them sharing your content, which will greatly improve your traffic.
 

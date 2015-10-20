@@ -9,7 +9,7 @@ In this three part series, we'll explore some strategies you can use to generate
 
 ## Get Psyched Up
 
-Setting out to write a blog post can be overwhelming. Many people find it hard to choose a topic. I think a lot of this comes down to feeling like you don't know enough about anything to write about it. But if you think that you have to be an expert before you start writing, think again. I don't know how many times I've heard people say: "I would write about _(insert technology)_ if I knew a little bit more about it". It's common to feel uncomfortable with the idea of publishing a piece telling the world "how you should do _X_". But fret not. This is just a little bit of [imposter syndrome](http://startupbros.com/21-ways-overcome-impostor-syndrome/).
+Figuring out how to write a technical blog post can be overwhelming if you're not used to it. Many people find it hard to choose a topic. I think a lot of this comes down to feeling like you don't know enough about anything to write about it. But if you think that you have to be an expert before you start writing, think again. I don't know how many times I've heard people say: "I would write about _(insert technology)_ if I knew a little bit more about it". It's common to feel uncomfortable with the idea of publishing a piece telling the world "how you should do _X_". But fret not. This is just a little bit of [imposter syndrome](http://startupbros.com/21-ways-overcome-impostor-syndrome/).
 
 ```
 If you want to learn something, read about it. If you want to understand something, write about it. If you want to master something, teach it.
@@ -65,4 +65,4 @@ Generating a good long-tail keyword is a bit of a fine art. If you have any frie
 
 Getting into the head space to write a blog post can be daunting at first. But when you treat it as a learning process and break the process up into small, manageable tasks, it becomes a bit easier. In this post, we've looked at how to think about the purpose of blogging, generate ideas, think about your audience, and drive your topic with a tightly focused long-tail keyword.
 
-Stay tuned for part two of this series, where we'll talk about some tools you can use for producing content in the actual _writing process_ itself. Until then, good luck and happy blogging!
+Stay tuned for part two of this series, where we'll talk about another aspect of how to write a technical blog post: tools that will help you produce content in the actual _writing process_ itself. Until then, good luck and happy blogging!

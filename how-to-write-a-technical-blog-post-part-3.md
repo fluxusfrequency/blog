@@ -1,7 +1,7 @@
 # How To Write A Technical Blog Post
 ## Part 3: Publish
 
-In this three part series, we're exploring what it takes to break into the technical blogging space. In the first part, we looked at initial steps you can take to get into a good writing flow. In the second part, we In this, the second part of of the series, we'll talk about how to do the actual writing itself: some effective structures you can use to organize your posts, the creative process of writing, and making sure that your content is as good as it can be.
+In this three part series, we're exploring what it takes to break into the technical blogging space. In the first part, we looked at initial steps you can take to get into a good writing flow. In the second part, we explored how to do the actual writing itself. In this, the third and final part of this series, we'll talk about one more aspect of how to write a technical blog post: getting as many people to read it as possible.
 
 ## Survey Your Kingdom
 
