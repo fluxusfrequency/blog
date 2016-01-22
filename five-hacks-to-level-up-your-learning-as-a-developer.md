@@ -4,7 +4,7 @@
 
 Lately, I've been thinking a lot about how I learn. I was a teacher before I started programming, so I spent many hours studying how people learn. Since being a developer involves constantly staying on top of the latest technologies, I've turned these strategies on myself in service of learning more, faster.
 
-In a [previous post](), I introduced the concept of Metacognition and talked about a process called metacognitive regulation, which you can use to get the most out of your learning sessions. In this post, I'll share some more tactical approaches that you can use to level up your learning as a developer.
+In a [previous post](https://quickleft.com/?p=2790), I introduced the concept of Metacognition and talked about a process called metacognitive regulation, which you can use to get the most out of your learning sessions. In this post, I'll share some more tactical approaches that you can use to level up your learning as a developer.
 
 ## 1. Know Your Learning Style
 

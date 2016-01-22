@@ -1,4 +1,4 @@
-# How Do I Learn? Undertanding Your Learning Style As A Developer
+# How To Learn Best As A Developer
 
 ## Introduction
 
@@ -8,7 +8,7 @@ As consultants, we find ourselves in a new code base, or coming to terms with a 
 
 Even if you're not a consultant, knowing the lay of the land when it comes to the latest and greatest technologies is essential if you're a developer. Programmers spend a lot of cycles tinkering with "the new hotness". For every framework or language that does eventually see some level of success, many others fail. Because of this, we inevitably invest some time learning things we'll never use. It's important to be efficient in our learning, to minimize wasted time and effort.
 
-Other programmers ask me about some of the strategies I use in my own learning. Because I used to be a teacher, I've spent a fair amount of time thinking about how people learn. In this post, we'll talk about how to examine your learning process so that you can learn more effectively as a programmer.
+Other programmers ask me about some of the strategies I use in my own learning. Because I used to be a teacher, I've spent a fair amount of time thinking about how people learn. In this post, we'll talk about how to examine your process so that you can figure out how learn best as a developer.
 
 ## Introducing Metacognition
 
