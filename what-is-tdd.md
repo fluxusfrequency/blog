@@ -12,7 +12,7 @@ Test-Driven Development is an approach to writing software in which the develope
 
 If you'd like to get a sense of what Test-Driven Development looks like in action, read my post about [creating a custom Ruby gem](https://quickleft.com/blog/wrapping-your-api-in-a-custom-ruby-gem/), where I walk through the process step by step.
 
-TDD has long been a favorite approach of organizations that follow [Extreme Programming](http://www.extremeprogramming.org/) and Agile principles. In 2003, Kent Book wrote [the book](http://www.amazon.com/Test-Driven-Development-By-Example/dp/0321146530) on this approach. In the years since, TDD has enjoyed enormous success, being elevated to near-dogmatic status.
+TDD has long been a favorite approach of organizations that follow [Extreme Programming](http://www.extremeprogramming.org/) and Agile principles. In 2003, Kent Beck wrote [the book](http://www.amazon.com/Test-Driven-Development-By-Example/dp/0321146530) on this approach. In the years since, TDD has enjoyed enormous success, being elevated to near-dogmatic status.
 
 In the past couple years, some have raised concerns that the programming community is being too strict in its demand for TDD. Most notably David Heinemeier Hansson (creator of Ruby on Rails), wrote a blog post entitled [TDD is dead. Long live testing.](http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html), which was met with passionate reactions from people on both sides of the argument.
 
@@ -26,13 +26,13 @@ What are the specific ways that a test-driven approach can benefit your business
 
 If computer systems built themselves, they would probably be perfect. Unfortunately, computers need people to tell them what to do, which means humans have to communicate to get software written. If you've worked in tech for any length of time, you've probably experienced the frustration of a mismatch between what was envisioned in planning and how an app actually behaves in the wild.
 
-TDD helps alleviate this problem, because the test serves as a specification for what the code to be written should _do_. As long as you're [writing good stories](https://blog.engineyard.com/2015/happy-sad-evil-weird-feature-planning), your development team should be able to build exactly what you asked for. If your team aggies to use [Acceptance Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development#TDD_and_ATDD), you can even write tests that describe how you want it to work in plain English!
+TDD helps alleviate this problem, because the test serves as a specification for what the code to be written should _do_. As long as you're [writing good stories](https://blog.engineyard.com/2015/happy-sad-evil-weird-feature-planning), your development team should be able to build exactly what you asked for. If your team agrees to use [Acceptance Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development#TDD_and_ATDD), you can even write tests that describe how you want it to work in plain English!
 
 2. Your Code Will Read Like Poetry
 
 Because [refactoring code](http://fluxusfrequency.github.io/blog/2014/01/10/refactoring-1-extract-method/) is a built-in step in TDD, you end up with a much cleaner codebase as you go. Apps built with TDD tend to have less duplication, fewer edge cases that aren't thought through, and a better overall architecture.
 
-Why should you care if the code is pretty or not? It makes it easier to add features, fix bugs, and get up to speed. Every time you [hire a consultant](https://quickleft.com/) or new developer, there have to spend a certain amount of time understanding how the different parts of your application interact. This [ramping up process](https://quickleft.com/blog/ramping-up-developers-on-code/) takes much less time when the code is well-structured. Similarly, programmers can make changes (whether features or bugs) much more quickly when there's less mental overhead to struggle with.
+Why should you care if the code is pretty or not? It makes it easier to add features, fix bugs, and get up to speed. Every time you [hire a consultant](https://quickleft.com/) or new developer, they have to spend a certain amount of time understanding how the different parts of your application interact. This [ramping up process](https://quickleft.com/blog/ramping-up-developers-on-code/) takes much less time when the code is well-structured. Similarly, programmers can make changes (whether features or bugs) much more quickly when there's less mental overhead to struggle with.
 
 3. You Can See Trouble A Mile Away
 
