@@ -10,7 +10,7 @@ In a [previous post](https://quickleft.com/?p=2790), I introduced the concept of
 
 Before you start applying learning strategies, it's good to establish a baseline understanding of how you learn. One of the easiest ways to start this work is to find out your learning style.
 
-You may have heard of the three learning modalities proposed by [Walter Burke Barbe et al](https://en.wikipedia.org/wiki/Learning_styles): Visual, Auditory, and Kinesthetic. Just about everyone can learn from all of these approaches, but we're also more or less attunes to each of them. You can find out where you fall by taking an [online quiz](http://www.educationplanner.org/students/self-assessments/learning-styles.shtml). It only takes ten minutes, and is applicable throughout your life.
+You may have heard of the three learning modalities proposed by [Walter Burke Barbe et al](https://en.wikipedia.org/wiki/Learning_styles): Visual, Auditory, and Kinesthetic. Just about everyone can learn from all of these approaches, but we're also more or less attuned to each of them. You can find out where you fall by taking an [online quiz](http://www.educationplanner.org/students/self-assessments/learning-styles.shtml). It only takes ten minutes, and is applicable throughout your life.
 
 Here are some ways to use each modality when learning technology:
 
