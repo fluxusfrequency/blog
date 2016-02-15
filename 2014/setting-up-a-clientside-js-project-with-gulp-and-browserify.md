@@ -329,7 +329,7 @@ Now we'll write our million dollar app in `client/index.js`:
 alert('I found your car!');
 ```
 
-Let's put it all together. Run `grunt build`, then `open public/index.html`. Our default browser opens a beautiful olive green screen with an alert box. Profit!
+Let's put it all together. Run `gulp build`, then `open public/index.html`. Our default browser opens a beautiful olive green screen with an alert box. Profit!
 
 ## One Task To Rule Them All
 
