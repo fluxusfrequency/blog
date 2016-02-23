@@ -2,7 +2,7 @@
 
 ## Introduction
 
-When you're getting ready to build an application, there are many choices to be made. Will you choose to build it as cheaply as possible, then hope that things work out down the line? Or will you spend the time and money to create something that's built with craftsmanship and will withstand the tests of time, changing business requirements, and user error?
+When you’re getting ready to build an application, there are many choices to be made. Will you choose to build it as cheaply as possible, then hope that things work out down the line? Or do you need something more resilient?  If so, spending the time and money to build a quality application will pay off.  Code written with craftsmanship will withstand the tests of time, changing business requirements, and user error.
 
 At Quick Left, we believe that it's worth taking the time to build things right. A well-written codebase saves time and money, and withstands the test of time. On the other hand, we're also interested in doing things efficiently. If there's a way to write quality code _and_ save time and money, that's the kind of service we want to provide for our clients. That's why we use Test-Driven Development.
 
