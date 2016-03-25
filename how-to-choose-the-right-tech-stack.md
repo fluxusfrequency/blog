@@ -32,7 +32,7 @@ For tech companies in this early stage, it's vital for adding features to be che
 
 When you know that your code is disposable, you'll want to use the easiest tool you can find. Some good choices include [WordPress](https://wordpress.org/), basic PHP, or a static site generated with [Jekyll](https://jekyllrb.com/) or [HarpJS](http://harpjs.com/). All of these technologies are easy to understand, and you can probably get started with them yourself even if you're not especially technical.
 
-In some cases, you might already know that you need to build something that will last a little while. If you've already proven your concept in a basic way, and need to a solid base that you can easily extend from, but you're still very young, you might want to consider using [Ruby on Rails](http://rubyonrails.org/) or [Django](https://www.djangoproject.com/). Both frameworks are easy to build new features in. Plus, they have the added bonus of being widely known, which means you will find it easier to hire new developers to work on your code as you continue to grow.
+In some cases, you might already know that you need to build something that will last a little while. If you've already proven your concept in a basic way, and need to set up a solid base that you can easily extend from, but you're still very young, you might want to consider using [Ruby on Rails](http://rubyonrails.org/) or [Django](https://www.djangoproject.com/). Both frameworks are easy to build new features in. Plus, they have the added bonus of being widely known, which means you will find it easier to hire new developers to work on your code as you continue to grow.
 
 ### Proven Market
 
@@ -58,7 +58,7 @@ This is the moment when most companies begin to consider the benefits of doing [
 
 At this point, you need to decide on your organizational architecture. Will you go toward a micro-services or other [Service-Oriented Architecture](http://fluxusfrequency.github.io/blog/2014/02/14/service-oriented-architecture/)? If so, consider the difficulty of making sure that there is clear encapsulation and well-defined APIs for each of your services. Perhaps you want to stick with a [monolith](https://m.signalvnoise.com/the-majestic-monolith-29166d022228#.deg42umkz), but it's time to start over and apply the lessons you've learned. Or, maybe you want to move from a server-rendered page style app to a JavaScript heavy client-side app.
 
-If you have an established and growing business and you find yourself making facing this decision, you should definitely consult with an experienced system architect and weight the benefits and drawbacks of each approach you're considering. Because the rewrite is an expensive and time-intensive process, and it greatly weakens your ability to add new features while it's going on. Having the guidance of an skilled architect will help mitigate the cost and risk of making the switch-over.
+If you have an established and growing business and you find yourself facing this decision, you should definitely consult with an experienced system architect and weigh the benefits and drawbacks of each approach you're considering. Because the rewrite is an expensive and time-intensive process, it greatly weakens your ability to add new features while it's going on. Having the guidance of an skilled architect will help mitigate the cost and risk of making the switch-over.
 
 ### Evaluating Technologies
 
@@ -78,7 +78,7 @@ Drawing from my colleague Laura Steadman's article on [Evaluating Open Source Li
 
 ## Conclusion
 
-When you're piloting a tech business, there are certain touchstone moments where the decisions you make can make or break your future success. Choosing the right tech stack for your app is one of these moments. In this post, I've we've looked some strategies you can use when making this choice.
+When you're piloting a tech business, there are certain touchstone moments where the decisions you make can make or break your future success. Choosing the right tech stack for your app is one of these moments. In this post, we've looked some strategies you can use when making this choice.
 
 First, we thought about the demographics and experience you want to provide. Next, we considered where your business is in its overall lifecycle. Finally, we went down a checklist and asked questions to evaluate how appropriate each of your choices was.
 
