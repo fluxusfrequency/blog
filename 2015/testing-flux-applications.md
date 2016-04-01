@@ -183,9 +183,8 @@ import Backbone from 'backbone';
 
 it('dispatches an event', function(done) {
   this.spy = this.sinon.spy(AppDispatcher, 'dispatch');
-  this.collection = new Backbone.Collection();
 
-  MyAction.loadModels(this.collection);
+  MyAction.loadModels();
   setTimeout(function() {
     sinon.assert.calledOnce(this.spy);
     done();
