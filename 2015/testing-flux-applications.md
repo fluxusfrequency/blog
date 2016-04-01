@@ -264,7 +264,7 @@ Given that `stores` are only supposed to accept data through the callback they r
 
 ```javascript
 import _ from 'lodash';
-import {EventEmitter} from 'events;
+import {EventEmitter} from 'events';
 import Widgets from '../collections/widgets';
 import AppDispatcher from '../dispatchers/app-dispatcher';
 
