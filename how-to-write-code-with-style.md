@@ -1,6 +1,8 @@
 # How To Write Code With Style
 
-As a consultant, I spend a lot of time reading through other peoples' code. Every few months I find myself in a new context, and unless I building a greenfield project, I have to ramp up on a codebase with months to years of history. It's always surprising to me the extent to which teams rely on undocumented knowledge. When I'm trying to get a project up and running, I _always_ have to reach out to somebody else at the company to get past a certain snag in the set up process. It happens every time. Then I hear: "oh yeah, you just need to _foobar_ the _bazqux_, then it will work." Welp. If the necessary hack had been included in the README, or if the code had been written in a less cryptic way, then I probably could have figured it out on my own.
+As a consultant, I spend a lot of time reading through other peoples' code. Every few months I find myself in a new context, and unless I building a greenfield project, I have to ramp up on a codebase with months to years of history.
+
+It's always surprising to me the extent to which teams rely on undocumented knowledge. When I'm trying to get a project up and running, I always have to reach out to somebody else at the company to get past a certain snag in the set up process. The inevitable answer comes: "oh yeah, you just need to _foobar_ the _bazqux_, then it will work." While this process does get me where I need to go, a lot of time and context-switching could have been saved if the necessary hack had been included in the README or the code had been written in a less cryptic way. In that case, I probably could have figured it out on my own.
 
 Code has to work
 Code is communication
@@ -46,15 +48,26 @@ Why should you delete it? When there's old, dusty code hanging around that never
 Consider the following code:
 
 ```
-def x(args)
-  ProductService.new(args[0]).process!
-end
+(function(w, d, s, l, i) {
+   w[l] = w[l] || [];
+   w[l].push({
+     'service.start': new Date().getTime(),
+     event: 'service'
+   });
+   var f = d.getElementsByTagName(s)[0],
+   j = d.createElement(s),
+   dl = l != 'dataMonitor' ? '&l=' + l : '';
+   j.async = true;
+   j.src = '//cdn.foobar.com/script.js?id=' + i + dl;
+   f.parentNode.insertBefore(j, f);
+ })(window, document, 'script', dataMonitor, id);
 ```
 
 Wat?
 
 Just because you can write things succinctly doesn't mean you should. Code golf is fun as an exercise, but it's not fun to try to understand your minimal code when I'm trying to build a business.
 
+Writing code that's easy to understand is both courteous and economical. I can't count the number of hours I've spent trying to decipher terse and cryptic blocks of code. Adding those hours up across a team of devs, it's easy to see how clear naming and formatting has the potential to save a company enormous amounts of money.
 
 
 ## 6. Follow The Style Guide
@@ -71,6 +84,5 @@ It's hard to understand code. The developer that comes after you will have to di
 As writers of modern, flexible languages, the possible ways to solve a problem seem innumerable and glamorous. But we should realize that if we want to do our best to make our thoughts clear to whoever comes after us, our best bet is to write code as straightforwardly as we can.
 
 We should strive to be humble. Leave behind the desire to write the most clever or efficient algorithm if it means sacrificing clarity. Blazing fast code has a time and place. But generally speaking, the money your company will save when the next programmer understands your code immediately will more than make up for the hundred milliseconds you would have saved by using bitmasking instead of a dictionary.
-
 
 ## Conclusion
