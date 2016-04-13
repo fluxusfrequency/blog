@@ -1,6 +1,6 @@
 # How To Write Code With Style: 7 Tips For Cleaner Code
 
-## Introduction - Say What You Mean, Mean What You Say
+## Say What You Mean, Mean What You Say
 
 Code is communication. It has two audiences: the computer, and the future maintainer. How we communicate with the computer is rather objective: you either gave it the instructions to do what you really wanted, or you didn't.
 
@@ -8,7 +8,7 @@ But people aren't so easy. As computer programmers, we channel our hopes, dreams
 
 There are as many ways to write code as there are programmers, and we all do it a little bit differently. There's beauty in this diversity, but it also makes it harder to be understood. And the harder it is to read code, the longer it takes to maintain and extend it. Time is money, so this is a bummer when it comes to building a tech business.
 
-How can we effectively communicate with other humans when we're writing code? In this post, we'll explore seven rules of thumb that you can use to write cleaner code.
+How can we effectively communicate with other humans when we're programming? Write code with style! In this post, we'll explore seven rules of thumb that you can use to write cleaner code.
 
 ## 1. Business Value Comes First
 
@@ -98,7 +98,7 @@ The same thing goes for comments. In communicating the purpose complex function,
 
 Whatever you do, leave a trail of docs behind you. Doing so is a boon to the future maintainer of your code. And who knows, it might be you!
 
-## Write With Compassion
+## Write Code With Style and Compassion
 
 It's hard to understand code. The developer that comes after you will have to dig through a complicated folder structure to find your files, and when they get there they'll have to decipher your variable names, dig through your dependencies to find magic values, _and_ try to grok how what you've written stands for a real business situation.
 
@@ -108,7 +108,7 @@ We should strive to be humble. Leave behind the desire to write the most clever 
 
 ## Conclusion
 
-In this post, we've talked about seven things to consider integrating into the approach you take to writing code. It's my hope that you weigh them, and perhaps call them to mind as you're programming. If we all do our part, the codebases of the world will be a little cleaner, and working with computers will be a little more fun for us all.
+In this post, we've talked about seven things to consider integrating into the approach you take to writing code. It's my hope that you weigh them, and perhaps call them to mind as you're programming. If we all do our part by choosing to write code with style, the codebases of the world will be a little cleaner, and working with computers will be a little more fun for us all.
 
 Until next time, happy coding!
 
