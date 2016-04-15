@@ -4,7 +4,7 @@
 
 Code is communication. It has two audiences: the computer, and the future maintainer. How we communicate with the computer is rather objective: you either gave it the instructions to do what you really wanted, or you didn't.
 
-But people aren't so easy. As computer programmers, we channel our hopes, dreams, and moods into our writing.[WordPress](https://wordpress.org) popularized the slogan "Code is Poetry". To me, it reads as a true statement.
+But people aren't so easy. As computer programmers, we channel our hopes, dreams, and moods into our writing. [WordPress](https://wordpress.org) popularized the slogan "Code is Poetry". To me, it reads as a true statement.
 
 There are as many ways to write code as there are programmers, and we all do it a little bit differently. There's beauty in this diversity, but it also makes it harder to be understood. And the harder it is to read code, the longer it takes to maintain and extend it. Time is money, so this is a bummer when it comes to building a tech business.
 
@@ -30,7 +30,7 @@ Don't leave TODOs littered throughout the code with things you'd like to see don
 
 Being present as you code can be threatened by many things. I've already mentioned tempting code changes. Other threatening distractions include social media, checking the news, Slack or HipChat, and growl notifications.
 
-If you've never tried timeboxing (for example, with Pomodoros), I highly recommend it. Combine them with an app like Freedom to keep yourself from getting pulled away, and pretty soon you'll find yourself able to avoid context switching for good blocks of time.
+If you've never tried timeboxing (for example, with Pomodoros), I highly recommend it. Combine them with an app like [Freedom](https://freedom.to/) or [SelfControl](https://selfcontrolapp.com/) to keep yourself from getting pulled away, and pretty soon you'll find yourself able to avoid context switching for good blocks of time.
 
 ## 3. Keep It Simple, Stupid
 
@@ -112,4 +112,4 @@ In this post, we've talked about seven things to consider integrating into the a
 
 Until next time, happy coding!
 
-P. S. If the topic of code and communication interests you, I highly recommend checkout out Matt Ward's excellent post [The Poetics of Coding](https://www.smashingmagazine.com/2010/05/the-poetics-of-coding/).
+P. S. If the topic of code and communication interests you, I highly recommend checking out Matt Ward's excellent post [The Poetics of Coding](https://www.smashingmagazine.com/2010/05/the-poetics-of-coding/).
