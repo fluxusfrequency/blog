@@ -1,5 +1,8 @@
 # Building an Ethereum-Based Economy in Ruby
 
+https://github.com/DigixGlobal/ethereum-ruby
+https://github.com/janx/ruby-ethereum
+
 ## Background
 
 hubot
@@ -11,16 +14,21 @@ cat cape, etc awards - $
 
 replace with blockchain based system
 
-## Create the slackbot
+## Doin It
 
-## Create the ledger
+### Create the accounts
 
-## Write send and recieve hooks
+Users are known by cryptographic signature
+
+### Write send and recieve hooks
 
 SOL standards
 
-## Contract
+### Contract
 
 Whenever someone gets to 50 kudos give them a gift card
 
+### Create the slackbot
+
+## Conclusion
 
