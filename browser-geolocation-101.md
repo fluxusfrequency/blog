@@ -1,5 +1,8 @@
 # Browser Geolocation 101
 
+https://developers.google.com/web/fundamentals/native-hardware/user-location/user-consent?hl=en
+http://diveinto.html5doctor.com/geolocation.html
+
 Introduction
 
 ## The HTML5 Geolocation API
